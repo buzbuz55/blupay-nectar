@@ -1,4 +1,4 @@
-import { ArrowLeft, ChevronRight, Plus, Building2, Landmark, CalendarClock, MapPin, Fingerprint, Lock, Bell, Users2, SmilePlus, HelpCircle, FileText, Wallet, BriefcaseBusiness, Send, Gift, FileKey, Smartphone, ShieldCheck, FileQuestion, Star, LogOut } from "lucide-react";
+import { ArrowLeft, Building2, Plus, Landmark, CalendarClock, MapPin, Fingerprint, Lock, Bell, Users2, SmilePlus, HelpCircle, FileText, Wallet, BriefcaseBusiness, Send, Gift, FileKey, Smartphone, ShieldCheck, FileQuestion, Star, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const settingSections = [
@@ -97,7 +97,7 @@ const SettingsPage = () => {
                         {item.badge}
                       </span>
                     )}
-                    <ChevronRight className="w-5 h-5 text-gray-400" />
+                    <span className="text-gray-400">›</span>
                   </div>
                 </Link>
               ))}
@@ -106,7 +106,10 @@ const SettingsPage = () => {
         ))}
 
         <div className="p-4">
-          <button className="w-full flex items-center justify-center gap-2 text-blupay-primary font-medium py-2">
+          <button 
+            className="w-full flex items-center justify-center gap-2 text-blue-500 font-medium py-2"
+            onClick={() => console.log("Sign out clicked")}
+          >
             <LogOut className="w-5 h-5" />
             <span>Sign Out of BLUPAY</span>
           </button>
