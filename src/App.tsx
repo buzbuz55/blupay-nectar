@@ -9,6 +9,7 @@ import SettingsPage from "./pages/Settings";
 import CardsPage from "./pages/Cards";
 import PayPage from "./pages/Pay";
 import CryptoPage from "./pages/Crypto";
+import SupportPage from "./pages/Support";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App: React.FC = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <SupportPage />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/notifications" element={<NotificationsPage />} />
