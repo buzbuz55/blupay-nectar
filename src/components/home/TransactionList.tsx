@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import { memo } from "react";
 
 interface Transaction {
   id: number;
@@ -9,7 +10,7 @@ interface Transaction {
   avatar: string;
 }
 
-export const TransactionList = ({ transactions }: { transactions: Transaction[] }) => {
+export const TransactionList = memo(({ transactions }: { transactions: Transaction[] }) => {
   return (
     <div className="space-y-4">
       {transactions.map((transaction) => (
@@ -35,4 +36,6 @@ export const TransactionList = ({ transactions }: { transactions: Transaction[] 
       ))}
     </div>
   );
-};
+});
+
+TransactionList.displayName = "TransactionList";
