@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotificationsPage from "./pages/Notifications";
 import SettingsPage from "./pages/Settings";
 import CardsPage from "./pages/Cards";
+import PayPage from "./pages/Pay";
 
 const queryClient = new QueryClient();
 
@@ -22,7 +23,7 @@ const App: React.FC = () => {
             <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/cards/*" element={<CardsPage />} />
-            <Route path="/pay" element={<div className="p-4">Pay/Request Page</div>} />
+            <Route path="/pay" element={<PayPage />} />
             <Route path="/crypto" element={<div className="p-4">Crypto Page</div>} />
             <Route path="/profile" element={<div className="p-4">Profile Page</div>} />
           </Routes>
