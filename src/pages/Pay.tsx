@@ -1,7 +1,10 @@
 import { ArrowLeft, QrCode, Search, Users } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 const contacts = [
   {
@@ -9,7 +12,7 @@ const contacts = [
     name: "Kollel Chatzos",
     username: "@kollel-chatzos",
     initials: "KC",
-    image: null
+    image: "/lovable-uploads/223a1454-fa94-4477-a9c7-62432d05a73a.png"
   },
   {
     id: 2,
@@ -38,34 +41,38 @@ const contacts = [
     username: "@wwstudios",
     initials: "JW",
     image: null
-  },
-  {
-    id: 6,
-    name: "Shmuel Wise",
-    username: "@realcleardaf",
-    initials: "SW",
-    image: null
-  },
-  {
-    id: 7,
-    name: "Derech Emet",
-    username: "@congderechemet",
-    initials: "DE",
-    image: null
-  },
-  {
-    id: 8,
-    name: "Kollel Kotel",
-    username: "@Kollelkotel",
-    initials: "KK",
-    image: null
   }
 ];
 
 const PayPage = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const { toast } = useToast();
+
+  const handleSyncContacts = () => {
+    toast({
+      title: "Syncing contacts",
+      description: "We're syncing your contacts to help you find people you know.",
+    });
+    // Here we would implement the actual contacts sync functionality
+  };
+
+  const filteredContacts = contacts.filter(contact => 
+    contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    contact.username.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
+      {/* Header with time and status */}
+      <div className="flex justify-between items-center p-4 text-sm text-gray-600">
+        <span>1:09</span>
+        <div className="flex items-center gap-2">
+          <span className="h-4 w-4">📱</span>
+          <span className="h-4 w-4">🔋</span>
+        </div>
+      </div>
+
+      {/* Search Header */}
       <div className="sticky top-0 bg-background z-10 px-4 py-3 border-b">
         <div className="flex items-center gap-3">
           <Link to="/" className="text-gray-600 hover:text-gray-900">
@@ -77,6 +84,8 @@ const PayPage = () => {
               <Input 
                 className="w-full pl-10 pr-4 py-2 bg-gray-100 border-none" 
                 placeholder="Name, @username, phone, or email"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
@@ -88,28 +97,38 @@ const PayPage = () => {
 
       {/* Sync Contacts Section */}
       <div className="p-4 border-b">
-        <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          className="w-full flex items-center gap-4 hover:bg-gray-50"
+          onClick={handleSyncContacts}
+        >
           <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
             <Users className="h-6 w-6 text-gray-600" />
           </div>
-          <div>
+          <div className="text-left">
             <h2 className="text-xl font-semibold">Sync your contacts</h2>
             <p className="text-gray-600">Easily find people you know.</p>
           </div>
-        </div>
+        </Button>
       </div>
 
       {/* Top People Section */}
       <div className="p-4">
         <h3 className="text-xl font-semibold mb-4">Top people</h3>
         <div className="space-y-4">
-          {contacts.map((contact) => (
+          {filteredContacts.map((contact) => (
             <button 
               key={contact.id}
               className="flex items-center gap-4 w-full hover:bg-gray-50 p-2 rounded-lg transition-colors"
+              onClick={() => {
+                toast({
+                  title: `Selected ${contact.name}`,
+                  description: "Opening payment details...",
+                });
+              }}
             >
               <Avatar className="h-12 w-12">
-                {contact.image && <img src={contact.image} alt={contact.name} />}
+                <AvatarImage src={contact.image} />
                 <AvatarFallback className="bg-gray-200 text-gray-600">
                   {contact.initials}
                 </AvatarFallback>
