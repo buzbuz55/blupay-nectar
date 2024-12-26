@@ -7,26 +7,30 @@ import Index from "./pages/Index";
 import NotificationsPage from "./pages/Notifications";
 import SettingsPage from "./pages/Settings";
 
+// Create a new QueryClient instance outside of the component
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/notifications" element={<NotificationsPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/cards" element={<div className="p-4">Cards Page</div>} />
-          <Route path="/pay" element={<div className="p-4">Pay/Request Page</div>} />
-          <Route path="/crypto" element={<div className="p-4">Crypto Page</div>} />
-          <Route path="/profile" element={<div className="p-4">Profile Page</div>} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+// Make App a proper React functional component with explicit return
+const App: React.FC = () => {
+  return (
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/cards" element={<div className="p-4">Cards Page</div>} />
+            <Route path="/pay" element={<div className="p-4">Pay/Request Page</div>} />
+            <Route path="/crypto" element={<div className="p-4">Crypto Page</div>} />
+            <Route path="/profile" element={<div className="p-4">Profile Page</div>} />
+          </Routes>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
+  );
+};
 
 export default App;
