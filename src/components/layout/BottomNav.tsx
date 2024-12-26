@@ -15,14 +15,16 @@ export const BottomNav = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 shadow-lg">
       <div className="flex justify-around items-center">
         {navItems.map((item) => (
           <Link
             key={item.path}
             to={item.path}
-            className={`flex flex-col items-center ${
-              isActive(item.path) ? "text-blupay-primary" : "text-gray-500"
+            className={`flex flex-col items-center transition-all duration-200 transform hover:scale-105 ${
+              isActive(item.path) 
+                ? "text-blupay-primary scale-105" 
+                : "text-gray-500"
             }`}
           >
             <item.icon className="w-6 h-6" />
