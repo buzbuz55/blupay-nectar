@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Settings, Plus, CreditCard, Building2, PaypalIcon } from "lucide-react";
+import { Settings, Plus, CreditCard, Building2, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
@@ -82,7 +82,7 @@ const CardsPage = () => {
             onClick={() => handleConnect("paypal")}
             disabled={isConnecting}
           >
-            <PaypalIcon className="w-6 h-6 mr-3" />
+            <DollarSign className="w-6 h-6 mr-3" />
             <div className="text-left">
               <div className="font-semibold">Connect PayPal</div>
               <div className="text-sm text-gray-500">Buy and cash out with PayPal</div>
