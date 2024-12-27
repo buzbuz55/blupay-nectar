@@ -14,6 +14,7 @@ import SupportPage from "./pages/Support";
 import BLUAi from "./pages/BLUAi";
 import BLUAiChat from "./pages/BLUAiChat";
 import KYCPage from "./pages/KYC";
+import DirectDeposits from "./pages/DirectDeposits";
 import { BottomNav } from "./components/layout/BottomNav";
 
 const queryClient = new QueryClient();
@@ -84,6 +85,7 @@ const App: React.FC = () => {
               <Route path="/bluai" element={<BLUAi />} />
               <Route path="/bluai/chat" element={<BLUAiChat />} />
               <Route path="/kyc" element={<KYCPage />} />
+              <Route path="/direct-deposits" element={<DirectDeposits />} />
               <Route path="/support" element={<SupportPage />} />
             </Routes>
           </div>
