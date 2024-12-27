@@ -1,19 +1,16 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus, X, DollarSign } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-
-interface Participant {
-  id: string;
-  identifier: string;
-  share: number;
-}
+import { AddParticipant } from "../split/AddParticipant";
+import { ParticipantsList } from "../split/ParticipantsList";
+import { AmountInput } from "../split/AmountInput";
+import { Participant, SplitStep } from "../split/types";
 
 export const SplitPayment = () => {
-  const [step, setStep] = useState<'participants' | 'amount' | 'confirm'>('participants');
+  const [step, setStep] = useState<SplitStep>('participants');
   const [amount, setAmount] = useState('');
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [newParticipant, setNewParticipant] = useState('');
@@ -33,7 +30,12 @@ export const SplitPayment = () => {
     const newId = Math.random().toString(36).substr(2, 9);
     setParticipants([
       ...participants,
-      { id: newId, identifier: newParticipant.trim(), share: 0 }
+      { 
+        id: newId, 
+        identifier: newParticipant.trim(), 
+        share: 0,
+        percentage: participants.length === 0 ? 100 : 0 
+      }
     ]);
     setNewParticipant('');
   };
@@ -42,10 +44,27 @@ export const SplitPayment = () => {
     setParticipants(participants.filter(p => p.id !== id));
   };
 
+  const handlePercentageChange = (id: string, percentage: number) => {
+    setParticipants(participants.map(p => 
+      p.id === id ? { ...p, percentage } : p
+    ));
+  };
+
   const handleNext = () => {
     if (step === 'participants' && participants.length > 0) {
       setStep('amount');
     } else if (step === 'amount' && amount) {
+      setStep('percentages');
+    } else if (step === 'percentages') {
+      const totalPercentage = participants.reduce((sum, p) => sum + (p.percentage || 0), 0);
+      if (Math.abs(totalPercentage - 100) > 0.01) {
+        toast({
+          title: "Invalid percentages",
+          description: "Percentages must add up to 100%",
+          variant: "destructive",
+        });
+        return;
+      }
       setStep('confirm');
       recalculateShares();
     }
@@ -54,8 +73,10 @@ export const SplitPayment = () => {
   const handleBack = () => {
     if (step === 'amount') {
       setStep('participants');
-    } else if (step === 'confirm') {
+    } else if (step === 'percentages') {
       setStep('amount');
+    } else if (step === 'confirm') {
+      setStep('percentages');
     }
   };
 
@@ -63,11 +84,9 @@ export const SplitPayment = () => {
     if (participants.length === 0 || !amount) return;
     
     const totalAmount = parseFloat(amount);
-    const sharePerPerson = totalAmount / participants.length;
-    
     setParticipants(participants.map(p => ({
       ...p,
-      share: Number(sharePerPerson.toFixed(2))
+      share: Number(((p.percentage || 0) / 100 * totalAmount).toFixed(2))
     })));
   };
 
@@ -116,43 +135,15 @@ export const SplitPayment = () => {
               step !== 'participants' && "hidden"
             )}>
               <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Input
-                    placeholder="Add email, username, or phone"
-                    value={newParticipant}
-                    onChange={(e) => setNewParticipant(e.target.value)}
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
-                        handleAddParticipant();
-                      }
-                    }}
-                  />
-                  <Button onClick={handleAddParticipant} size="icon">
-                    <Plus className="w-4 h-4" />
-                  </Button>
-                </div>
-
-                <div className="space-y-2">
-                  {participants.map((participant) => (
-                    <div
-                      key={participant.id}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                    >
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                          {participant.identifier[0].toUpperCase()}
-                        </div>
-                        <span>{participant.identifier}</span>
-                      </div>
-                      <button
-                        onClick={() => handleRemoveParticipant(participant.id)}
-                        className="text-gray-400 hover:text-gray-600"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
+                <AddParticipant
+                  value={newParticipant}
+                  onChange={setNewParticipant}
+                  onAdd={handleAddParticipant}
+                />
+                <ParticipantsList
+                  participants={participants}
+                  onRemove={handleRemoveParticipant}
+                />
               </div>
             </div>
 
@@ -160,17 +151,23 @@ export const SplitPayment = () => {
               "transition-all duration-300",
               step !== 'amount' && "hidden"
             )}>
+              <AmountInput
+                value={amount}
+                onChange={setAmount}
+              />
+            </div>
+
+            <div className={cn(
+              "transition-all duration-300",
+              step !== 'percentages' && "hidden"
+            )}>
               <div className="space-y-4">
-                <div className="relative">
-                  <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
-                  <Input
-                    type="number"
-                    placeholder="Enter amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
+                <ParticipantsList
+                  participants={participants}
+                  onRemove={handleRemoveParticipant}
+                  showPercentages
+                  onPercentageChange={handlePercentageChange}
+                />
               </div>
             </div>
 
@@ -179,20 +176,10 @@ export const SplitPayment = () => {
               step !== 'confirm' && "hidden"
             )}>
               <div className="space-y-4">
-                {participants.map((participant) => (
-                  <div
-                    key={participant.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                        {participant.identifier[0].toUpperCase()}
-                      </div>
-                      <span>{participant.identifier}</span>
-                    </div>
-                    <span className="font-medium">${participant.share}</span>
-                  </div>
-                ))}
+                <ParticipantsList
+                  participants={participants}
+                  onRemove={handleRemoveParticipant}
+                />
               </div>
             </div>
 
