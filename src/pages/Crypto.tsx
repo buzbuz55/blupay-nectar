@@ -22,6 +22,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CryptoChart } from "@/components/crypto/CryptoChart";
+import { fetchWithRetry } from "@/utils/api";
 
 interface CryptoAsset {
   id: string;
@@ -165,18 +166,18 @@ const CryptoPage = () => {
   const [showScanner, setShowScanner] = useState(false);
   const { toast } = useToast();
 
-  const { data: cryptos, isLoading } = useQuery({
+  const { data: cryptos, isLoading, error } = useQuery({
     queryKey: ['cryptos'],
     queryFn: async () => {
-      const response = await fetch(
+      const data = await fetchWithRetry(
         'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false'
       );
-      if (!response.ok) {
-        throw new Error('Failed to fetch crypto data');
-      }
-      return response.json() as Promise<CryptoAsset[]>;
+      return data as CryptoAsset[];
     },
-    refetchInterval: 30000,
+    staleTime: 60000,
+    cacheTime: 300000,
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * Math.pow(2, attemptIndex), 10000),
   });
 
   const handleScanClick = () => {

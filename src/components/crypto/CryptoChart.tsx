@@ -2,6 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
+import { fetchWithRetry } from "@/utils/api";
 
 interface CryptoChartProps {
   cryptoId: string;
@@ -15,22 +18,33 @@ interface PriceDataPoint {
 }
 
 export const CryptoChart = ({ cryptoId, days, className }: CryptoChartProps) => {
-  const { data: priceData, isLoading } = useQuery({
+  const { data: priceData, isLoading, error } = useQuery({
     queryKey: ['cryptoChart', cryptoId, days],
     queryFn: async () => {
-      const response = await fetch(
+      const data = await fetchWithRetry(
         `https://api.coingecko.com/api/v3/coins/${cryptoId}/market_chart?vs_currency=usd&days=${days}`
       );
-      if (!response.ok) {
-        throw new Error('Failed to fetch price data');
-      }
-      const data = await response.json();
       return data.prices.map(([timestamp, price]: [number, number]) => ({
         timestamp,
         price,
       }));
     },
+    staleTime: 60000, // Consider data fresh for 1 minute
+    cacheTime: 300000, // Keep data in cache for 5 minutes
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * Math.pow(2, attemptIndex), 10000),
   });
+
+  if (error) {
+    return (
+      <Alert variant="destructive" className="my-4">
+        <AlertCircle className="h-4 w-4" />
+        <AlertDescription>
+          Failed to load chart data. Please try again later.
+        </AlertDescription>
+      </Alert>
+    );
+  }
 
   if (isLoading) {
     return <Skeleton className={`h-full w-full ${className}`} />;
