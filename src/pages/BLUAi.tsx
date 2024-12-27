@@ -4,6 +4,7 @@ import { Header } from '@/components/bluai/Header';
 import { FeatureList } from '@/components/bluai/FeatureList';
 import { CurrencyConverter } from '@/components/currency/CurrencyConverter';
 import { VoiceAuth } from '@/components/auth/VoiceAuth';
+import { VoicePayment } from '@/components/bluai/VoicePayment';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -55,6 +56,7 @@ const BLUAi = () => {
         />
         
         <VoiceAuth />
+        <VoicePayment />
         
         <div className="flex-1">
           <div className="mb-6">
