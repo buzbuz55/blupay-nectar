@@ -11,9 +11,10 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5, // 5 minutes
-      gcTime: 1000 * 60 * 30, // 30 minutes
+      gcTime: 1000 * 60 * 60, // 60 minutes
       retry: 1,
       refetchOnWindowFocus: false,
+      suspense: true, // Enable suspense mode
     },
   },
 });
@@ -23,9 +24,9 @@ const App = () => {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
           <Suspense fallback={<LoadingFallback />}>
+            <Toaster />
+            <Sonner />
             <AppRoutes />
           </Suspense>
         </TooltipProvider>
