@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { PaymentScreen } from "@/components/payment/PaymentScreen";
 
 const contacts = [
