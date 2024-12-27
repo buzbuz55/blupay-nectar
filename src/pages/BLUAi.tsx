@@ -5,6 +5,7 @@ import { FeatureList } from '@/components/bluai/FeatureList';
 import { CurrencyConverter } from '@/components/currency/CurrencyConverter';
 import { VoiceAuth } from '@/components/auth/VoiceAuth';
 import { VoicePayment } from '@/components/bluai/VoicePayment';
+import { AiRecommendations } from '@/components/bluai/AiRecommendations';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -54,6 +55,8 @@ const BLUAi = () => {
           temperature={temperature}
           weather={weather}
         />
+        
+        <AiRecommendations />
         
         <VoiceAuth />
         <VoicePayment />
