@@ -2,7 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import SignupFlow from '@/components/signup/SignupFlow';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Sun, Mic, Camera, RefreshCw, CalendarClock, Gift, History } from "lucide-react";
+import { 
+  Send, Sun, Mic, Camera, RefreshCw, CalendarClock, Gift, History,
+  CreditCard, Globe, ShieldCheck, ArrowDown, Users, MessageSquare,
+  ShoppingCart, ChartBar, Wallet, Headset, QrCode, Split, Mail,
+  WalletCards, UserCog, Speaker, AlertOctagon, Heart, PiggyBank,
+  Database, User, Settings, ChartLine, Percent, DollarSign
+} from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { CameraDialog } from '@/components/camera/CameraDialog';
 import { CurrencyConverter } from '@/components/currency/CurrencyConverter';
@@ -83,6 +89,42 @@ const BLUAi = () => {
     return <SignupFlow onComplete={handleSignupComplete} />;
   }
 
+  const featureButtons = [
+    { icon: CalendarClock, label: "Recurring Payments", route: "/recurring-payments" },
+    { icon: Gift, label: "Rewards & Cashback", route: "/rewards" },
+    { icon: History, label: "Transaction History", route: "/history" },
+    { icon: CreditCard, label: "Bill Pay Integration", route: "/bill-pay" },
+    { icon: Globe, label: "Multi-Currency Support", route: "/multi-currency" },
+    { icon: ShieldCheck, label: "Identity Verification", route: "/kyc" },
+    { icon: ArrowDown, label: "Direct Deposits", route: "/direct-deposits" },
+    { icon: Users, label: "Bill Splitting", route: "/bill-splitting" },
+    { icon: MessageSquare, label: "Payment Requests", route: "/payment-requests" },
+    { icon: ShoppingCart, label: "Merchant Payments", route: "/merchant" },
+    { icon: ChartBar, label: "Expense Categorization", route: "/expenses" },
+    { icon: Wallet, label: "Shared Wallets", route: "/shared-wallets" },
+    { icon: Headset, label: "Customer Support", route: "/support" },
+    { icon: QrCode, label: "QR Payments", route: "/qr-payments" },
+    { icon: Split, label: "Split with Friends", route: "/split" },
+    { icon: Gift, label: "Referral Program", route: "/referral" },
+    { icon: Wallet, label: "App-Only Balance", route: "/balance" },
+    { icon: Users, label: "Social Feed", route: "/social" },
+    { icon: Mail, label: "Email Payments", route: "/email-pay" },
+    { icon: WalletCards, label: "Digital Cards", route: "/cards" },
+    { icon: Globe, label: "Currency Exchange", route: "/exchange" },
+    { icon: UserCog, label: "AI Assistant", route: "/ai-assistant" },
+    { icon: Speaker, label: "Voice Payments", route: "/voice" },
+    { icon: AlertOctagon, label: "Fraud Detection", route: "/security" },
+    { icon: Heart, label: "Spend-For-A-Cause", route: "/donate" },
+    { icon: PiggyBank, label: "Automated Savings", route: "/savings" },
+    { icon: UserCog, label: "Spend Smart", route: "/smart-spend" },
+    { icon: Database, label: "Blockchain History", route: "/blockchain" },
+    { icon: User, label: "Spending Profiles", route: "/profiles" },
+    { icon: ChartLine, label: "Investment Tips", route: "/investments" },
+    { icon: ChartLine, label: "Credit Score", route: "/credit" },
+    { icon: Users, label: "Shared Goals", route: "/goals" },
+    { icon: Percent, label: "Personal Offers", route: "/offers" }
+  ];
+
   return (
     <div className="relative min-h-[calc(100vh-5rem)] overflow-hidden bg-gradient-to-br from-white/40 to-white/10">
       <div className="absolute inset-0 backdrop-blur-xl bg-white/30" />
@@ -108,42 +150,29 @@ const BLUAi = () => {
 
         <CurrencyConverter className="mb-6" />
 
-        {/* New Feature Buttons */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <Button
-            variant="outline"
-            className="flex flex-col items-center justify-center gap-2 p-4 h-auto aspect-square"
-            onClick={() => navigate('/recurring-payments')}
-          >
-            <CalendarClock className="w-8 h-8 text-blupay-primary" />
-            <span className="text-sm text-center font-medium">Recurring Payments</span>
-          </Button>
-          
-          <Button
-            variant="outline"
-            className="flex flex-col items-center justify-center gap-2 p-4 h-auto aspect-square"
-            onClick={() => navigate('/rewards')}
-          >
-            <Gift className="w-8 h-8 text-blupay-primary" />
-            <span className="text-sm text-center font-medium">Rewards & Cashback</span>
-          </Button>
-          
-          <Button
-            variant="outline"
-            className="flex flex-col items-center justify-center gap-2 p-4 h-auto aspect-square"
-            onClick={() => navigate('/history')}
-          >
-            <History className="w-8 h-8 text-blupay-primary" />
-            <span className="text-sm text-center font-medium">Transaction History</span>
-          </Button>
+        {/* Feature Buttons Grid */}
+        <div className="grid grid-cols-2 gap-4 mb-6 overflow-y-auto max-h-[50vh] pr-2 scrollbar-thin">
+          {featureButtons.map((feature, index) => (
+            <Button
+              key={index}
+              variant="outline"
+              className="flex flex-col items-center justify-center gap-2 p-4 h-auto aspect-square bg-white/50 backdrop-blur-sm hover:bg-white/60 transition-all duration-200"
+              onClick={() => navigate(feature.route)}
+            >
+              <feature.icon className="w-8 h-8 text-blupay-primary" />
+              <span className="text-sm text-center font-medium">{feature.label}</span>
+            </Button>
+          ))}
         </div>
 
+        {/* Chat Interface */}
         <div className="flex-1 overflow-y-auto mb-4 space-y-4">
           <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-4 max-w-[80%]">
             <p className="text-sm text-gray-800">How can I assist you today?</p>
           </div>
         </div>
 
+        {/* Input Section */}
         <div className="space-y-4">
           <div className="flex gap-2 items-center">
             <Input
