@@ -4,7 +4,6 @@ import { Header } from "@/components/home/Header";
 import { TransactionList } from "@/components/home/TransactionList";
 import { Button } from "@/components/ui/button";
 import { useState, useMemo, Suspense, lazy } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const LazyBalance = lazy(() => import("@/components/home/Balance").then(module => ({ default: module.Balance })));
 const LazyQuickActions = lazy(() => import("@/components/home/QuickActions").then(module => ({ default: module.QuickActions })));
@@ -53,7 +52,7 @@ const Index = () => {
   }, [activeTab]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-500 to-blue-600">
+    <div className="min-h-screen bg-gradient-to-b from-blupay-primary to-blupay-dark font-archivo">
       <Header />
       
       <main className="p-4 pb-20">
@@ -68,7 +67,7 @@ const Index = () => {
             onClick={() => setActiveTab('wallet')}
             className={`px-6 py-2 rounded-xl transition-all duration-200 ${
               activeTab === 'wallet' 
-                ? 'bg-white text-blue-600 hover:bg-white/90' 
+                ? 'bg-white text-blupay-dark hover:bg-white/90 font-medium' 
                 : 'text-white border-white/20 hover:bg-white/10'
             }`}
           >
@@ -79,7 +78,7 @@ const Index = () => {
             onClick={() => setActiveTab('transactions')}
             className={`px-6 py-2 rounded-xl transition-all duration-200 ${
               activeTab === 'transactions' 
-                ? 'bg-white text-blue-600 hover:bg-white/90' 
+                ? 'bg-white text-blupay-dark hover:bg-white/90 font-medium' 
                 : 'text-white border-white/20 hover:bg-white/10'
             }`}
           >
@@ -88,7 +87,7 @@ const Index = () => {
         </div>
         
         <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-lg">
-          <h2 className="text-xl font-semibold mb-4 text-white">
+          <h2 className="text-xl font-bold text-white tracking-tight">
             Completed
           </h2>
           <Suspense fallback={<div className="h-60 animate-pulse bg-white/5 rounded-xl"></div>}>
