@@ -20,26 +20,10 @@ export const CurrencyConverter = ({ className }: CurrencyConverterProps) => {
     { symbol: '£', rate: 0, name: 'GBP' },
     { symbol: '¥', rate: 0, name: 'JPY' },
     { symbol: 'A$', rate: 0, name: 'AUD' },
-    { symbol: 'C$', rate: 0, name: 'CAD' },
-    { symbol: 'CHF', rate: 0, name: 'CHF' },
-    { symbol: '¥', rate: 0, name: 'CNY' },
-    { symbol: 'HK$', rate: 0, name: 'HKD' },
-    { symbol: '₹', rate: 0, name: 'INR' },
-    { symbol: '₪', rate: 0, name: 'ILS' },
-    { symbol: '₩', rate: 0, name: 'KRW' },
-    { symbol: 'MX$', rate: 0, name: 'MXN' },
-    { symbol: 'N$', rate: 0, name: 'NZD' },
-    { symbol: '₱', rate: 0, name: 'PHP' },
-    { symbol: '₽', rate: 0, name: 'RUB' },
-    { symbol: 'S$', rate: 0, name: 'SGD' },
-    { symbol: '฿', rate: 0, name: 'THB' },
-    { symbol: '₺', rate: 0, name: 'TRY' },
-    { symbol: 'R$', rate: 0, name: 'BRL' },
-    { symbol: 'R', rate: 0, name: 'ZAR' }
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
-  const [amount, setAmount] = useState<string>('');
+  const [amount, setAmount] = useState<string>('1');
   const [selectedCurrency, setSelectedCurrency] = useState<string>('EUR');
 
   const fetchRates = async () => {
@@ -72,20 +56,11 @@ export const CurrencyConverter = ({ className }: CurrencyConverterProps) => {
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    if (value === '') {
-      setAmount('');
-    } else {
-      // Format with two decimal places
-      const numericValue = parseInt(value) / 100;
-      setAmount(numericValue.toFixed(2));
+    const value = e.target.value;
+    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+      setAmount(value);
     }
   };
-
-  const formattedAmount = amount ? parseFloat(amount).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }) : '0.00';
 
   return (
     <Card className={cn("p-4 bg-white/50 backdrop-blur-sm", className)}>
@@ -103,18 +78,24 @@ export const CurrencyConverter = ({ className }: CurrencyConverterProps) => {
         </button>
       </div>
 
-      <div className="mb-6">
-        <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm mb-4">
-          <span className="text-4xl font-medium">{formattedAmount}</span>
-          <span className="text-2xl font-medium text-gray-600">USD</span>
+      <div className="mb-4">
+        <div className="flex gap-2 items-center mb-2">
+          <Input
+            type="text"
+            value={amount}
+            onChange={handleAmountChange}
+            placeholder="Enter amount"
+            className="w-full"
+          />
+          <span className="text-lg font-medium">USD</span>
         </div>
       </div>
       
-      <div className="space-y-3 max-h-[400px] overflow-y-auto">
+      <div className="space-y-3">
         {rates.map((currency) => (
           <div 
             key={currency.name} 
-            className="flex justify-between items-center p-3 rounded-lg hover:bg-white/50 transition-colors"
+            className="flex justify-between items-center p-2 rounded-lg hover:bg-white/50 transition-colors"
             onClick={() => setSelectedCurrency(currency.name)}
           >
             <div className="flex items-center gap-2">
