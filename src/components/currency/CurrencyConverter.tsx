@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card } from "@/components/ui/card";
 import { RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 
 interface CurrencyConverterProps {
   className?: string;
@@ -22,6 +23,8 @@ export const CurrencyConverter = ({ className }: CurrencyConverterProps) => {
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [amount, setAmount] = useState<string>('1');
+  const [selectedCurrency, setSelectedCurrency] = useState<string>('EUR');
 
   const fetchRates = async () => {
     setIsLoading(true);
@@ -48,10 +51,21 @@ export const CurrencyConverter = ({ className }: CurrencyConverterProps) => {
     return () => clearInterval(interval);
   }, []);
 
+  const calculateConversion = (amount: number, rate: number) => {
+    return (amount * rate).toFixed(2);
+  };
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+      setAmount(value);
+    }
+  };
+
   return (
     <Card className={cn("p-4 bg-white/50 backdrop-blur-sm", className)}>
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold text-gray-800">Live Exchange Rates</h3>
+        <h3 className="text-lg font-semibold text-gray-800">Currency Converter</h3>
         <button 
           onClick={fetchRates}
           className="p-2 rounded-full hover:bg-gray-100 transition-colors"
@@ -63,17 +77,34 @@ export const CurrencyConverter = ({ className }: CurrencyConverterProps) => {
           )} />
         </button>
       </div>
+
+      <div className="mb-4">
+        <div className="flex gap-2 items-center mb-2">
+          <Input
+            type="text"
+            value={amount}
+            onChange={handleAmountChange}
+            placeholder="Enter amount"
+            className="w-full"
+          />
+          <span className="text-lg font-medium">USD</span>
+        </div>
+      </div>
       
       <div className="space-y-3">
         {rates.map((currency) => (
-          <div key={currency.name} className="flex justify-between items-center p-2 rounded-lg hover:bg-white/50 transition-colors">
+          <div 
+            key={currency.name} 
+            className="flex justify-between items-center p-2 rounded-lg hover:bg-white/50 transition-colors"
+            onClick={() => setSelectedCurrency(currency.name)}
+          >
             <div className="flex items-center gap-2">
               <span className="text-lg font-medium">{currency.symbol}</span>
               <span className="text-gray-600">{currency.name}</span>
             </div>
             <div className="text-right">
               <div className="text-lg font-medium">
-                {currency.rate.toFixed(4)}
+                {amount ? calculateConversion(parseFloat(amount), currency.rate) : '0.00'} {currency.symbol}
               </div>
               <div className="text-xs text-gray-500">
                 1 USD = {currency.rate.toFixed(4)} {currency.name}
