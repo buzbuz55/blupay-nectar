@@ -8,27 +8,43 @@ import { Skeleton } from "@/components/ui/skeleton";
 const transactions = [
   {
     id: 1,
-    name: "Kollel Kotel",
-    date: "Dec 26",
+    name: "Sarah Johnson",
+    date: "Today",
     amount: -53.56,
     isPrivate: true,
-    avatar: "KK"
+    avatar: "/lovable-uploads/photo-1581091226825-a6a2a5aee158.jpg"
   },
   {
     id: 2,
-    name: "Kollel Chatzos",
-    date: "Dec 24",
-    amount: -104.03,
-    isPrivate: true,
-    avatar: "KC"
+    name: "David Chen",
+    date: "Today",
+    amount: 204.03,
+    isPrivate: false,
+    avatar: "/lovable-uploads/photo-1581092795360-fd1ca04f0952.jpg"
   },
   {
     id: 3,
-    name: "Lillian Mbazbaz",
-    date: "Dec 22",
-    amount: -104.03,
+    name: "Maria Garcia",
+    date: "Yesterday",
+    amount: -24.99,
+    isPrivate: false,
+    avatar: "/lovable-uploads/photo-1649972904349-6e44c42644a7.jpg"
+  },
+  {
+    id: 4,
+    name: "James Wilson",
+    date: "Yesterday",
+    amount: 150.00,
     isPrivate: true,
-    avatar: "LM"
+    avatar: "/lovable-uploads/photo-1486312338219-ce68d2c6f44d.jpg"
+  },
+  {
+    id: 5,
+    name: "Emma Thompson",
+    date: "Dec 22",
+    amount: -45.50,
+    isPrivate: false,
+    avatar: "/lovable-uploads/photo-1501286353178-1ec881214838.jpg"
   }
 ];
 
