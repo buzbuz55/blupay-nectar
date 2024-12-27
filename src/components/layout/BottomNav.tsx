@@ -4,11 +4,16 @@ import { Link, useLocation } from "react-router-dom";
 export const BottomNav = () => {
   const location = useLocation();
   
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    if (path === "/cards") {
+      return location.pathname.startsWith("/cards");
+    }
+    return location.pathname === path;
+  };
   
   const navItems = [
     { icon: Home, label: "Home", path: "/" },
-    { icon: CreditCard, label: "Cards", path: "/cards" },
+    { icon: CreditCard, label: "Cards", path: "/cards/overview" },
     { icon: Send, label: "Pay/Request", path: "/pay" },
     { icon: Bitcoin, label: "Crypto", path: "/crypto" },
     { icon: Bot, label: "BLUAi", path: "/bluai" },

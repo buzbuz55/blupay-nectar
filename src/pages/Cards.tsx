@@ -1,12 +1,13 @@
+import { Routes, Route } from "react-router-dom";
+import { CardSignupIntro } from "@/components/cards/CardSignupIntro";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Settings, Plus, CreditCard, Building2, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
-import { BottomNav } from "@/components/layout/BottomNav";
+import { Link } from "react-router-dom";
 
-const CardsPage = () => {
+const CardsOverview = () => {
   const { toast } = useToast();
   const [isConnecting, setIsConnecting] = useState(false);
 
@@ -100,10 +101,20 @@ const CardsPage = () => {
           </Card>
         </div>
       </main>
-
-      <BottomNav />
     </div>
   );
 };
 
-export default CardsPage;
+const Cards = () => {
+  return (
+    <Routes>
+      <Route index element={<CardSignupIntro />} />
+      <Route path="overview" element={<CardsOverview />} />
+      <Route path="credit" element={<div className="p-4">Credit Card Application Form (Coming Soon)</div>} />
+      <Route path="debit" element={<div className="p-4">Debit Card Application Form (Coming Soon)</div>} />
+      <Route path="crypto" element={<div className="p-4">Crypto Card Application Form (Coming Soon)</div>} />
+    </Routes>
+  );
+};
+
+export default Cards;
