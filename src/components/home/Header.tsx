@@ -9,10 +9,13 @@ export const Header = () => {
       
       <div className="relative z-10">
         <div className="flex justify-between items-start">
-          <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight">H Baz</h1>
+          <Link 
+            to="/profile" 
+            className="space-y-1 group transition-transform duration-200 hover:scale-105"
+          >
+            <h1 className="text-2xl font-bold tracking-tight group-hover:text-white/90">H Baz</h1>
             <p className="text-sm text-white/80 font-medium">@bazbaz</p>
-          </div>
+          </Link>
           
           <div className="flex gap-4">
             <Link 
