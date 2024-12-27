@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -31,48 +32,14 @@ interface CryptoAsset {
   market_cap: number;
 }
 
-const PurchaseDialog = ({ crypto }: { crypto: CryptoAsset }) => {
-  const [amount, setAmount] = useState("");
-  const { toast } = useToast();
-
-  const handlePurchase = () => {
-    toast({
-      title: "Purchase Initiated",
-      description: `Starting purchase of ${amount} ${crypto.symbol.toUpperCase()}`,
-    });
-    // Here you would typically integrate with a payment processor
-  };
-
-  return (
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>Purchase {crypto.name}</DialogTitle>
-      </DialogHeader>
-      <div className="space-y-4 pt-4">
-        <div className="space-y-2">
-          <Label htmlFor="amount">Amount to purchase</Label>
-          <Input
-            id="amount"
-            type="number"
-            placeholder="0.00"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-          <p className="text-sm text-muted-foreground">
-            Total: ${amount ? (parseFloat(amount) * crypto.current_price).toFixed(2) : "0.00"}
-          </p>
-        </div>
-        <Button onClick={handlePurchase} className="w-full">
-          Purchase {crypto.symbol.toUpperCase()}
-        </Button>
-      </div>
-    </DialogContent>
-  );
-};
-
 const CryptoCard = ({ crypto }: { crypto: CryptoAsset }) => {
+  const navigate = useNavigate();
+  
   return (
-    <Card className="hover:shadow-lg transition-shadow">
+    <Card 
+      className="hover:shadow-lg transition-shadow cursor-pointer"
+      onClick={() => navigate(`/crypto/${crypto.id}`)}
+    >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-lg font-medium">
           <div className="flex items-center gap-2">
@@ -111,6 +78,45 @@ const CryptoCard = ({ crypto }: { crypto: CryptoAsset }) => {
         </div>
       </CardContent>
     </Card>
+  );
+};
+
+const PurchaseDialog = ({ crypto }: { crypto: CryptoAsset }) => {
+  const [amount, setAmount] = useState("");
+  const { toast } = useToast();
+
+  const handlePurchase = () => {
+    toast({
+      title: "Purchase Initiated",
+      description: `Starting purchase of ${amount} ${crypto.symbol.toUpperCase()}`,
+    });
+    // Here you would typically integrate with a payment processor
+  };
+
+  return (
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Purchase {crypto.name}</DialogTitle>
+      </DialogHeader>
+      <div className="space-y-4 pt-4">
+        <div className="space-y-2">
+          <Label htmlFor="amount">Amount to purchase</Label>
+          <Input
+            id="amount"
+            type="number"
+            placeholder="0.00"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          <p className="text-sm text-muted-foreground">
+            Total: ${amount ? (parseFloat(amount) * crypto.current_price).toFixed(2) : "0.00"}
+          </p>
+        </div>
+        <Button onClick={handlePurchase} className="w-full">
+          Purchase {crypto.symbol.toUpperCase()}
+        </Button>
+      </div>
+    </DialogContent>
   );
 };
 

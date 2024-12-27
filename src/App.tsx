@@ -9,6 +9,7 @@ import SettingsPage from "./pages/Settings";
 import CardsPage from "./pages/Cards";
 import PayPage from "./pages/Pay";
 import CryptoPage from "./pages/Crypto";
+import CryptoDetail from "./pages/CryptoDetail";
 import SupportPage from "./pages/Support";
 import BLUAi from "./pages/BLUAi";
 import BLUAiChat from "./pages/BLUAiChat";
@@ -35,6 +36,7 @@ const App: React.FC = () => {
               <Route path="/cards/*" element={<CardsPage />} />
               <Route path="/pay/*" element={<PayPage />} />
               <Route path="/crypto" element={<CryptoPage />} />
+              <Route path="/crypto/:id" element={<CryptoDetail />} />
               <Route path="/bluai" element={<BLUAi />} />
               <Route path="/bluai/chat" element={<BLUAiChat />} />
               <Route path="/kyc" element={<KYCPage />} />
