@@ -6,6 +6,7 @@ import { CurrencyConverter } from '@/components/currency/CurrencyConverter';
 import { VoiceAuth } from '@/components/auth/VoiceAuth';
 import { VoicePayment } from '@/components/bluai/VoicePayment';
 import { AiRecommendations } from '@/components/bluai/AiRecommendations';
+import { InvestmentTips } from '@/components/bluai/InvestmentTips';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -57,6 +58,7 @@ const BLUAi = () => {
         />
         
         <AiRecommendations />
+        <InvestmentTips />
         
         <VoiceAuth />
         <VoicePayment />
