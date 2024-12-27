@@ -3,7 +3,8 @@ import {
   ArrowDown, Users, MessageSquare, ShoppingCart, ChartBar, Wallet,
   Headset, QrCode, Split, Mail, WalletCards, UserCog, Speaker,
   AlertOctagon, Heart, PiggyBank, Database, User, Settings, ChartLine,
-  Percent, DollarSign, BrainCircuit, Building2
+  Percent, DollarSign, BrainCircuit, Building2, Store, Filter,
+  Bell, Share2, Languages, Coins, UserPlus, Newspaper, CreditCard as CardIcon
 } from "lucide-react";
 
 export const featureButtons = [
@@ -14,43 +15,95 @@ export const featureButtons = [
     description: "Your personal AI financial assistant"
   },
   { 
-    icon: MessageSquare, 
-    label: "Payment Requests", 
-    route: "/payment-request",
-    description: "Request money with custom messages and notes"
-  },
-  { 
-    icon: Globe, 
-    label: "Currency Converter", 
-    route: "currency-converter",
-    description: "Guaranteed lowest rates in the world - saving you time and money"
-  },
-  { 
-    icon: Building2, 
+    icon: Store, 
     label: "Merchant Payments", 
     route: "/merchant",
     description: "Pay businesses and merchants directly"
   },
-  { icon: CalendarClock, label: "Recurring Payments", route: "/recurring-payments" },
-  { icon: Gift, label: "Rewards & Cashback", route: "/rewards" },
-  { icon: History, label: "Transaction History", route: "/history" },
-  { icon: CreditCard, label: "Bill Pay Integration", route: "/bill-pay" },
-  { icon: ShieldCheck, label: "Identity Verification", route: "/kyc", description: "Verify your identity to unlock higher transaction limits" },
-  { icon: ArrowDown, label: "Direct Deposits", route: "/direct-deposits" },
-  { icon: Users, label: "Bill Splitting", route: "/bill-splitting" },
-  { icon: MessageSquare, label: "Payment Requests", route: "/payment-requests" },
-  { icon: ShoppingCart, label: "Merchant Payments", route: "/merchant" },
-  { icon: ChartBar, label: "Expense Categorization", route: "/expenses" },
-  { icon: Wallet, label: "Shared Wallets", route: "/shared-wallets" },
-  { icon: Headset, label: "Customer Support", route: "/support" },
-  { icon: QrCode, label: "QR Payments", route: "/qr-payments" },
-  { icon: Split, label: "Split with Friends", route: "/split" },
-  { icon: Gift, label: "Referral Program", route: "/referral" },
-  { icon: Wallet, label: "App-Only Balance", route: "/balance" },
-  { icon: Users, label: "Social Feed", route: "/social" },
-  { icon: Mail, label: "Email Payments", route: "/email-pay" },
-  { icon: WalletCards, label: "Digital Cards", route: "/cards" },
-  { icon: Globe, label: "Currency Exchange", route: "/exchange" },
+  { 
+    icon: ChartBar, 
+    label: "Expense Categories", 
+    route: "/expenses",
+    description: "View and manage your spending categories"
+  },
+  { 
+    icon: Share2, 
+    label: "Shared Wallets", 
+    route: "/shared-wallets",
+    description: "Create and manage group funds"
+  },
+  { 
+    icon: Headset, 
+    label: "Customer Support", 
+    route: "/support",
+    description: "Get help with your account"
+  },
+  { 
+    icon: QrCode, 
+    label: "QR Payments", 
+    route: "/qr-payments",
+    description: "Send and receive money via QR codes"
+  },
+  { 
+    icon: Split, 
+    label: "Split with Friends", 
+    route: "/split",
+    description: "Split bills and expenses easily"
+  },
+  { 
+    icon: Filter, 
+    label: "Transaction History", 
+    route: "/history",
+    description: "View and filter your transactions"
+  },
+  { 
+    icon: Languages, 
+    label: "Language Settings", 
+    route: "/settings/language",
+    description: "Change app language"
+  },
+  { 
+    icon: Bell, 
+    label: "Notifications", 
+    route: "/notifications",
+    description: "Manage your notification preferences"
+  },
+  { 
+    icon: UserPlus, 
+    label: "Referral Program", 
+    route: "/referral",
+    description: "Invite friends and earn rewards"
+  },
+  { 
+    icon: Coins, 
+    label: "App Balance", 
+    route: "/balance",
+    description: "Manage your in-app funds"
+  },
+  { 
+    icon: Newspaper, 
+    label: "Social Feed", 
+    route: "/social",
+    description: "See your friends' transactions"
+  },
+  { 
+    icon: Mail, 
+    label: "Email Payments", 
+    route: "/email-pay",
+    description: "Send money via email"
+  },
+  { 
+    icon: CardIcon, 
+    label: "Digital Cards", 
+    route: "/cards",
+    description: "Manage your virtual cards"
+  },
+  { 
+    icon: Globe, 
+    label: "Currency Exchange", 
+    route: "/exchange",
+    description: "Convert between currencies"
+  },
   { icon: UserCog, label: "AI Assistant", route: "/ai-assistant" },
   { icon: Speaker, label: "Voice Payments", route: "/voice" },
   { icon: AlertOctagon, label: "Fraud Detection", route: "/security" },

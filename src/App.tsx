@@ -80,7 +80,7 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/notifications" element={<NotificationsPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/settings/*" element={<SettingsPage />} />
               <Route path="/cards/*" element={<CardsPage />} />
               <Route path="/pay/*" element={<PayPage />} />
               <Route path="/crypto" element={<CryptoPage />} />
