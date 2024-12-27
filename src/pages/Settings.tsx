@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { NotificationSettings } from "@/components/notifications/NotificationSettings";
 
 const settingSections = [
   {
@@ -97,9 +98,8 @@ const SettingsPage = () => {
       </header>
 
       <main className="pt-16 pb-20">
-        <div className="p-4 mb-4">
-          <p className="text-sm text-gray-600">BLUPAY is a service of BluCorp, Inc.</p>
-          <p className="text-sm text-gray-600">NMLS ID: 910457</p>
+        <div className="p-4">
+          <NotificationSettings />
         </div>
 
         {settingSections.map((section) => (
