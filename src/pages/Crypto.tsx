@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { QRScanner } from "@/components/qr/QRScanner";
 import { Button } from "@/components/ui/button";
-import { QrCode, Bitcoin, ChartLine, ArrowUp, ArrowDown } from "lucide-react";
+import { QrCode, ChartLine, ArrowUp, ArrowDown, Settings } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -36,48 +36,27 @@ const CryptoCard = ({ crypto }: { crypto: CryptoAsset }) => {
   const navigate = useNavigate();
   
   return (
-    <Card 
-      className="hover:shadow-lg transition-shadow cursor-pointer"
+    <div 
+      className="flex items-center justify-between py-4 border-b cursor-pointer"
       onClick={() => navigate(`/crypto/${crypto.id}`)}
     >
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-lg font-medium">
-          <div className="flex items-center gap-2">
-            <img src={crypto.image} alt={crypto.name} className="w-6 h-6" />
-            {crypto.symbol.toUpperCase()}
-          </div>
-        </CardTitle>
-        <ChartLine className="w-4 h-4 text-gray-500" />
-      </CardHeader>
-      <CardContent>
-        <div className="flex justify-between items-center">
-          <div>
-            <p className="text-2xl font-bold">
-              ${crypto.current_price.toLocaleString()}
-            </p>
-            <p className="text-sm text-gray-500">
-              Market Cap: ${(crypto.market_cap / 1000000).toFixed(2)}M
-            </p>
-          </div>
-          <div className={`flex items-center gap-1 ${
-            crypto.price_change_percentage_24h >= 0 ? 'text-green-500' : 'text-red-500'
-          }`}>
-            {crypto.price_change_percentage_24h >= 0 ? (
-              <ArrowUp className="w-4 h-4" />
-            ) : (
-              <ArrowDown className="w-4 h-4" />
-            )}
-            <span>{Math.abs(crypto.price_change_percentage_24h).toFixed(2)}%</span>
-          </div>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm">Buy</Button>
-            </DialogTrigger>
-            <PurchaseDialog crypto={crypto} />
-          </Dialog>
+      <div className="flex items-center gap-3">
+        <img src={crypto.image} alt={crypto.name} className="w-8 h-8" />
+        <div>
+          <h3 className="font-medium">{crypto.name}</h3>
+          <p className="text-sm text-gray-500">{crypto.symbol.toUpperCase()}</p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+      <div className="text-right">
+        <p className="font-medium">${crypto.current_price.toLocaleString()}</p>
+        <p className={`text-sm ${
+          crypto.price_change_percentage_24h >= 0 ? 'text-green-500' : 'text-red-500'
+        }`}>
+          {crypto.price_change_percentage_24h >= 0 ? '+' : ''}
+          {crypto.price_change_percentage_24h.toFixed(2)}%
+        </p>
+      </div>
+    </div>
   );
 };
 
@@ -90,7 +69,6 @@ const PurchaseDialog = ({ crypto }: { crypto: CryptoAsset }) => {
       title: "Purchase Initiated",
       description: `Starting purchase of ${amount} ${crypto.symbol.toUpperCase()}`,
     });
-    // Here you would typically integrate with a payment processor
   };
 
   return (
@@ -123,6 +101,7 @@ const PurchaseDialog = ({ crypto }: { crypto: CryptoAsset }) => {
 const CryptoPage = () => {
   const [showScanner, setShowScanner] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const { data: cryptos, isLoading } = useQuery({
     queryKey: ['cryptos'],
@@ -135,7 +114,7 @@ const CryptoPage = () => {
       }
       return response.json() as Promise<CryptoAsset[]>;
     },
-    refetchInterval: 30000, // Refetch every 30 seconds
+    refetchInterval: 30000,
   });
 
   const handleScanClick = () => {
@@ -151,36 +130,78 @@ const CryptoPage = () => {
   }
 
   return (
-    <div className="p-4 space-y-6 pb-20">
+    <div className="p-4 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Crypto</h1>
         <Button 
-          onClick={handleScanClick}
-          variant="outline"
-          className="flex items-center gap-2"
+          variant="ghost" 
+          size="icon"
+          onClick={() => navigate('/settings')}
         >
-          <QrCode className="w-4 h-4" />
-          Scan
+          <Settings className="w-5 h-5" />
         </Button>
       </div>
 
       <div className="space-y-4">
-        {isLoading ? (
-          Array(3).fill(0).map((_, i) => (
-            <Card key={i} className="w-full">
-              <CardContent className="p-6">
+        <div className="text-left">
+          <p className="text-gray-600">Your crypto balance</p>
+          <h2 className="text-4xl font-bold">$0</h2>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="w-full bg-blue-500 hover:bg-blue-600">Buy</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Select Cryptocurrency</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                {cryptos?.map((crypto) => (
+                  <div 
+                    key={crypto.id}
+                    className="flex items-center justify-between p-3 hover:bg-gray-100 rounded-lg cursor-pointer"
+                    onClick={() => navigate(`/crypto/${crypto.id}`)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <img src={crypto.image} alt={crypto.name} className="w-6 h-6" />
+                      <span>{crypto.name}</span>
+                    </div>
+                    <span>${crypto.current_price.toLocaleString()}</span>
+                  </div>
+                ))}
+              </div>
+            </DialogContent>
+          </Dialog>
+          <Button 
+            variant="outline" 
+            className="w-full"
+            onClick={handleScanClick}
+          >
+            Receive
+          </Button>
+        </div>
+
+        <div>
+          <h3 className="text-xl font-semibold mb-4">Explore more crypto</h3>
+          {isLoading ? (
+            Array(3).fill(0).map((_, i) => (
+              <div key={i} className="py-4 border-b">
                 <div className="flex justify-between items-center">
                   <Skeleton className="h-12 w-[200px]" />
                   <Skeleton className="h-8 w-[100px]" />
                 </div>
-              </CardContent>
-            </Card>
-          ))
-        ) : (
-          cryptos?.map((crypto) => (
-            <CryptoCard key={crypto.id} crypto={crypto} />
-          ))
-        )}
+              </div>
+            ))
+          ) : (
+            <div className="space-y-2">
+              {cryptos?.map((crypto) => (
+                <CryptoCard key={crypto.id} crypto={crypto} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
