@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +11,17 @@ import {
 } from "@/components/ui/select";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 
-export const TransactionFilter = () => {
+interface TransactionFilterProps {
+  onSearchChange: (value: string) => void;
+  onCategoryChange: (value: string) => void;
+  onAmountChange: (value: string) => void;
+}
+
+export const TransactionFilter = ({ 
+  onSearchChange,
+  onCategoryChange,
+  onAmountChange
+}: TransactionFilterProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("all");
   const [amount, setAmount] = useState("");
@@ -25,6 +35,18 @@ export const TransactionFilter = () => {
     "bills",
     "other",
   ];
+
+  useEffect(() => {
+    onSearchChange(searchTerm);
+  }, [searchTerm, onSearchChange]);
+
+  useEffect(() => {
+    onCategoryChange(category);
+  }, [category, onCategoryChange]);
+
+  useEffect(() => {
+    onAmountChange(amount);
+  }, [amount, onAmountChange]);
 
   return (
     <div className="space-y-4 bg-white p-4 rounded-lg shadow-sm">
