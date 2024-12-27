@@ -3,7 +3,7 @@ import { QrCode, Eye, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import QRCode from "qrcode.react";
+import { QRCodeSVG } from "qrcode.react";
 
 interface ProfileInfo {
   name: string;
@@ -52,7 +52,7 @@ export const ProfileDropdown = ({ profile }: { profile: ProfileInfo }) => {
               <div className="flex flex-col items-center gap-4 p-6">
                 <h2 className="text-xl font-semibold">Your BluPay QR Code</h2>
                 <div className="bg-white p-4 rounded-xl">
-                  <QRCode value={userQRValue} size={200} />
+                  <QRCodeSVG value={userQRValue} size={200} />
                 </div>
                 <p className="text-sm text-gray-500">Scan to connect with {profile.name}</p>
               </div>
