@@ -1,4 +1,4 @@
-import { Users } from "lucide-react";
+import { Users, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -6,24 +6,22 @@ export const QuickActions = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="grid grid-cols-2 gap-4 mb-6">
+    <div className="grid grid-cols-2 gap-4">
       <Button
         variant="outline"
-        className="flex items-center justify-center gap-2 p-4 h-auto"
+        className="flex items-center justify-center gap-2 p-4 h-auto rounded-2xl border-2 border-gray-100 hover:bg-gray-50 hover:border-gray-200 transition-all"
         onClick={() => navigate("/pay")}
       >
-        <Users className="w-6 h-6 text-blupay-primary" />
-        <span className="text-blupay-primary font-medium">Create a group</span>
+        <Users className="w-5 h-5 text-gray-700" />
+        <span className="text-gray-900 font-medium">Create Group</span>
       </Button>
       <Button
         variant="outline"
-        className="flex items-center justify-center gap-2 p-4 h-auto"
-        onClick={() => navigate("/profile")}
+        className="flex items-center justify-center gap-2 p-4 h-auto rounded-2xl border-2 border-gray-100 hover:bg-gray-50 hover:border-gray-200 transition-all"
+        onClick={() => navigate("/pay")}
       >
-        <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-          LM
-        </div>
-        <span className="text-gray-700">219 friends</span>
+        <Gift className="w-5 h-5 text-gray-700" />
+        <span className="text-gray-900 font-medium">Send Gift</span>
       </Button>
     </div>
   );

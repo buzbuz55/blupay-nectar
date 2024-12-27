@@ -3,31 +3,28 @@ import { Link } from "react-router-dom";
 
 export const Header = () => {
   return (
-    <header className="bg-gradient-to-r from-blupay-dark to-blupay-primary p-6 text-white relative overflow-hidden">
-      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-      
-      <div className="relative z-10">
-        <div className="flex justify-between items-start">
+    <header className="bg-white px-4 py-6 sticky top-0 z-50 backdrop-blur-lg bg-white/80">
+      <div className="max-w-2xl mx-auto">
+        <div className="flex justify-between items-center">
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight">H Baz</h1>
-            <p className="text-sm text-white/80 font-medium">@bazbaz</p>
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900">H Baz</h1>
+            <p className="text-sm text-gray-500 font-medium">@bazbaz</p>
           </div>
           
-          <div className="flex gap-4">
+          <div className="flex gap-2">
             <Link 
               to="/notifications" 
-              className="relative p-2 hover:bg-white/10 rounded-xl transition-colors duration-200"
+              className="relative p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
             >
-              <Bell className="w-6 h-6" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-blupay-accent rounded-full" />
+              <Bell className="w-6 h-6 text-gray-700" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
             </Link>
             
             <Link 
               to="/settings" 
-              className="p-2 hover:bg-white/10 rounded-xl transition-colors duration-200"
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
             >
-              <Settings className="w-6 h-6" />
+              <Settings className="w-6 h-6 text-gray-700" />
             </Link>
           </div>
         </div>
