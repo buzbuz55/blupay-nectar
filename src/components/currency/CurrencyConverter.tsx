@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Card } from "@/components/ui/card";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 interface CurrencyConverterProps {
   className?: string;
@@ -15,6 +17,7 @@ interface ExchangeRate {
 }
 
 export const CurrencyConverter = ({ className }: CurrencyConverterProps) => {
+  const { toast } = useToast();
   const [rates, setRates] = useState<ExchangeRate[]>([
     { symbol: '€', rate: 0, name: 'EUR' },
     { symbol: '£', rate: 0, name: 'GBP' },
@@ -76,16 +79,24 @@ export const CurrencyConverter = ({ className }: CurrencyConverterProps) => {
     if (value === '') {
       setAmount('');
     } else {
-      // Format with two decimal places
       const numericValue = parseInt(value) / 100;
       setAmount(numericValue.toFixed(2));
     }
+  };
+
+  const handleInternationalTransfer = () => {
+    toast({
+      title: "International Transfer",
+      description: "You'll be connected with our international transfer specialist for amounts over $5,000",
+    });
   };
 
   const formattedAmount = amount ? parseFloat(amount).toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   }) : '0.00';
+
+  const showInternationalOption = parseFloat(amount) >= 5000;
 
   return (
     <Card className={cn("p-4 bg-white/50 backdrop-blur-sm", className)}>
@@ -109,6 +120,24 @@ export const CurrencyConverter = ({ className }: CurrencyConverterProps) => {
           <span className="text-2xl font-medium text-gray-600">USD</span>
         </div>
       </div>
+      
+      {showInternationalOption && (
+        <div className="mb-6 p-4 bg-blue-50 rounded-xl border border-blue-100">
+          <h4 className="text-lg font-semibold text-blue-800 mb-2">
+            International Transfer Available
+          </h4>
+          <p className="text-blue-600 mb-3">
+            Get better rates and dedicated support for transfers over $5,000
+          </p>
+          <Button 
+            onClick={handleInternationalTransfer}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2"
+          >
+            Talk to a Specialist
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+        </div>
+      )}
       
       <div className="space-y-3 max-h-[400px] overflow-y-auto">
         {rates.map((currency) => (
