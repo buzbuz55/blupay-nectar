@@ -2,9 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import SignupFlow from '@/components/signup/SignupFlow';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Sun, Mic, Camera } from "lucide-react";
+import { Send, Sun, Mic, Camera, RefreshCw } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { CameraDialog } from '@/components/camera/CameraDialog';
+import { CurrencyConverter } from '@/components/currency/CurrencyConverter';
 
 const BLUAi = () => {
   const { toast } = useToast();
@@ -102,6 +103,8 @@ const BLUAi = () => {
           </h1>
           <p className="text-lg text-gray-600">Welcome back!</p>
         </div>
+
+        <CurrencyConverter className="mb-6" />
 
         <div className="flex-1 overflow-y-auto mb-4 space-y-4">
           <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-4 max-w-[80%]">
