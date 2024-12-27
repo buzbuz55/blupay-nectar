@@ -30,7 +30,7 @@ export const CryptoChart = ({ cryptoId, days, className }: CryptoChartProps) => 
       }));
     },
     staleTime: 60000, // Consider data fresh for 1 minute
-    cacheTime: 300000, // Keep data in cache for 5 minutes
+    gcTime: 300000, // Keep data in cache for 5 minutes (renamed from cacheTime)
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * Math.pow(2, attemptIndex), 10000),
   });

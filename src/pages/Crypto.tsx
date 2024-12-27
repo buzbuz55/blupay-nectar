@@ -175,7 +175,7 @@ const CryptoPage = () => {
       return data as CryptoAsset[];
     },
     staleTime: 60000,
-    cacheTime: 300000,
+    gcTime: 300000, // renamed from cacheTime
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * Math.pow(2, attemptIndex), 10000),
   });
