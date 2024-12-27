@@ -71,13 +71,13 @@ const App: React.FC = () => {
           <SwipeDetector />
           <Toaster />
           <Sonner />
-          <div className="pb-20"> {/* Add padding to prevent content from being hidden behind the nav */}
+          <div className="pb-20">
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/notifications" element={<NotificationsPage />} />
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/cards/*" element={<CardsPage />} />
-              <Route path="/pay" element={<PayPage />} />
+              <Route path="/pay/*" element={<PayPage />} />
               <Route path="/crypto" element={<CryptoPage />} />
               <Route path="/bluai" element={<BLUAi />} />
             </Routes>
