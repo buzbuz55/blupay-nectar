@@ -1,10 +1,11 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useState, useCallback, memo } from "react";
 import { PaymentAmountStep } from "./PaymentAmountStep";
 import { PaymentMethodStep } from "./PaymentMethodStep";
 import { PaymentReceipt } from "./PaymentReceipt";
 import { CreditCard } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { ErrorBoundary } from "./ErrorBoundary";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -19,7 +20,7 @@ interface PaymentModalProps {
 
 type PaymentStep = "amount" | "method" | "receipt";
 
-export const PaymentModal = ({ isOpen, onClose, recipient }: PaymentModalProps) => {
+const PaymentModal = memo(({ isOpen, onClose, recipient }: PaymentModalProps) => {
   const [amount, setAmount] = useState("0");
   const [note, setNote] = useState("");
   const [step, setStep] = useState<PaymentStep>("amount");
@@ -28,17 +29,16 @@ export const PaymentModal = ({ isOpen, onClose, recipient }: PaymentModalProps) 
   const [transactionId, setTransactionId] = useState("");
   const { toast } = useToast();
 
-  const handleContinue = () => {
+  const handleContinue = useCallback(() => {
     setStep("method");
-  };
+  }, []);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     setStep("amount");
-  };
+  }, []);
 
-  const handleSelectMethod = (method: any) => {
+  const handleSelectMethod = useCallback((method: any) => {
     setSelectedMethod(method);
-    // Generate a random transaction ID
     const randomId = Math.random().toString(36).substring(2, 15) + 
                     Math.random().toString(36).substring(2, 15);
     setTransactionId(randomId);
@@ -48,55 +48,69 @@ export const PaymentModal = ({ isOpen, onClose, recipient }: PaymentModalProps) 
       description: "Please wait while we process your payment.",
     });
 
-    // Simulate payment processing
-    setTimeout(() => {
+    // Simulate payment processing with minimal delay
+    requestAnimationFrame(() => {
       setStep("receipt");
       toast({
         title: "Payment successful!",
         description: `You've sent $${amount} to ${recipient.name}`,
       });
-    }, 1500);
-  };
+    });
+  }, [amount, recipient.name, toast]);
+
+  const handleAmountChange = useCallback((newAmount: string) => {
+    setAmount(newAmount);
+  }, []);
+
+  const handleNoteChange = useCallback((newNote: string) => {
+    setNote(newNote);
+  }, []);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md mx-auto p-0 rounded-t-[2rem] h-[90vh] mt-[10vh]">
-        {step === "amount" && (
-          <PaymentAmountStep
-            recipient={recipient}
-            amount={amount}
-            note={note}
-            onAmountChange={setAmount}
-            onNoteChange={setNote}
-            onContinue={handleContinue}
-          />
-        )}
-        
-        {step === "method" && (
-          <PaymentMethodStep
-            amount={amount}
-            onBack={handleBack}
-            onSelectMethod={handleSelectMethod}
-            purchaseProtection={purchaseProtection}
-            onPurchaseProtectionChange={setPurchaseProtection}
-          />
-        )}
+        <ErrorBoundary>
+          {step === "amount" && (
+            <PaymentAmountStep
+              recipient={recipient}
+              amount={amount}
+              note={note}
+              onAmountChange={handleAmountChange}
+              onNoteChange={handleNoteChange}
+              onContinue={handleContinue}
+            />
+          )}
+          
+          {step === "method" && (
+            <PaymentMethodStep
+              amount={amount}
+              onBack={handleBack}
+              onSelectMethod={handleSelectMethod}
+              purchaseProtection={purchaseProtection}
+              onPurchaseProtectionChange={setPurchaseProtection}
+            />
+          )}
 
-        {step === "receipt" && selectedMethod && (
-          <PaymentReceipt
-            recipient={recipient}
-            amount={Number(amount)}
-            transactionId={transactionId}
-            paymentMethod={{
-              type: selectedMethod.title,
-              lastFour: selectedMethod.id === "card" ? "4880" : undefined,
-              icon: selectedMethod.icon || <CreditCard className="h-6 w-6" />
-            }}
-            fee={selectedMethod.id === "card" ? Number(amount) * 0.03 : 0}
-            timestamp={new Date()}
-          />
-        )}
+          {step === "receipt" && selectedMethod && (
+            <PaymentReceipt
+              recipient={recipient}
+              amount={Number(amount)}
+              transactionId={transactionId}
+              paymentMethod={{
+                type: selectedMethod.title,
+                lastFour: selectedMethod.id === "card" ? "4880" : undefined,
+                icon: selectedMethod.icon || <CreditCard className="h-6 w-6" />
+              }}
+              fee={selectedMethod.id === "card" ? Number(amount) * 0.03 : 0}
+              timestamp={new Date()}
+            />
+          )}
+        </ErrorBoundary>
       </DialogContent>
     </Dialog>
   );
-};
+});
+
+PaymentModal.displayName = "PaymentModal";
+
+export { PaymentModal };

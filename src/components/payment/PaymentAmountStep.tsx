@@ -1,3 +1,4 @@
+import { memo, useCallback } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +18,7 @@ interface PaymentAmountStepProps {
   onContinue: () => void;
 }
 
-export const PaymentAmountStep = ({
+export const PaymentAmountStep = memo(({
   recipient,
   amount,
   note,
@@ -25,17 +26,21 @@ export const PaymentAmountStep = ({
   onNoteChange,
   onContinue
 }: PaymentAmountStepProps) => {
-  const handleNumberClick = (num: string) => {
+  const handleNumberClick = useCallback((num: string) => {
     if (amount === "0") {
       onAmountChange(num);
     } else {
       onAmountChange(amount + num);
     }
-  };
+  }, [amount, onAmountChange]);
 
-  const handleBackspace = () => {
+  const handleBackspace = useCallback(() => {
     onAmountChange(amount.length > 1 ? amount.slice(0, -1) : "0");
-  };
+  }, [amount, onAmountChange]);
+
+  const handleNoteChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onNoteChange(e.target.value);
+  }, [onNoteChange]);
 
   return (
     <div className="flex flex-col h-full">
@@ -128,4 +133,6 @@ export const PaymentAmountStep = ({
       </div>
     </div>
   );
-};
+});
+
+PaymentAmountStep.displayName = "PaymentAmountStep";
