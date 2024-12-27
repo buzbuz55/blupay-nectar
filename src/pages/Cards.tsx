@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
 import { TransactionFilter } from "@/components/transaction/TransactionFilter";
+import { RedPacket } from "@/components/redpacket/RedPacket";
 
 const CardsOverview = () => {
   const { toast } = useToast();
@@ -41,6 +42,9 @@ const CardsOverview = () => {
           onCategoryChange={setSelectedCategory}
           onAmountChange={setAmountFilter}
         />
+        
+        {/* Red Packet Feature */}
+        <RedPacket />
         
         {/* Developer Note */}
         <Card className="p-4 bg-blue-50 border-blue-200">
