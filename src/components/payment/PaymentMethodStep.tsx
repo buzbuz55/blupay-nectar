@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { CreditCard, Building2, Bitcoin, Wallet } from "lucide-react";
@@ -19,14 +20,15 @@ interface PaymentMethodStepProps {
   onPurchaseProtectionChange: (enabled: boolean) => void;
 }
 
-export const PaymentMethodStep = ({
+export const PaymentMethodStep = memo(({
   amount,
   onBack,
   onSelectMethod,
   purchaseProtection,
   onPurchaseProtectionChange
 }: PaymentMethodStepProps) => {
-  const paymentMethods: PaymentMethod[] = [
+  // Memoize payment methods to prevent unnecessary re-renders
+  const paymentMethods = useMemo(() => [
     {
       id: "card",
       title: "Bank of America - 4880",
@@ -59,7 +61,34 @@ export const PaymentMethodStep = ({
       fee: "No Fee",
       feeAmount: "$0.00"
     }
-  ];
+  ], []);
+
+  // Memoize payment method buttons
+  const paymentMethodButtons = useMemo(() => (
+    paymentMethods.map((method) => (
+      <button
+        key={method.id}
+        className="w-full p-4 rounded-xl border border-gray-200 flex items-center justify-between hover:bg-gray-50 transition-colors"
+        onClick={() => {
+          requestAnimationFrame(() => onSelectMethod(method));
+        }}
+      >
+        <div className="flex items-center gap-4">
+          <div className="p-2 rounded-full bg-gray-100">
+            {method.icon}
+          </div>
+          <div className="text-left">
+            <div className="font-semibold">{method.title}</div>
+            <div className="text-sm text-gray-600">{method.subtitle}</div>
+          </div>
+        </div>
+        <div className="text-right">
+          <div className="text-sm font-medium">{method.fee}</div>
+          <div className="text-sm text-gray-600">{method.feeAmount}</div>
+        </div>
+      </button>
+    ))
+  ), [paymentMethods, onSelectMethod]);
 
   return (
     <div className="p-6 space-y-6">
@@ -77,27 +106,7 @@ export const PaymentMethodStep = ({
       </div>
 
       <div className="space-y-4">
-        {paymentMethods.map((method) => (
-          <button
-            key={method.id}
-            className="w-full p-4 rounded-xl border border-gray-200 flex items-center justify-between hover:bg-gray-50 transition-colors"
-            onClick={() => onSelectMethod(method)}
-          >
-            <div className="flex items-center gap-4">
-              <div className="p-2 rounded-full bg-gray-100">
-                {method.icon}
-              </div>
-              <div className="text-left">
-                <div className="font-semibold">{method.title}</div>
-                <div className="text-sm text-gray-600">{method.subtitle}</div>
-              </div>
-            </div>
-            <div className="text-right">
-              <div className="text-sm font-medium">{method.fee}</div>
-              <div className="text-sm text-gray-600">{method.feeAmount}</div>
-            </div>
-          </button>
-        ))}
+        {paymentMethodButtons}
       </div>
 
       <div className="mt-6 space-y-4">
@@ -110,7 +119,9 @@ export const PaymentMethodStep = ({
           </div>
           <Switch
             checked={purchaseProtection}
-            onCheckedChange={onPurchaseProtectionChange}
+            onCheckedChange={(checked) => {
+              requestAnimationFrame(() => onPurchaseProtectionChange(checked));
+            }}
           />
         </div>
       </div>
@@ -122,4 +133,6 @@ export const PaymentMethodStep = ({
       </Button>
     </div>
   );
-};
+});
+
+PaymentMethodStep.displayName = "PaymentMethodStep";

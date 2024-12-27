@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { Heart, MessageSquare, Lock } from "lucide-react";
@@ -21,39 +22,54 @@ interface PaymentReceiptProps {
   timestamp: Date;
 }
 
-export const PaymentReceipt = ({ recipient, amount, transactionId, paymentMethod, fee, timestamp }: PaymentReceiptProps) => {
+export const PaymentReceipt = memo(({ 
+  recipient, 
+  amount, 
+  transactionId, 
+  paymentMethod, 
+  fee, 
+  timestamp 
+}: PaymentReceiptProps) => {
+  // Memoize formatted date strings
+  const formattedTime = useMemo(() => format(timestamp, "h:mm"), [timestamp]);
+  const formattedDateTime = useMemo(() => 
+    format(timestamp, "MMMM dd, yyyy, h:mm a"), 
+    [timestamp]
+  );
+
+  // Memoize recipient info section
+  const recipientInfo = useMemo(() => (
+    <div className="flex flex-col items-center gap-4">
+      <Avatar className="h-16 w-16">
+        <AvatarImage src={recipient.avatarUrl} />
+        <AvatarFallback>{recipient.initials}</AvatarFallback>
+      </Avatar>
+      <div className="text-center">
+        <h2 className="text-2xl font-semibold">{recipient.name}</h2>
+        <p className="text-gray-500">"{amount.toFixed(2)}"</p>
+        <p className="text-3xl font-bold text-red-500 mt-2">-${amount.toFixed(2)}</p>
+      </div>
+    </div>
+  ), [recipient, amount]);
+
   return (
     <div className="space-y-6">
-      {/* Status Bar */}
       <div className="flex justify-between items-center text-sm text-gray-600">
-        <span>{format(timestamp, "h:mm")}</span>
+        <span>{formattedTime}</span>
         <div className="flex items-center gap-2">
           <span>📱</span>
           <span>🔋</span>
         </div>
       </div>
 
-      {/* Success Message */}
       <div className="bg-green-50 text-green-700 p-4 rounded-lg flex items-center gap-2">
         <span className="text-green-500">✓</span>
         <span>You sent a payment to {recipient.name}</span>
       </div>
 
-      {/* Recipient Info */}
       <Card className="p-6 space-y-4">
-        <div className="flex flex-col items-center gap-4">
-          <Avatar className="h-16 w-16">
-            <AvatarImage src={recipient.avatarUrl} />
-            <AvatarFallback>{recipient.initials}</AvatarFallback>
-          </Avatar>
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold">{recipient.name}</h2>
-            <p className="text-gray-500">"{amount.toFixed(2)}"</p>
-            <p className="text-3xl font-bold text-red-500 mt-2">-${amount.toFixed(2)}</p>
-          </div>
-        </div>
+        {recipientInfo}
 
-        {/* Social Activity */}
         <div className="space-y-4">
           <h3 className="text-lg font-semibold">Social activity</h3>
           <div className="flex gap-4 justify-center">
@@ -66,7 +82,6 @@ export const PaymentReceipt = ({ recipient, amount, transactionId, paymentMethod
           </div>
         </div>
 
-        {/* Transaction Details */}
         <div className="space-y-4">
           <div className="space-y-2">
             <h3 className="font-semibold">Status</h3>
@@ -94,7 +109,7 @@ export const PaymentReceipt = ({ recipient, amount, transactionId, paymentMethod
           <div className="space-y-2">
             <h3 className="font-semibold">Transaction details</h3>
             <div className="flex items-center gap-2 text-gray-700">
-              <span>{format(timestamp, "MMMM dd, yyyy, h:mm a")}</span>
+              <span>{formattedDateTime}</span>
               <Lock className="h-4 w-4 text-blue-500" />
               <span className="text-blue-500">Private</span>
             </div>
@@ -118,4 +133,6 @@ export const PaymentReceipt = ({ recipient, amount, transactionId, paymentMethod
       </Card>
     </div>
   );
-};
+});
+
+PaymentReceipt.displayName = "PaymentReceipt";
