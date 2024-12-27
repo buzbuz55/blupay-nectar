@@ -1,0 +1,43 @@
+import {
+  CalendarClock, Gift, History, CreditCard, Globe, ShieldCheck,
+  ArrowDown, Users, MessageSquare, ShoppingCart, ChartBar, Wallet,
+  Headset, QrCode, Split, Mail, WalletCards, UserCog, Speaker,
+  AlertOctagon, Heart, PiggyBank, Database, User, Settings, ChartLine,
+  Percent, DollarSign
+} from "lucide-react";
+
+export const featureButtons = [
+  { icon: CalendarClock, label: "Recurring Payments", route: "/recurring-payments" },
+  { icon: Gift, label: "Rewards & Cashback", route: "/rewards" },
+  { icon: History, label: "Transaction History", route: "/history" },
+  { icon: CreditCard, label: "Bill Pay Integration", route: "/bill-pay" },
+  { icon: Globe, label: "Multi-Currency Support", route: "/multi-currency" },
+  { icon: ShieldCheck, label: "Identity Verification", route: "/kyc" },
+  { icon: ArrowDown, label: "Direct Deposits", route: "/direct-deposits" },
+  { icon: Users, label: "Bill Splitting", route: "/bill-splitting" },
+  { icon: MessageSquare, label: "Payment Requests", route: "/payment-requests" },
+  { icon: ShoppingCart, label: "Merchant Payments", route: "/merchant" },
+  { icon: ChartBar, label: "Expense Categorization", route: "/expenses" },
+  { icon: Wallet, label: "Shared Wallets", route: "/shared-wallets" },
+  { icon: Headset, label: "Customer Support", route: "/support" },
+  { icon: QrCode, label: "QR Payments", route: "/qr-payments" },
+  { icon: Split, label: "Split with Friends", route: "/split" },
+  { icon: Gift, label: "Referral Program", route: "/referral" },
+  { icon: Wallet, label: "App-Only Balance", route: "/balance" },
+  { icon: Users, label: "Social Feed", route: "/social" },
+  { icon: Mail, label: "Email Payments", route: "/email-pay" },
+  { icon: WalletCards, label: "Digital Cards", route: "/cards" },
+  { icon: Globe, label: "Currency Exchange", route: "/exchange" },
+  { icon: UserCog, label: "AI Assistant", route: "/ai-assistant" },
+  { icon: Speaker, label: "Voice Payments", route: "/voice" },
+  { icon: AlertOctagon, label: "Fraud Detection", route: "/security" },
+  { icon: Heart, label: "Spend-For-A-Cause", route: "/donate" },
+  { icon: PiggyBank, label: "Automated Savings", route: "/savings" },
+  { icon: UserCog, label: "Spend Smart", route: "/smart-spend" },
+  { icon: Database, label: "Blockchain History", route: "/blockchain" },
+  { icon: User, label: "Spending Profiles", route: "/profiles" },
+  { icon: ChartLine, label: "Investment Tips", route: "/investments" },
+  { icon: ChartLine, label: "Credit Score", route: "/credit" },
+  { icon: Users, label: "Shared Goals", route: "/goals" },
+  { icon: Percent, label: "Personal Offers", route: "/offers" }
+];
