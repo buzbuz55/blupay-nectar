@@ -4,10 +4,36 @@ import { Mic, MicOff } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from 'react-router-dom';
 
-// Define the types for the Web Speech API
+// Define types for the Web Speech API
+interface SpeechRecognitionEvent extends Event {
+  resultIndex: number;
+  results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+  error: string;
+}
+
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onstart: (event: Event) => void;
+  onend: (event: Event) => void;
+  onerror: (event: SpeechRecognitionErrorEvent) => void;
+  onresult: (event: SpeechRecognitionEvent) => void;
+  start: () => void;
+  stop: () => void;
+}
+
+// Define the window interface extension
 interface IWindow extends Window {
-  SpeechRecognition?: typeof SpeechRecognition;
-  webkitSpeechRecognition?: typeof SpeechRecognition;
+  SpeechRecognition?: {
+    new(): SpeechRecognition;
+  };
+  webkitSpeechRecognition?: {
+    new(): SpeechRecognition;
+  };
 }
 
 export const VoicePayment = () => {
