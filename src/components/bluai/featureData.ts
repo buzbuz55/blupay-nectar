@@ -14,6 +14,12 @@ export const featureButtons = [
     description: "Your personal AI financial assistant"
   },
   { 
+    icon: MessageSquare, 
+    label: "Payment Requests", 
+    route: "/payment-request",
+    description: "Request money with custom messages and notes"
+  },
+  { 
     icon: Globe, 
     label: "Currency Converter", 
     route: "currency-converter",
