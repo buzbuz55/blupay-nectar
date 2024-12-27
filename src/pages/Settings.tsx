@@ -1,21 +1,25 @@
 import { ArrowLeft, Building2, Plus, Landmark, CalendarClock, MapPin, Fingerprint, Lock, Bell, Users2, SmilePlus, HelpCircle, FileText, Wallet, BriefcaseBusiness, Send, Gift, FileKey, Smartphone, ShieldCheck, FileQuestion, Star, LogOut } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 const settingSections = [
   {
     title: "PREFERENCES",
     items: [
-      { icon: Building2, label: "Account", badge: "" },
-      { icon: Plus, label: "Create Business Profile", badge: "New" },
-      { icon: Landmark, label: "Payment Methods", badge: "" },
-      { icon: CalendarClock, label: "Scheduled Payments & Requests", badge: "" },
-      { icon: MapPin, label: "Shipping Addresses", badge: "" },
-      { icon: Fingerprint, label: "Face ID & Passcode", badge: "" },
-      { icon: Lock, label: "Privacy", badge: "" },
-      { icon: Bell, label: "Notifications", badge: "" },
-      { icon: Users2, label: "Friends & Social", badge: "" },
-      { icon: SmilePlus, label: "Emoji", badge: "" },
-      { icon: HelpCircle, label: "Get help", badge: "" },
+      { id: "account", icon: Building2, label: "Account", badge: "", content: "Manage your account settings and preferences" },
+      { id: "business", icon: Plus, label: "Create Business Profile", badge: "New", content: "Set up your business profile to accept payments" },
+      { id: "payment", icon: Landmark, label: "Payment Methods", badge: "", content: "Add or remove payment methods" },
+      { id: "scheduled", icon: CalendarClock, label: "Scheduled Payments & Requests", badge: "", content: "View and manage your scheduled transactions" },
+      { id: "shipping", icon: MapPin, label: "Shipping Addresses", badge: "", content: "Manage your shipping addresses" },
+      { id: "faceid", icon: Fingerprint, label: "Face ID & Passcode", badge: "", content: "Configure your security settings" },
+      { id: "privacy", icon: Lock, label: "Privacy", badge: "", content: "Control your privacy settings" },
+      { id: "notifications", icon: Bell, label: "Notifications", badge: "", content: "Customize your notification preferences" },
+      { id: "friends", icon: Users2, label: "Friends & Social", badge: "", content: "Manage your social connections" },
+      { id: "emoji", icon: SmilePlus, label: "Emoji", badge: "", content: "Customize your emoji reactions" },
+      { id: "help", icon: HelpCircle, label: "Get help", badge: "", content: "Get support and answers to your questions" },
     ]
   },
   {
@@ -58,6 +62,29 @@ const settingSections = [
 ];
 
 const SettingsPage = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [selectedSetting, setSelectedSetting] = useState<{
+    id: string;
+    label: string;
+    content: string;
+  } | null>(null);
+
+  const handleSettingClick = (item: { id: string; label: string; content: string }) => {
+    setSelectedSetting(item);
+  };
+
+  const handleSignOut = () => {
+    toast({
+      title: "Signing out...",
+      description: "You have been successfully signed out.",
+    });
+    // In a real app, you would handle the sign out logic here
+    setTimeout(() => {
+      navigate('/');
+    }, 1500);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 fixed top-0 left-0 right-0 z-10">
@@ -80,10 +107,10 @@ const SettingsPage = () => {
             <h2 className="px-4 py-2 text-sm font-semibold text-gray-500">{section.title}</h2>
             <div className="bg-white">
               {section.items.map((item, index) => (
-                <Link
+                <button
                   key={item.label}
-                  to="#"
-                  className={`flex items-center justify-between p-4 hover:bg-gray-50 ${
+                  onClick={() => handleSettingClick(item)}
+                  className={`w-full flex items-center justify-between p-4 hover:bg-gray-50 ${
                     index !== section.items.length - 1 ? 'border-b border-gray-100' : ''
                   }`}
                 >
@@ -99,23 +126,35 @@ const SettingsPage = () => {
                     )}
                     <span className="text-gray-400">›</span>
                   </div>
-                </Link>
+                </button>
               ))}
             </div>
           </div>
         ))}
 
         <div className="p-4">
-          <button 
-            className="w-full flex items-center justify-center gap-2 text-blue-500 font-medium py-2"
-            onClick={() => console.log("Sign out clicked")}
+          <Button 
+            variant="destructive"
+            className="w-full flex items-center justify-center gap-2 py-2"
+            onClick={handleSignOut}
           >
             <LogOut className="w-5 h-5" />
             <span>Sign Out of BLUPAY</span>
-          </button>
+          </Button>
           <p className="text-center text-gray-500 text-sm mt-4">Version 10.55.0 (4)</p>
         </div>
       </main>
+
+      <Dialog open={!!selectedSetting} onOpenChange={() => setSelectedSetting(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{selectedSetting?.label}</DialogTitle>
+          </DialogHeader>
+          <div className="p-4">
+            <p className="text-gray-600">{selectedSetting?.content}</p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
