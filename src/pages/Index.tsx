@@ -1,11 +1,13 @@
 import { Balance } from "@/components/home/Balance";
 import { QuickActions } from "@/components/home/QuickActions";
+import { BottomNav } from "@/components/layout/BottomNav";
 import { Header } from "@/components/home/Header";
 import { TransactionList } from "@/components/home/TransactionList";
 import { Button } from "@/components/ui/button";
 import { useState, useMemo, Suspense, lazy } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
+// Lazy load components that aren't immediately visible
 const LazyBalance = lazy(() => import("@/components/home/Balance").then(module => ({ default: module.Balance })));
 const LazyQuickActions = lazy(() => import("@/components/home/QuickActions").then(module => ({ default: module.QuickActions })));
 
@@ -38,14 +40,15 @@ const transactions = [
 
 const LoadingSkeleton = () => (
   <div className="space-y-4 animate-pulse">
-    <div className="h-24 bg-app-card rounded-2xl"></div>
-    <div className="h-40 bg-app-card rounded-2xl"></div>
+    <div className="h-24 bg-gray-200 rounded-lg"></div>
+    <div className="h-40 bg-gray-200 rounded-lg"></div>
   </div>
 );
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<'wallet' | 'transactions'>('wallet');
   
+  // Memoize filtered transactions to prevent unnecessary recalculations
   const filteredTransactions = useMemo(() => {
     return transactions.filter(t => 
       activeTab === 'wallet' ? t.amount < 0 : true
@@ -53,7 +56,7 @@ const Index = () => {
   }, [activeTab]);
 
   return (
-    <div className="min-h-screen bg-app-dark text-white">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       
       <main className="p-4 pb-20">
@@ -62,40 +65,32 @@ const Index = () => {
           <LazyBalance />
         </Suspense>
         
-        <div className="flex justify-between mb-4 p-2 bg-app-card rounded-2xl backdrop-blur-lg">
+        <div className="flex justify-between mb-4">
           <Button
             variant={activeTab === 'wallet' ? 'default' : 'outline'}
             onClick={() => setActiveTab('wallet')}
-            className={`px-6 py-2 rounded-xl transition-all duration-200 ${
-              activeTab === 'wallet' 
-                ? 'bg-neon-green text-black hover:bg-neon-green/90' 
-                : 'text-neon-green border-neon-green/20 hover:bg-neon-green/10'
-            }`}
+            className="px-6 py-2 rounded-full transition-colors"
           >
             Wallet
           </Button>
           <Button
             variant={activeTab === 'transactions' ? 'default' : 'outline'}
             onClick={() => setActiveTab('transactions')}
-            className={`px-6 py-2 rounded-xl transition-all duration-200 ${
-              activeTab === 'transactions' 
-                ? 'bg-neon-green text-black hover:bg-neon-green/90' 
-                : 'text-neon-green border-neon-green/20 hover:bg-neon-green/10'
-            }`}
+            className="px-6 py-2 rounded-full transition-colors"
           >
             Transactions
           </Button>
         </div>
         
-        <div className="bg-app-card rounded-2xl p-4 backdrop-blur-lg">
-          <h2 className="text-xl font-semibold mb-4 bg-gradient-neon text-transparent bg-clip-text">
-            Completed
-          </h2>
-          <Suspense fallback={<div className="h-60 animate-pulse bg-app-card rounded-xl"></div>}>
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Completed</h2>
+          <Suspense fallback={<div className="h-60 animate-pulse bg-gray-100 rounded-lg"></div>}>
             <TransactionList transactions={filteredTransactions} />
           </Suspense>
         </div>
       </main>
+      
+      <BottomNav />
     </div>
   );
 };

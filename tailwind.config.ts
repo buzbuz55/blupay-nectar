@@ -19,17 +19,6 @@ export default {
     },
     extend: {
       colors: {
-        neon: {
-          green: "#CCFF00",
-          blue: "#00E5FF",
-          pink: "#FF00E5",
-          yellow: "#FFFF00",
-        },
-        app: {
-          dark: "#000000",
-          card: "rgba(0,0,0,0.8)",
-          "card-hover": "rgba(0,0,0,0.9)",
-        },
         blupay: {
           primary: "#1EAEDB",
           secondary: "#F1F0FB",
@@ -73,10 +62,6 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-      },
-      backgroundImage: {
-        'gradient-neon': 'linear-gradient(to right, #CCFF00, #00E5FF)',
-        'gradient-dark': 'linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.95))',
       },
       borderRadius: {
         lg: "var(--radius)",
