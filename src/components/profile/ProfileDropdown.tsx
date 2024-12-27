@@ -1,6 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { QrCode } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { PaymentModal } from "../payment/PaymentModal";
 
 interface ProfileInfo {
   name: string;
@@ -10,6 +12,14 @@ interface ProfileInfo {
 }
 
 export const ProfileDropdown = ({ profile }: { profile: ProfileInfo }) => {
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedRecipient, setSelectedRecipient] = useState<any>(null);
+
+  const handleProfileClick = (recipient: any) => {
+    setSelectedRecipient(recipient);
+    setIsPaymentModalOpen(true);
+  };
+
   return (
     <div className="bg-white min-h-screen">
       <div className="p-4 space-y-6">
@@ -48,29 +58,6 @@ export const ProfileDropdown = ({ profile }: { profile: ProfileInfo }) => {
           </div>
         </div>
 
-        {/* Teen Account Section */}
-        <div className="space-y-2">
-          <button 
-            className="w-full p-4 text-blue-500 font-semibold text-lg border rounded-full hover:bg-gray-50 transition-colors flex items-center justify-between"
-            onClick={() => console.log("Create teen account clicked")}
-          >
-            Create a teen account
-            <span className="text-2xl">+</span>
-          </button>
-        </div>
-
-        {/* Business Profile Section */}
-        <div>
-          <h2 className="text-xl font-bold mb-2">Business Profile</h2>
-          <button 
-            className="w-full p-4 text-blue-500 font-semibold text-lg border rounded-full hover:bg-gray-50 transition-colors flex items-center justify-between"
-            onClick={() => console.log("Create business profile clicked")}
-          >
-            Create a business profile
-            <span className="text-2xl">+</span>
-          </button>
-        </div>
-
         {/* Completed Transactions Section */}
         <div className="space-y-4">
           <div className="flex justify-between items-center">
@@ -80,7 +67,14 @@ export const ProfileDropdown = ({ profile }: { profile: ProfileInfo }) => {
           
           <div className="space-y-4">
             {/* Transaction items */}
-            <div className="flex items-center justify-between py-2">
+            <button 
+              className="w-full flex items-center justify-between py-2"
+              onClick={() => handleProfileClick({
+                name: "Kollel Kotel",
+                username: "@kollel-kotel",
+                initials: "KK"
+              })}
+            >
               <div className="flex items-center gap-3">
                 <Avatar>
                   <AvatarFallback>KK</AvatarFallback>
@@ -94,10 +88,18 @@ export const ProfileDropdown = ({ profile }: { profile: ProfileInfo }) => {
                 </div>
               </div>
               <span className="text-red-500 font-medium">- $53.56</span>
-            </div>
+            </button>
           </div>
         </div>
       </div>
+
+      {selectedRecipient && (
+        <PaymentModal
+          isOpen={isPaymentModalOpen}
+          onClose={() => setIsPaymentModalOpen(false)}
+          recipient={selectedRecipient}
+        />
+      )}
     </div>
   );
 };
