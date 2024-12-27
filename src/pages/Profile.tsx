@@ -2,10 +2,12 @@ import { useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Profile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [showInviteNotification, setShowInviteNotification] = useState(true);
 
   // In a real app, you would fetch user data based on the ID
   const mockUserData = {
@@ -16,6 +18,10 @@ const Profile = () => {
     avatar: "/lovable-uploads/photo-1581091226825-a6a2a5aee158.jpg",
     transactions: 142,
     friends: 891
+  };
+
+  const handleDismissNotification = () => {
+    setShowInviteNotification(false);
   };
 
   return (
@@ -55,6 +61,35 @@ const Profile = () => {
               <p className="text-gray-600">Friends</p>
             </div>
           </div>
+
+          {showInviteNotification && (
+            <div className="w-full max-w-md bg-white rounded-xl shadow-sm border p-4 space-y-4">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white text-xl font-bold">
+                  B
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg">Invite friends, earn $15</h3>
+                  <p className="text-gray-600">Share your link or invite friends from your contacts. Everybody gets $15!</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Button 
+                  className="w-full bg-gradient-to-r from-blue-400 to-purple-500 text-white"
+                  onClick={() => console.log("Invite clicked")}
+                >
+                  Invite
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={handleDismissNotification}
+                >
+                  Not now
+                </Button>
+              </div>
+            </div>
+          )}
           
           <div className="w-full max-w-md mt-8">
             <Button className="w-full" variant="outline">
