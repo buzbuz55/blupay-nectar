@@ -32,6 +32,14 @@ const BLUAi = () => {
     }
   }, [location]);
 
+  const handleFeatureClick = (route: string) => {
+    if (route === 'currency-converter') {
+      setShowCurrencyConverter(true);
+    } else {
+      navigate(route);
+    }
+  };
+
   if (!hasCompletedSignup) {
     return <SignupFlow onComplete={handleSignupComplete} />;
   }
@@ -51,7 +59,7 @@ const BLUAi = () => {
             <p className="text-sm text-gray-600">Explore what you can do</p>
           </div>
           
-          <FeatureList />
+          <FeatureList onFeatureClick={handleFeatureClick} />
         </div>
       </div>
 

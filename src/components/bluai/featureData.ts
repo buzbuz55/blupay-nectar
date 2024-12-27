@@ -16,7 +16,7 @@ export const featureButtons = [
   { 
     icon: Globe, 
     label: "Currency Converter", 
-    route: "/crypto",
+    route: "currency-converter",
     description: "Guaranteed lowest rates in the world - saving you time and money"
   },
   { icon: CalendarClock, label: "Recurring Payments", route: "/recurring-payments" },
