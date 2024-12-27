@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
+import { TransactionFilter } from "@/components/transaction/TransactionFilter";
 
 const CardsOverview = () => {
   const { toast } = useToast();
@@ -32,6 +33,8 @@ const CardsOverview = () => {
       </header>
 
       <main className="p-4 space-y-6">
+        <TransactionFilter />
+        
         {/* Developer Note */}
         <Card className="p-4 bg-blue-50 border-blue-200">
           <h2 className="font-semibold text-blue-800 mb-2">Developer Note</h2>
