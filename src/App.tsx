@@ -11,6 +11,7 @@ import CardsPage from "./pages/Cards";
 import PayPage from "./pages/Pay";
 import CryptoPage from "./pages/Crypto";
 import SupportPage from "./pages/Support";
+import BLUAi from "./pages/BLUAi";
 import { BottomNav } from "./components/layout/BottomNav";
 
 const queryClient = new QueryClient();
@@ -78,7 +79,7 @@ const App: React.FC = () => {
               <Route path="/cards/*" element={<CardsPage />} />
               <Route path="/pay" element={<PayPage />} />
               <Route path="/crypto" element={<CryptoPage />} />
-              <Route path="/profile" element={<div className="p-4">Profile Page</div>} />
+              <Route path="/bluai" element={<BLUAi />} />
             </Routes>
           </div>
           <BottomNav />

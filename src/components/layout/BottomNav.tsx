@@ -1,4 +1,4 @@
-import { Home, CreditCard, Send, Bitcoin, User } from "lucide-react";
+import { Home, CreditCard, Send, Bitcoin, Bot } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 export const BottomNav = () => {
@@ -11,7 +11,7 @@ export const BottomNav = () => {
     { icon: CreditCard, label: "Cards", path: "/cards" },
     { icon: Send, label: "Pay/Request", path: "/pay" },
     { icon: Bitcoin, label: "Crypto", path: "/crypto" },
-    { icon: User, label: "Me", path: "/profile" },
+    { icon: Bot, label: "BLUAi", path: "/bluai" },
   ];
 
   return (
