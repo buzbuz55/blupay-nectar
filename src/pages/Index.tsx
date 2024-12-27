@@ -38,8 +38,8 @@ const transactions = [
 
 const LoadingSkeleton = () => (
   <div className="space-y-4 animate-pulse">
-    <div className="h-24 bg-app-card rounded-2xl"></div>
-    <div className="h-40 bg-app-card rounded-2xl"></div>
+    <div className="h-24 bg-white/10 rounded-2xl"></div>
+    <div className="h-40 bg-white/10 rounded-2xl"></div>
   </div>
 );
 
@@ -53,7 +53,7 @@ const Index = () => {
   }, [activeTab]);
 
   return (
-    <div className="min-h-screen bg-app-dark text-white">
+    <div className="min-h-screen bg-gradient-to-b from-blue-500 to-blue-600">
       <Header />
       
       <main className="p-4 pb-20">
@@ -62,14 +62,14 @@ const Index = () => {
           <LazyBalance />
         </Suspense>
         
-        <div className="flex justify-between mb-4 p-2 bg-app-card rounded-2xl backdrop-blur-lg">
+        <div className="flex justify-between mb-4 p-2 bg-white/10 rounded-2xl backdrop-blur-lg">
           <Button
             variant={activeTab === 'wallet' ? 'default' : 'outline'}
             onClick={() => setActiveTab('wallet')}
             className={`px-6 py-2 rounded-xl transition-all duration-200 ${
               activeTab === 'wallet' 
-                ? 'bg-neon-green text-black hover:bg-neon-green/90' 
-                : 'text-neon-green border-neon-green/20 hover:bg-neon-green/10'
+                ? 'bg-white text-blue-600 hover:bg-white/90' 
+                : 'text-white border-white/20 hover:bg-white/10'
             }`}
           >
             Wallet
@@ -79,19 +79,19 @@ const Index = () => {
             onClick={() => setActiveTab('transactions')}
             className={`px-6 py-2 rounded-xl transition-all duration-200 ${
               activeTab === 'transactions' 
-                ? 'bg-neon-green text-black hover:bg-neon-green/90' 
-                : 'text-neon-green border-neon-green/20 hover:bg-neon-green/10'
+                ? 'bg-white text-blue-600 hover:bg-white/90' 
+                : 'text-white border-white/20 hover:bg-white/10'
             }`}
           >
             Transactions
           </Button>
         </div>
         
-        <div className="bg-app-card rounded-2xl p-4 backdrop-blur-lg">
-          <h2 className="text-xl font-semibold mb-4 bg-gradient-neon text-transparent bg-clip-text">
+        <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-lg">
+          <h2 className="text-xl font-semibold mb-4 text-white">
             Completed
           </h2>
-          <Suspense fallback={<div className="h-60 animate-pulse bg-app-card rounded-xl"></div>}>
+          <Suspense fallback={<div className="h-60 animate-pulse bg-white/5 rounded-xl"></div>}>
             <TransactionList transactions={filteredTransactions} />
           </Suspense>
         </div>
