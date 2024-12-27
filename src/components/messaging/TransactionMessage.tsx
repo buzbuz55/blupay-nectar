@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MessageCircle, SmilePlus } from "lucide-react";
+import { MessageCircle, SmilePlus, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
 
 interface Message {
   id: string;
@@ -36,11 +37,14 @@ export const TransactionMessage = ({
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [reactions, setReactions] = useState<Reaction[]>(initialReactions);
   const [newMessage, setNewMessage] = useState("");
+  const [isSending, setIsSending] = useState(false);
   const { toast } = useToast();
 
-  const handleAddMessage = () => {
+  const handleAddMessage = async () => {
     if (!newMessage.trim()) return;
 
+    setIsSending(true);
+    
     const message: Message = {
       id: Math.random().toString(36).substr(2, 9),
       userId: "current-user", // In a real app, this would come from auth
@@ -51,17 +55,24 @@ export const TransactionMessage = ({
     setMessages([...messages, message]);
     setNewMessage("");
     
+    // Simulate network delay for demonstration
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
     toast({
       title: "Message sent",
       description: "Your message has been added to the transaction.",
     });
+    
+    setTimeout(() => {
+      setIsSending(false);
+    }, 1000);
   };
 
   const handleAddReaction = (emoji: string) => {
     const existingReaction = reactions.find((r) => r.emoji === emoji);
     
     if (existingReaction) {
-      const userId = "current-user"; // In a real app, this would come from auth
+      const userId = "current-user";
       const hasReacted = existingReaction.userIds.includes(userId);
       
       if (hasReacted) {
@@ -95,7 +106,7 @@ export const TransactionMessage = ({
         {
           emoji,
           count: 1,
-          userIds: ["current-user"], // In a real app, this would come from auth
+          userIds: ["current-user"],
         },
       ]);
     }
@@ -175,8 +186,19 @@ export const TransactionMessage = ({
           placeholder="Add a comment..."
           className="flex-1"
         />
-        <Button onClick={handleAddMessage}>
-          <MessageCircle className="h-4 w-4" />
+        <Button 
+          onClick={handleAddMessage}
+          className={cn(
+            "transition-all duration-300",
+            isSending && "bg-green-500 hover:bg-green-600"
+          )}
+          disabled={isSending}
+        >
+          {isSending ? (
+            <CheckCircle className="h-4 w-4 animate-scale-in text-white" />
+          ) : (
+            <MessageCircle className="h-4 w-4" />
+          )}
         </Button>
       </div>
     </div>
