@@ -11,6 +11,9 @@ import { TransactionFilter } from "@/components/transaction/TransactionFilter";
 const CardsOverview = () => {
   const { toast } = useToast();
   const [isConnecting, setIsConnecting] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [amountFilter, setAmountFilter] = useState("");
 
   const handleConnect = (method: string) => {
     setIsConnecting(true);
@@ -33,7 +36,11 @@ const CardsOverview = () => {
       </header>
 
       <main className="p-4 space-y-6">
-        <TransactionFilter />
+        <TransactionFilter 
+          onSearchChange={setSearchTerm}
+          onCategoryChange={setSelectedCategory}
+          onAmountChange={setAmountFilter}
+        />
         
         {/* Developer Note */}
         <Card className="p-4 bg-blue-50 border-blue-200">
