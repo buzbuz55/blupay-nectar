@@ -1,80 +1,96 @@
 import { Balance } from "@/components/home/Balance";
 import { QuickActions } from "@/components/home/QuickActions";
+import { BottomNav } from "@/components/layout/BottomNav";
 import { Header } from "@/components/home/Header";
 import { TransactionList } from "@/components/home/TransactionList";
-import { Suspense, lazy } from "react";
+import { Button } from "@/components/ui/button";
+import { useState, useMemo, Suspense, lazy } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+
+// Lazy load components that aren't immediately visible
+const LazyBalance = lazy(() => import("@/components/home/Balance").then(module => ({ default: module.Balance })));
+const LazyQuickActions = lazy(() => import("@/components/home/QuickActions").then(module => ({ default: module.QuickActions })));
 
 const transactions = [
   {
     id: 1,
-    name: "Sarah Johnson",
-    date: "Today",
+    name: "Kollel Kotel",
+    date: "Dec 26",
     amount: -53.56,
     isPrivate: true,
-    avatar: "/lovable-uploads/photo-1581091226825-a6a2a5aee158.jpg"
+    avatar: "KK"
   },
   {
     id: 2,
-    name: "David Chen",
-    date: "Today",
-    amount: 204.03,
-    isPrivate: false,
-    avatar: "/lovable-uploads/photo-1581092795360-fd1ca04f0952.jpg"
+    name: "Kollel Chatzos",
+    date: "Dec 24",
+    amount: -104.03,
+    isPrivate: true,
+    avatar: "KC"
   },
   {
     id: 3,
-    name: "Maria Garcia",
-    date: "Yesterday",
-    amount: -24.99,
-    isPrivate: false,
-    avatar: "/lovable-uploads/photo-1649972904349-6e44c42644a7.jpg"
-  },
-  {
-    id: 4,
-    name: "James Wilson",
-    date: "Yesterday",
-    amount: 150.00,
-    isPrivate: true,
-    avatar: "/lovable-uploads/photo-1486312338219-ce68d2c6f44d.jpg"
-  },
-  {
-    id: 5,
-    name: "Emma Thompson",
+    name: "Lillian Mbazbaz",
     date: "Dec 22",
-    amount: -45.50,
-    isPrivate: false,
-    avatar: "/lovable-uploads/photo-1501286353178-1ec881214838.jpg"
+    amount: -104.03,
+    isPrivate: true,
+    avatar: "LM"
   }
 ];
 
 const LoadingSkeleton = () => (
   <div className="space-y-4 animate-pulse">
-    <div className="h-24 bg-gray-100 rounded-2xl"></div>
-    <div className="h-40 bg-gray-100 rounded-2xl"></div>
+    <div className="h-24 bg-gray-200 rounded-lg"></div>
+    <div className="h-40 bg-gray-200 rounded-lg"></div>
   </div>
 );
 
 const Index = () => {
+  const [activeTab, setActiveTab] = useState<'wallet' | 'transactions'>('wallet');
+  
+  // Memoize filtered transactions to prevent unnecessary recalculations
+  const filteredTransactions = useMemo(() => {
+    return transactions.filter(t => 
+      activeTab === 'wallet' ? t.amount < 0 : true
+    );
+  }, [activeTab]);
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <main className="px-4 pb-20 max-w-2xl mx-auto">
-        <div className="space-y-6 mt-4">
-          <Suspense fallback={<LoadingSkeleton />}>
-            <Balance />
-            <QuickActions />
+      <main className="p-4 pb-20">
+        <Suspense fallback={<LoadingSkeleton />}>
+          <LazyQuickActions />
+          <LazyBalance />
+        </Suspense>
+        
+        <div className="flex justify-between mb-4">
+          <Button
+            variant={activeTab === 'wallet' ? 'default' : 'outline'}
+            onClick={() => setActiveTab('wallet')}
+            className="px-6 py-2 rounded-full transition-colors"
+          >
+            Wallet
+          </Button>
+          <Button
+            variant={activeTab === 'transactions' ? 'default' : 'outline'}
+            onClick={() => setActiveTab('transactions')}
+            className="px-6 py-2 rounded-full transition-colors"
+          >
+            Transactions
+          </Button>
+        </div>
+        
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Completed</h2>
+          <Suspense fallback={<div className="h-60 animate-pulse bg-gray-100 rounded-lg"></div>}>
+            <TransactionList transactions={filteredTransactions} />
           </Suspense>
-          
-          <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">Recent Activity</h2>
-            <Suspense fallback={<div className="h-60 animate-pulse bg-gray-100 rounded-2xl"></div>}>
-              <TransactionList transactions={transactions} />
-            </Suspense>
-          </section>
         </div>
       </main>
+      
+      <BottomNav />
     </div>
   );
 };

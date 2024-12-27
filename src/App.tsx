@@ -12,7 +12,6 @@ import PayPage from "./pages/Pay";
 import CryptoPage from "./pages/Crypto";
 import SupportPage from "./pages/Support";
 import BLUAi from "./pages/BLUAi";
-import Profile from "./pages/Profile";
 import { BottomNav } from "./components/layout/BottomNav";
 
 const queryClient = new QueryClient();
@@ -72,7 +71,7 @@ const App: React.FC = () => {
           <SwipeDetector />
           <Toaster />
           <Sonner />
-          <div className="pb-20">
+          <div className="pb-20"> {/* Add padding to prevent content from being hidden behind the nav */}
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/notifications" element={<NotificationsPage />} />
@@ -81,7 +80,6 @@ const App: React.FC = () => {
               <Route path="/pay" element={<PayPage />} />
               <Route path="/crypto" element={<CryptoPage />} />
               <Route path="/bluai" element={<BLUAi />} />
-              <Route path="/profile/:id" element={<Profile />} />
             </Routes>
           </div>
           <BottomNav />

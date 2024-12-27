@@ -2,11 +2,16 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState, memo } from "react";
-import { ArrowUpRight, ArrowDownLeft } from "lucide-react";
 
 export const Balance = memo(() => {
   const navigate = useNavigate();
@@ -31,6 +36,7 @@ export const Balance = memo(() => {
       return;
     }
 
+    // Here you would typically save this to a secure backend
     toast({
       title: "Banking Information Saved",
       description: "Your account details have been securely saved",
@@ -40,37 +46,33 @@ export const Balance = memo(() => {
 
   return (
     <>
-      <Card className="p-6 rounded-2xl border-0 shadow-sm bg-gradient-to-br from-white to-gray-50">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">Balance</h2>
+      <Card className="p-6 mb-4 shadow-lg hover:shadow-xl transition-shadow">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold">Balance</h2>
           <Button 
             variant="outline" 
             size="sm" 
             onClick={handleAccountInfo}
-            className="text-sm font-medium hover:bg-gray-100 border-gray-200"
+            className="hover:bg-blue-50 transition-colors"
           >
-            Account Info
+            Account & Routing
           </Button>
         </div>
-        
-        <div className="mb-8">
-          <span className="text-4xl font-bold text-gray-900">$6.76</span>
+        <div className="mb-6">
+          <span className="text-3xl font-bold">$6.76</span>
         </div>
-        
         <div className="grid grid-cols-2 gap-4">
           <Button 
-            className="flex items-center justify-center gap-2 bg-black hover:bg-black/90 text-white rounded-xl h-12"
+            className="w-full bg-blupay-primary hover:bg-blupay-primary/90 transition-colors"
             onClick={() => navigate("/pay")}
           >
-            <ArrowUpRight className="w-4 h-4" />
-            Send
+            Transfer
           </Button>
           <Button 
-            className="flex items-center justify-center gap-2 bg-black hover:bg-black/90 text-white rounded-xl h-12"
+            className="w-full bg-blupay-primary hover:bg-blupay-primary/90 transition-colors"
             onClick={() => navigate("/cards")}
           >
-            <ArrowDownLeft className="w-4 h-4" />
-            Receive
+            Add money
           </Button>
         </div>
       </Card>
