@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import SignupFlow from '@/components/signup/SignupFlow';
 import { Header } from '@/components/bluai/Header';
 import { FeatureList } from '@/components/bluai/FeatureList';
+import { CurrencyConverter } from '@/components/currency/CurrencyConverter';
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const BLUAi = () => {
   const [hasCompletedSignup, setHasCompletedSignup] = useState(() => {
@@ -10,6 +13,9 @@ const BLUAi = () => {
   const [userName, setUserName] = useState('User');
   const [temperature, setTemperature] = useState('25°');
   const [weather, setWeather] = useState('Sunny');
+  const [showCurrencyConverter, setShowCurrencyConverter] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSignupComplete = () => {
     localStorage.setItem('hasCompletedSignup', 'true');
@@ -19,7 +25,12 @@ const BLUAi = () => {
   useEffect(() => {
     const savedName = localStorage.getItem('userName') || 'User';
     setUserName(savedName);
-  }, []);
+
+    // Check if we're returning from the currency converter
+    if (location.state?.fromCurrency) {
+      setShowCurrencyConverter(true);
+    }
+  }, [location]);
 
   if (!hasCompletedSignup) {
     return <SignupFlow onComplete={handleSignupComplete} />;
@@ -43,6 +54,12 @@ const BLUAi = () => {
           <FeatureList />
         </div>
       </div>
+
+      <Dialog open={showCurrencyConverter} onOpenChange={setShowCurrencyConverter}>
+        <DialogContent className="sm:max-w-[425px]">
+          <CurrencyConverter className="w-full" />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

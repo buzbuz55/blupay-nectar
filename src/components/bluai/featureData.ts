@@ -3,15 +3,26 @@ import {
   ArrowDown, Users, MessageSquare, ShoppingCart, ChartBar, Wallet,
   Headset, QrCode, Split, Mail, WalletCards, UserCog, Speaker,
   AlertOctagon, Heart, PiggyBank, Database, User, Settings, ChartLine,
-  Percent, DollarSign
+  Percent, DollarSign, BrainCircuit
 } from "lucide-react";
 
 export const featureButtons = [
+  { 
+    icon: BrainCircuit, 
+    label: "Ask BLUAi", 
+    route: "/bluai/chat",
+    description: "Your personal AI financial assistant"
+  },
+  { 
+    icon: Globe, 
+    label: "Currency Converter", 
+    route: "/crypto",
+    description: "Guaranteed lowest rates in the world - saving you time and money"
+  },
   { icon: CalendarClock, label: "Recurring Payments", route: "/recurring-payments" },
   { icon: Gift, label: "Rewards & Cashback", route: "/rewards" },
   { icon: History, label: "Transaction History", route: "/history" },
   { icon: CreditCard, label: "Bill Pay Integration", route: "/bill-pay" },
-  { icon: Globe, label: "Multi-Currency Support", route: "/multi-currency" },
   { icon: ShieldCheck, label: "Identity Verification", route: "/kyc" },
   { icon: ArrowDown, label: "Direct Deposits", route: "/direct-deposits" },
   { icon: Users, label: "Bill Splitting", route: "/bill-splitting" },
