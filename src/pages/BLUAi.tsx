@@ -2,12 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import SignupFlow from '@/components/signup/SignupFlow';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Sun, Mic, Camera, RefreshCw } from "lucide-react";
+import { Send, Sun, Mic, Camera, RefreshCw, CalendarClock, Gift, History } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { CameraDialog } from '@/components/camera/CameraDialog';
 import { CurrencyConverter } from '@/components/currency/CurrencyConverter';
+import { useNavigate } from 'react-router-dom';
 
 const BLUAi = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [hasCompletedSignup, setHasCompletedSignup] = useState(() => {
     return localStorage.getItem('hasCompletedSignup') === 'true';
@@ -105,6 +107,36 @@ const BLUAi = () => {
         </div>
 
         <CurrencyConverter className="mb-6" />
+
+        {/* New Feature Buttons */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <Button
+            variant="outline"
+            className="flex flex-col items-center justify-center gap-2 p-4 h-auto aspect-square"
+            onClick={() => navigate('/recurring-payments')}
+          >
+            <CalendarClock className="w-8 h-8 text-blupay-primary" />
+            <span className="text-sm text-center font-medium">Recurring Payments</span>
+          </Button>
+          
+          <Button
+            variant="outline"
+            className="flex flex-col items-center justify-center gap-2 p-4 h-auto aspect-square"
+            onClick={() => navigate('/rewards')}
+          >
+            <Gift className="w-8 h-8 text-blupay-primary" />
+            <span className="text-sm text-center font-medium">Rewards & Cashback</span>
+          </Button>
+          
+          <Button
+            variant="outline"
+            className="flex flex-col items-center justify-center gap-2 p-4 h-auto aspect-square"
+            onClick={() => navigate('/history')}
+          >
+            <History className="w-8 h-8 text-blupay-primary" />
+            <span className="text-sm text-center font-medium">Transaction History</span>
+          </Button>
+        </div>
 
         <div className="flex-1 overflow-y-auto mb-4 space-y-4">
           <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-4 max-w-[80%]">
