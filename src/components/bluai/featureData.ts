@@ -3,7 +3,7 @@ import {
   ArrowDown, Users, MessageSquare, ShoppingCart, ChartBar, Wallet,
   Headset, QrCode, Split, Mail, WalletCards, UserCog, Speaker,
   AlertOctagon, Heart, PiggyBank, Database, User, Settings, ChartLine,
-  Percent, DollarSign, BrainCircuit
+  Percent, DollarSign, BrainCircuit, Building2
 } from "lucide-react";
 
 export const featureButtons = [
@@ -24,6 +24,12 @@ export const featureButtons = [
     label: "Currency Converter", 
     route: "currency-converter",
     description: "Guaranteed lowest rates in the world - saving you time and money"
+  },
+  { 
+    icon: Building2, 
+    label: "Merchant Payments", 
+    route: "/merchant",
+    description: "Pay businesses and merchants directly"
   },
   { icon: CalendarClock, label: "Recurring Payments", route: "/recurring-payments" },
   { icon: Gift, label: "Rewards & Cashback", route: "/rewards" },
