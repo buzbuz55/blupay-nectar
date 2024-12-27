@@ -18,9 +18,6 @@ export default {
       },
     },
     extend: {
-      fontFamily: {
-        archivo: ['Archivo', 'sans-serif'],
-      },
       colors: {
         neon: {
           green: "#CCFF00",
@@ -34,10 +31,10 @@ export default {
           "card-hover": "rgba(0,0,0,0.9)",
         },
         blupay: {
-          primary: "#2575FC",
+          primary: "#1EAEDB",
           secondary: "#F1F0FB",
           accent: "#8B5CF6",
-          dark: "#012156",
+          dark: "#1A1F2C",
           light: "#F8FAFC",
           success: "#10B981",
           warning: "#F59E0B",
