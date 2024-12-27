@@ -2,6 +2,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { QrCode, Eye, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import QRCode from "qrcode.react";
 
 interface ProfileInfo {
   name: string;
@@ -11,9 +13,10 @@ interface ProfileInfo {
 }
 
 export const ProfileDropdown = ({ profile }: { profile: ProfileInfo }) => {
+  const userQRValue = `blupay:${profile.username}`; // This creates a unique QR code based on username
+
   return (
     <div className="min-h-screen bg-blupay-primary">
-      {/* Header with curved bottom */}
       <div className="relative bg-blupay-primary text-white p-6 pb-20">
         <div className="flex justify-between items-start">
           <div className="space-y-1">
@@ -38,11 +41,23 @@ export const ProfileDropdown = ({ profile }: { profile: ProfileInfo }) => {
           </div>
         </div>
 
-        {/* Profile Image and QR */}
         <div className="relative mt-8">
-          <div className="absolute right-0 bottom-0 p-2 bg-white rounded-lg">
-            <QrCode className="w-5 h-5 text-gray-600" />
-          </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="absolute right-0 bottom-0 p-2 bg-white rounded-lg hover:bg-gray-100 transition-colors">
+                <QrCode className="w-5 h-5 text-gray-600" />
+              </button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <div className="flex flex-col items-center gap-4 p-6">
+                <h2 className="text-xl font-semibold">Your BluPay QR Code</h2>
+                <div className="bg-white p-4 rounded-xl">
+                  <QRCode value={userQRValue} size={200} />
+                </div>
+                <p className="text-sm text-gray-500">Scan to connect with {profile.name}</p>
+              </div>
+            </DialogContent>
+          </Dialog>
           <Avatar className="w-24 h-24 border-4 border-white">
             <AvatarImage src={profile.avatarUrl} />
             <AvatarFallback className="text-2xl">{profile.name.charAt(0)}</AvatarFallback>

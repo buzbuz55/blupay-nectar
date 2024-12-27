@@ -17,6 +17,7 @@ import KYCPage from "./pages/KYC";
 import DirectDeposits from "./pages/DirectDeposits";
 import PaymentRequestPage from "./pages/PaymentRequest";
 import MerchantPage from "./pages/Merchant";
+import ProfilePage from "./pages/Profile";
 import { BottomNav } from "./components/layout/BottomNav";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App: React.FC = () => {
               <Route path="/payment-request" element={<PaymentRequestPage />} />
               <Route path="/merchant" element={<MerchantPage />} />
               <Route path="/support" element={<SupportPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
             </Routes>
           </div>
           <BottomNav />
