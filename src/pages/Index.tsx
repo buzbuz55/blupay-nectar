@@ -1,9 +1,9 @@
 import { Balance } from "@/components/home/Balance";
 import { QuickActions } from "@/components/home/QuickActions";
-import { BottomNav } from "@/components/layout/BottomNav";
 import { Header } from "@/components/home/Header";
 import { TransactionList } from "@/components/home/TransactionList";
 import { Button } from "@/components/ui/button";
+import { SplitPayment } from "@/components/home/SplitPayment";
 import { useState, useMemo, Suspense, lazy } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -48,7 +48,6 @@ const LoadingSkeleton = () => (
 const Index = () => {
   const [activeTab, setActiveTab] = useState<'wallet' | 'transactions'>('wallet');
   
-  // Memoize filtered transactions to prevent unnecessary recalculations
   const filteredTransactions = useMemo(() => {
     return transactions.filter(t => 
       activeTab === 'wallet' ? t.amount < 0 : true
@@ -65,7 +64,9 @@ const Index = () => {
           <LazyBalance />
         </Suspense>
         
-        <div className="flex justify-between mb-4">
+        <SplitPayment />
+        
+        <div className="flex justify-between mb-4 mt-6">
           <Button
             variant={activeTab === 'wallet' ? 'default' : 'outline'}
             onClick={() => setActiveTab('wallet')}
@@ -89,8 +90,6 @@ const Index = () => {
           </Suspense>
         </div>
       </main>
-      
-      <BottomNav />
     </div>
   );
 };
