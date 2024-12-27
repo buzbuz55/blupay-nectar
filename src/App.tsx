@@ -19,6 +19,7 @@ import DirectDeposits from "./pages/DirectDeposits";
 import PaymentRequestPage from "./pages/PaymentRequest";
 import MerchantPage from "./pages/Merchant";
 import ProfilePage from "./pages/Profile";
+import ContactUs from "./pages/ContactUs";
 import { BottomNav } from "./components/layout/BottomNav";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App: React.FC = () => {
           <Sonner />
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/contact-us" element={<ContactUs />} />
             <Route
               path="/"
               element={
