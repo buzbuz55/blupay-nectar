@@ -23,7 +23,7 @@ export const featureButtons = [
   { icon: Gift, label: "Rewards & Cashback", route: "/rewards" },
   { icon: History, label: "Transaction History", route: "/history" },
   { icon: CreditCard, label: "Bill Pay Integration", route: "/bill-pay" },
-  { icon: ShieldCheck, label: "Identity Verification", route: "/kyc" },
+  { icon: ShieldCheck, label: "Identity Verification", route: "/kyc", description: "Verify your identity to unlock higher transaction limits" },
   { icon: ArrowDown, label: "Direct Deposits", route: "/direct-deposits" },
   { icon: Users, label: "Bill Splitting", route: "/bill-splitting" },
   { icon: MessageSquare, label: "Payment Requests", route: "/payment-requests" },
