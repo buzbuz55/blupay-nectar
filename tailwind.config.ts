@@ -22,7 +22,12 @@ export default {
         blupay: {
           primary: "#1EAEDB",
           secondary: "#F1F0FB",
-          accent: "#9b87f5",
+          accent: "#8B5CF6",
+          dark: "#1A1F2C",
+          light: "#F8FAFC",
+          success: "#10B981",
+          warning: "#F59E0B",
+          error: "#EF4444",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -62,6 +67,9 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        "2xl": "1rem",
+        "3xl": "1.5rem",
+        "4xl": "2rem",
       },
       keyframes: {
         "accordion-down": {
