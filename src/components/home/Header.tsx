@@ -1,5 +1,6 @@
-import { Bell, Settings } from "lucide-react";
+import { Bell, Settings, Search } from "lucide-react";
 import { Link } from "react-router-dom";
+import { SearchDialog } from "../search/SearchDialog";
 
 export const Header = () => {
   return (
@@ -18,6 +19,8 @@ export const Header = () => {
           </Link>
           
           <div className="flex items-center gap-3">
+            <SearchDialog />
+            
             <Link 
               to="/notifications" 
               className="relative p-2 hover:bg-white/10 rounded-lg transition-colors duration-200"
