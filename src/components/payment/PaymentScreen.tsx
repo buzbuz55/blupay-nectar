@@ -1,24 +1,14 @@
 import React, { useState } from 'react';
-import { ChevronLeft, Info, ChevronDown } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { ChevronLeft, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { NumberPad } from './NumberPad';
-import currency from 'currency.js';
-
-const currencies = [
-  { code: 'USD', symbol: '$', rate: 1 },
-  { code: 'EUR', symbol: '€', rate: 0.91 },
-  { code: 'GBP', symbol: '£', rate: 0.79 },
-  { code: 'JPY', symbol: '¥', rate: 151.67 },
-];
 
 export const PaymentScreen = () => {
   const [amount, setAmount] = useState('');
-  const [selectedCurrency, setSelectedCurrency] = useState(currencies[0]);
-  const [showCurrencies, setShowCurrencies] = useState(false);
-  const navigate = useNavigate();
+  const [note, setNote] = useState('');
   const { toast } = useToast();
 
   const handleNumberClick = (num: string) => {
@@ -34,11 +24,6 @@ export const PaymentScreen = () => {
     setAmount(prev => prev.slice(0, -1) || '');
   };
 
-  const handleCurrencySelect = (currency: typeof currencies[0]) => {
-    setSelectedCurrency(currency);
-    setShowCurrencies(false);
-  };
-
   const handleSendMoney = () => {
     if (!amount || parseFloat(amount) <= 0) {
       toast({
@@ -51,9 +36,8 @@ export const PaymentScreen = () => {
 
     toast({
       title: "Money sent successfully",
-      description: `${selectedCurrency.symbol}${amount} has been sent to Gabriella Ingrid`,
+      description: `$${amount} has been sent`,
     });
-    navigate('/pay');
   };
 
   const formattedAmount = new Intl.NumberFormat('en-US', {
@@ -62,73 +46,56 @@ export const PaymentScreen = () => {
   }).format(parseFloat(amount) || 0);
 
   return (
-    <div className="h-screen bg-white grid grid-rows-[auto_1fr_auto] max-h-screen">
-      <header className="p-4 border-b">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <Link to="/pay" className="p-2">
-              <ChevronLeft className="h-6 w-6" />
-            </Link>
-            <h1 className="text-xl font-semibold">Send money to</h1>
-          </div>
-          <button className="p-2">
-            <Info className="h-6 w-6" />
-          </button>
-        </div>
+    <div className="h-screen bg-white flex flex-col">
+      <header className="p-4 flex justify-between items-center">
+        <Link to="/pay" className="p-2">
+          <ChevronLeft className="h-6 w-6" />
+        </Link>
+        <Link to="/pay" className="p-2">
+          <X className="h-6 w-6" />
+        </Link>
       </header>
 
-      <main className="p-4 flex flex-col justify-between">
-        <div className="space-y-6">
-          <div className="flex items-center gap-4">
-            <Avatar className="h-12 w-12 bg-purple-500">
-              <AvatarImage src="" />
-              <AvatarFallback>GI</AvatarFallback>
-            </Avatar>
-            <div>
-              <h2 className="text-lg font-semibold">Gabriella Ingrid</h2>
-              <p className="text-sm text-gray-500">Linkae • 8393 7322 8383</p>
-            </div>
-          </div>
-
-          <div className="text-center space-y-2">
-            <div className="flex items-center justify-center gap-2">
-              <span className="text-4xl font-semibold">{selectedCurrency.symbol}</span>
-              <span className="text-4xl font-semibold">{formattedAmount}</span>
-            </div>
-            <div className="relative inline-block">
-              <button 
-                className="flex items-center gap-1 px-4 py-2 rounded-full bg-gray-100"
-                onClick={() => setShowCurrencies(!showCurrencies)}
-              >
-                <span>{selectedCurrency.code}</span>
-                <ChevronDown className="h-4 w-4" />
-              </button>
-              
-              {showCurrencies && (
-                <div className="absolute top-full mt-2 w-full bg-white shadow-lg rounded-lg overflow-hidden z-10">
-                  {currencies.map((curr) => (
-                    <button
-                      key={curr.code}
-                      className="w-full px-4 py-2 text-left hover:bg-gray-50"
-                      onClick={() => handleCurrencySelect(curr)}
-                    >
-                      {curr.symbol} {curr.code}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+      <main className="flex-1 flex flex-col items-center px-4 pt-8 pb-6 gap-8">
+        <div className="text-center space-y-2">
+          <Avatar className="h-20 w-20 mx-auto">
+            <AvatarImage src="/placeholder.svg" />
+            <AvatarFallback>KC</AvatarFallback>
+          </Avatar>
+          <h2 className="text-xl font-semibold mt-4">Kollel Chatzos</h2>
         </div>
 
-        <div className="space-y-4">
+        <div className="text-center space-y-4 flex-1 flex flex-col justify-center">
+          <div className="flex items-center justify-center text-5xl font-semibold">
+            <span>$</span>
+            <span>{formattedAmount}</span>
+          </div>
+          <input
+            type="text"
+            placeholder="What's this for?"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            className="w-full p-4 text-center bg-gray-50 rounded-xl text-gray-600 placeholder:text-gray-400"
+          />
+        </div>
+
+        <div className="w-full space-y-4">
           <NumberPad onNumberClick={handleNumberClick} onDelete={handleDelete} />
-          <Button 
-            onClick={handleSendMoney}
-            className="w-full h-12 text-lg bg-blue-500 hover:bg-blue-600 text-white rounded-xl"
-          >
-            Send Money
-          </Button>
+          <div className="grid grid-cols-2 gap-4">
+            <Button 
+              variant="outline"
+              className="w-full h-12 text-lg"
+              onClick={() => setAmount('')}
+            >
+              Request
+            </Button>
+            <Button 
+              className="w-full h-12 text-lg"
+              onClick={handleSendMoney}
+            >
+              Pay
+            </Button>
+          </div>
         </div>
       </main>
     </div>
