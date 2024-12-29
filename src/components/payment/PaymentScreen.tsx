@@ -24,6 +24,10 @@ export const PaymentScreen = () => {
     setAmount(prev => prev.slice(0, -1) || '');
   };
 
+  const handleClear = () => {
+    setAmount('');
+  };
+
   const handleSendMoney = () => {
     if (!amount || parseFloat(amount) <= 0) {
       toast({
@@ -80,7 +84,11 @@ export const PaymentScreen = () => {
         </div>
 
         <div className="w-full space-y-4">
-          <NumberPad onNumberClick={handleNumberClick} onDelete={handleDelete} />
+          <NumberPad 
+            onNumberClick={handleNumberClick} 
+            onDelete={handleDelete}
+            onClear={handleClear}
+          />
           <div className="grid grid-cols-2 gap-4">
             <Button 
               variant="outline"
