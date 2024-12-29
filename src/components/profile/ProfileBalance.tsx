@@ -9,8 +9,8 @@ export const ProfileBalance = () => {
           <h3 className="text-lg font-medium">Balance</h3>
           <div className="flex items-baseline gap-1">
             <span className="text-4xl font-bold">$</span>
-            <span className="text-5xl font-bold">6</span>
-            <span className="text-3xl font-bold">.76</span>
+            <span className="text-5xl font-bold">18,720,880</span>
+            <span className="text-3xl font-bold">.88</span>
           </div>
         </div>
         <button className="flex items-center gap-1 text-gray-600">
