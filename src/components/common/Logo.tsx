@@ -15,7 +15,7 @@ export const Logo = ({ className = "", size = "md" }: LogoProps) => {
   return (
     <Link to="/" className={`inline-block ${className}`}>
       <img
-        src="/lovable-uploads/ad1f85c8-ce79-4d90-a5c7-19a242c6c028.png"
+        src="/lovable-uploads/b04a39c1-cecf-4629-9c21-e54be915568b.png"
         alt="BluPay"
         className={`${sizeClasses[size]} w-auto object-contain`}
       />
