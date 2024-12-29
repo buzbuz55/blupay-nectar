@@ -21,7 +21,7 @@ export const BottomNav = () => {
         </div>
       ), 
       label: "Pay/Request", 
-      path: "/pay" 
+      path: "/" // Temporarily redirecting to home
     },
     { icon: Bitcoin, label: "Crypto", path: "/crypto" },
     { icon: Bot, label: "BLUAi", path: "/bluai" },

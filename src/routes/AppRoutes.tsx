@@ -8,7 +8,6 @@ const Index = lazy(() => import("@/pages/Index"));
 const NotificationsPage = lazy(() => import("@/pages/Notifications"));
 const SettingsPage = lazy(() => import("@/pages/Settings"));
 const CardsPage = lazy(() => import("@/pages/Cards"));
-const PayPage = lazy(() => import("@/pages/Pay"));
 const CryptoPage = lazy(() => import("@/pages/Crypto"));
 const CryptoDetail = lazy(() => import("@/pages/CryptoDetail"));
 const SupportPage = lazy(() => import("@/pages/Support"));
@@ -58,15 +57,6 @@ export const AppRoutes = () => {
         element={
           <div className="pb-20">
             <CardsPage />
-            <BottomNav />
-          </div>
-        }
-      />
-      <Route
-        path="/pay/*"
-        element={
-          <div className="pb-20">
-            <PayPage />
             <BottomNav />
           </div>
         }
