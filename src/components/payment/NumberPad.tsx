@@ -1,4 +1,5 @@
-import { Delete } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { X, Delete } from "lucide-react";
 
 interface NumberPadProps {
   onNumberClick: (num: string) => void;
@@ -8,34 +9,38 @@ interface NumberPadProps {
 
 export const NumberPad = ({ onNumberClick, onDelete, onClear }: NumberPadProps) => {
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-3 gap-2">
       {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-        <button
+        <Button
           key={num}
+          variant="outline"
           onClick={() => onNumberClick(num.toString())}
-          className="h-14 text-white text-2xl font-light hover:bg-white/10 rounded-xl transition-colors"
+          className="h-14 text-xl font-medium hover:bg-gray-100"
         >
           {num}
-        </button>
+        </Button>
       ))}
-      <button
+      <Button
+        variant="outline"
         onClick={() => onNumberClick('.')}
-        className="h-14 text-white text-2xl font-light hover:bg-white/10 rounded-xl transition-colors"
+        className="h-14 text-xl font-medium hover:bg-gray-100"
       >
         .
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="outline"
         onClick={() => onNumberClick('0')}
-        className="h-14 text-white text-2xl font-light hover:bg-white/10 rounded-xl transition-colors"
+        className="h-14 text-xl font-medium hover:bg-gray-100"
       >
         0
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="outline"
         onClick={onDelete}
-        className="h-14 text-white text-2xl font-light hover:bg-white/10 rounded-xl transition-colors"
+        className="h-14 text-xl font-medium hover:bg-gray-100"
       >
-        <Delete className="h-6 w-6 mx-auto" />
-      </button>
+        <Delete className="h-6 w-6" />
+      </Button>
     </div>
   );
 };
