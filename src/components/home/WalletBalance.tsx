@@ -10,10 +10,10 @@ export const WalletBalance = () => {
       <div className="flex justify-between items-start mb-4">
         <div className="flex-1">
           <h3 className="text-lg font-medium">Balance</h3>
-          <div className="flex items-baseline gap-0.5 flex-wrap">
-            <span className="text-3xl font-bold">$</span>
-            <span className="text-4xl font-bold tracking-tight">18,720,880</span>
-            <span className="text-2xl font-bold">.88</span>
+          <div className="flex items-baseline gap-0.5">
+            <span className="text-2xl font-bold">$</span>
+            <span className="text-3xl font-bold tracking-tight">18,720,880</span>
+            <span className="text-xl font-bold">.88</span>
           </div>
         </div>
         <button className="flex items-center gap-1 text-gray-600 ml-2 whitespace-nowrap">

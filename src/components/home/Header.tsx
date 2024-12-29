@@ -5,14 +5,11 @@ import { Logo } from "../common/Logo";
 
 export const Header = () => {
   return (
-    <header className="bg-gradient-to-r from-[#1A1F2C] to-[#9b87f5] p-4 text-white relative overflow-hidden">
-      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-      
-      <div className="relative z-10 max-w-4xl mx-auto">
+    <header className="bg-[#82c8e5] p-4 text-white relative overflow-hidden">
+      <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <Logo size="md" />
+            <Logo size="md" className="opacity-90" />
             <Link 
               to="/profile" 
               className="flex flex-col space-y-0.5 group transition-transform duration-200 hover:scale-102"
