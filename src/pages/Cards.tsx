@@ -6,15 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
-import { TransactionFilter } from "@/components/transaction/TransactionFilter";
 import { RedPacket } from "@/components/redpacket/RedPacket";
 
 const CardsOverview = () => {
   const { toast } = useToast();
   const [isConnecting, setIsConnecting] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [amountFilter, setAmountFilter] = useState("");
 
   const handleConnect = (method: string) => {
     setIsConnecting(true);
@@ -37,12 +33,6 @@ const CardsOverview = () => {
       </header>
 
       <main className="p-4 space-y-6">
-        <TransactionFilter 
-          onSearchChange={setSearchTerm}
-          onCategoryChange={setSelectedCategory}
-          onAmountChange={setAmountFilter}
-        />
-
         {/* Developer Note */}
         <Card className="p-4 bg-blue-50 border-blue-200">
           <h2 className="font-semibold text-blue-800 mb-2">Developer Note</h2>
