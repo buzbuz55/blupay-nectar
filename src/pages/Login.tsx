@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
+import { Logo } from "@/components/common/Logo";
 
 const Login = () => {
   const [userId, setUserId] = useState("");
@@ -12,7 +13,6 @@ const Login = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // For demo purposes, navigate to home on any login attempt
     navigate("/");
   };
 
@@ -46,12 +46,8 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-white p-4 space-y-8">
       {/* Logo */}
-      <div className="max-w-md mx-auto pt-8">
-        <img
-          src="/lovable-uploads/9ce88fcf-6663-4dfe-a1e4-3e05415953b7.png"
-          alt="Bank of America"
-          className="h-8"
-        />
+      <div className="max-w-md mx-auto pt-8 flex justify-center">
+        <Logo size="lg" />
       </div>
 
       {/* Login Form */}
@@ -137,27 +133,6 @@ const Login = () => {
           <a href="#" className="hover:underline">
             Enroll
           </a>
-        </div>
-      </div>
-
-      {/* Credit Card Offers */}
-      <div className="max-w-4xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {creditCards.map((card, index) => (
-            <Card
-              key={index}
-              className="p-4 flex justify-between items-center cursor-pointer hover:shadow-md transition-shadow"
-            >
-              <h3 className="text-xl font-medium">{card.title}</h3>
-              {card.offer && (
-                <div className="flex items-center space-x-2">
-                  <div className="text-blue-500 text-2xl font-bold">
-                    {card.offer}
-                  </div>
-                </div>
-              )}
-            </Card>
-          ))}
         </div>
       </div>
 

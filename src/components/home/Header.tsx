@@ -1,6 +1,7 @@
-import { Bell, Settings, Search } from "lucide-react";
+import { Bell, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SearchDialog } from "../search/SearchDialog";
+import { Logo } from "../common/Logo";
 
 export const Header = () => {
   return (
@@ -10,13 +11,16 @@ export const Header = () => {
       
       <div className="relative z-10 max-w-4xl mx-auto">
         <div className="flex justify-between items-center">
-          <Link 
-            to="/profile" 
-            className="flex flex-col space-y-0.5 group transition-transform duration-200 hover:scale-102"
-          >
-            <h1 className="text-xl font-semibold tracking-tight group-hover:text-white/90">H Baz</h1>
-            <p className="text-sm text-white/70 font-medium">@bazbaz</p>
-          </Link>
+          <div className="flex items-center gap-4">
+            <Logo size="md" />
+            <Link 
+              to="/profile" 
+              className="flex flex-col space-y-0.5 group transition-transform duration-200 hover:scale-102"
+            >
+              <h1 className="text-xl font-semibold tracking-tight group-hover:text-white/90">H Baz</h1>
+              <p className="text-sm text-white/70 font-medium">@bazbaz</p>
+            </Link>
+          </div>
           
           <div className="flex items-center gap-3">
             <SearchDialog />
