@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
-import { ChevronLeft, X } from 'lucide-react';
+import { ChevronLeft, X, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { NumberPad } from './NumberPad';
+import { ContactsDirectory } from './ContactsDirectory';
+
+interface Contact {
+  id: string;
+  name: string;
+  email?: string;
+  phone?: string;
+  avatar?: string;
+}
 
 export const PaymentScreen = () => {
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');
+  const [isContactsOpen, setIsContactsOpen] = useState(false);
+  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const { toast } = useToast();
 
   const handleNumberClick = (num: string) => {
@@ -28,6 +39,11 @@ export const PaymentScreen = () => {
     setAmount('');
   };
 
+  const handleSelectContact = (contact: Contact) => {
+    setSelectedContact(contact);
+    setIsContactsOpen(false);
+  };
+
   const handleSendMoney = () => {
     if (!amount || parseFloat(amount) <= 0) {
       toast({
@@ -38,9 +54,18 @@ export const PaymentScreen = () => {
       return;
     }
 
+    if (!selectedContact) {
+      toast({
+        title: "Select recipient",
+        description: "Please select a recipient from your contacts",
+        variant: "destructive",
+      });
+      return;
+    }
+
     toast({
       title: "Money sent successfully",
-      description: `$${amount} has been sent`,
+      description: `$${amount} has been sent to ${selectedContact.name}`,
     });
   };
 
@@ -62,11 +87,26 @@ export const PaymentScreen = () => {
 
       <main className="flex-1 flex flex-col items-center px-4 pt-8 pb-6 gap-8">
         <div className="text-center space-y-2">
-          <Avatar className="h-20 w-20 mx-auto">
-            <AvatarImage src="/placeholder.svg" />
-            <AvatarFallback>KC</AvatarFallback>
-          </Avatar>
-          <h2 className="text-xl font-semibold mt-4">Kollel Chatzos</h2>
+          {selectedContact ? (
+            <>
+              <Avatar className="h-20 w-20 mx-auto">
+                <AvatarImage src={selectedContact.avatar} />
+                <AvatarFallback>{selectedContact.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+              </Avatar>
+              <h2 className="text-xl font-semibold mt-4">{selectedContact.name}</h2>
+              <p className="text-sm text-gray-500">{selectedContact.email || selectedContact.phone}</p>
+            </>
+          ) : (
+            <Button
+              variant="outline"
+              size="lg"
+              className="gap-2"
+              onClick={() => setIsContactsOpen(true)}
+            >
+              <Users className="h-5 w-5" />
+              Select Contact
+            </Button>
+          )}
         </div>
 
         <div className="text-center space-y-4 flex-1 flex flex-col justify-center">
@@ -106,6 +146,12 @@ export const PaymentScreen = () => {
           </div>
         </div>
       </main>
+
+      <ContactsDirectory
+        isOpen={isContactsOpen}
+        onClose={() => setIsContactsOpen(false)}
+        onSelectContact={handleSelectContact}
+      />
     </div>
   );
 };
