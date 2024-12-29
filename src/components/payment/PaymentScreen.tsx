@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
-import { ChevronLeft, X } from 'lucide-react';
+import { ChevronLeft, Search, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { NumberPad } from './NumberPad';
 
 export const PaymentScreen = () => {
   const [amount, setAmount] = useState('');
-  const [note, setNote] = useState('');
   const { toast } = useToast();
 
   const handleNumberClick = (num: string) => {
-    if (amount.length < 8) {
-      setAmount(prev => {
-        if (prev === '0') return num;
-        return prev + num;
-      });
+    if (amount === '0' && num !== '.') {
+      setAmount(num);
+    } else if (amount.includes('.') && num === '.') {
+      return;
+    } else if (amount.split('.')[1]?.length >= 2 && amount.includes('.')) {
+      return;
+    } else {
+      setAmount(prev => prev + num);
     }
   };
 
   const handleDelete = () => {
-    setAmount(prev => prev.slice(0, -1) || '');
+    setAmount(prev => prev.slice(0, -1) || '0');
   };
 
   const handleClear = () => {
-    setAmount('');
+    setAmount('0');
   };
 
   const handleSendMoney = () => {
@@ -44,65 +44,46 @@ export const PaymentScreen = () => {
     });
   };
 
-  const formattedAmount = new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(parseFloat(amount) || 0);
-
   return (
-    <div className="h-screen bg-white flex flex-col">
+    <div className="h-screen bg-[#22c55e] flex flex-col">
       <header className="p-4 flex justify-between items-center">
         <Link to="/pay" className="p-2">
-          <ChevronLeft className="h-6 w-6" />
+          <ChevronLeft className="h-6 w-6 text-white" />
         </Link>
-        <Link to="/pay" className="p-2">
-          <X className="h-6 w-6" />
-        </Link>
+        <div className="flex gap-4">
+          <Search className="h-6 w-6 text-white" />
+          <User className="h-6 w-6 text-white" />
+        </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center px-4 pt-8 pb-6 gap-8">
-        <div className="text-center space-y-2">
-          <Avatar className="h-20 w-20 mx-auto">
-            <AvatarImage src="/placeholder.svg" />
-            <AvatarFallback>KC</AvatarFallback>
-          </Avatar>
-          <h2 className="text-xl font-semibold mt-4">Kollel Chatzos</h2>
-        </div>
-
-        <div className="text-center space-y-4 flex-1 flex flex-col justify-center">
-          <div className="flex items-center justify-center text-5xl font-semibold">
+      <main className="flex-1 flex flex-col items-center px-4 pt-8 pb-6">
+        <div className="flex-1 flex flex-col items-center justify-center">
+          <div className="text-white text-7xl font-light mb-4">
             <span>$</span>
-            <span>{formattedAmount}</span>
+            <span>{amount || '0'}</span>
           </div>
-          <input
-            type="text"
-            placeholder="What's this for?"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            className="w-full p-4 text-center bg-gray-50 rounded-xl text-gray-600 placeholder:text-gray-400"
-          />
+          <div className="text-white/80 text-xl">USD</div>
         </div>
 
-        <div className="w-full space-y-4">
+        <div className="w-full space-y-6">
           <NumberPad 
             onNumberClick={handleNumberClick} 
             onDelete={handleDelete}
             onClear={handleClear}
           />
           <div className="grid grid-cols-2 gap-4">
-            <Button 
-              variant="outline"
-              className="w-full h-12 text-lg"
-              onClick={() => setAmount('')}
+            <button 
+              className="h-14 text-white text-xl font-light hover:bg-white/10 rounded-xl transition-colors"
+              onClick={handleClear}
             >
               Request
-            </Button>
-            <Button 
-              className="w-full h-12 text-lg"
+            </button>
+            <button 
+              className="h-14 text-white text-xl font-light hover:bg-white/10 rounded-xl transition-colors"
               onClick={handleSendMoney}
             >
               Pay
-            </Button>
+            </button>
           </div>
         </div>
       </main>
