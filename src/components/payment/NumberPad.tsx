@@ -1,45 +1,46 @@
-import React from 'react';
+import { Button } from "@/components/ui/button";
+import { X, Delete } from "lucide-react";
 
 interface NumberPadProps {
   onNumberClick: (num: string) => void;
   onDelete: () => void;
+  onClear: () => void;
 }
 
-export const NumberPad: React.FC<NumberPadProps> = ({ onNumberClick, onDelete }) => {
+export const NumberPad = ({ onNumberClick, onDelete, onClear }: NumberPadProps) => {
   return (
-    <div className="grid grid-cols-4 gap-2">
+    <div className="grid grid-cols-3 gap-2">
       {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-        <button
+        <Button
           key={num}
+          variant="outline"
           onClick={() => onNumberClick(num.toString())}
-          className="h-14 text-xl font-medium rounded-xl bg-white hover:bg-gray-50 active:bg-gray-100 transition-colors"
+          className="h-14 text-xl font-medium hover:bg-gray-100"
         >
           {num}
-        </button>
+        </Button>
       ))}
-      <button
+      <Button
+        variant="outline"
         onClick={() => onNumberClick('.')}
-        className="h-14 text-xl font-medium rounded-xl bg-gray-100 hover:bg-gray-200 active:bg-gray-300 transition-colors"
+        className="h-14 text-xl font-medium hover:bg-gray-100"
       >
         .
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="outline"
         onClick={() => onNumberClick('0')}
-        className="h-14 text-xl font-medium rounded-xl bg-white hover:bg-gray-50 active:bg-gray-100 transition-colors"
+        className="h-14 text-xl font-medium hover:bg-gray-100"
       >
         0
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="outline"
         onClick={onDelete}
-        className="h-14 text-xl font-medium rounded-xl bg-gray-100 hover:bg-gray-200 active:bg-gray-300 transition-colors"
+        className="h-14 text-xl font-medium hover:bg-gray-100"
       >
-        ←
-      </button>
-      <button
-        className="h-14 text-xl font-medium rounded-xl bg-gray-100 hover:bg-gray-200 active:bg-gray-300 transition-colors"
-      >
-        +
-      </button>
+        <Delete className="h-6 w-6" />
+      </Button>
     </div>
   );
 };
