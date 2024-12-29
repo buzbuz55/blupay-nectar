@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { QrReader } from 'react-qr-reader';
 import { useToast } from '@/components/ui/use-toast';
-import { ChevronLeft, Image } from 'lucide-react';
+import { ChevronLeft, Image, Loader2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { PaymentScreen } from '@/components/payment/PaymentScreen';
 
 interface QRData {
   recipient: string;
@@ -68,7 +69,7 @@ export const QRScanner = () => {
       {/* Top Bar */}
       <div className="relative z-10">
         <div className="absolute top-4 left-4">
-          <Link to="/" className="text-white p-2 rounded-full bg-black/50">
+          <Link to="/pay" className="text-white p-2 rounded-full bg-black/50">
             <ChevronLeft className="w-6 h-6" />
           </Link>
         </div>
@@ -142,7 +143,7 @@ export const QRScanner = () => {
                       description: `Successfully sent payment to ${paymentData.recipient}`,
                     });
                     handleClosePayment();
-                    navigate('/');
+                    navigate('/pay');
                   }}
                 >
                   Confirm Payment
