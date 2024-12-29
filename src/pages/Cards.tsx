@@ -42,10 +42,7 @@ const CardsOverview = () => {
           onCategoryChange={setSelectedCategory}
           onAmountChange={setAmountFilter}
         />
-        
-        {/* Red Packet Feature */}
-        <RedPacket />
-        
+
         {/* Developer Note */}
         <Card className="p-4 bg-blue-50 border-blue-200">
           <h2 className="font-semibold text-blue-800 mb-2">Developer Note</h2>
@@ -114,6 +111,9 @@ const CardsOverview = () => {
             <p className="text-sm">Add a bank account or card to get started</p>
           </Card>
         </div>
+
+        {/* Red Packet Feature */}
+        <RedPacket />
       </main>
     </div>
   );
