@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { ChevronLeft, X, Users } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/button';
 import { NumberPad } from './NumberPad';
 import { ContactsDirectory } from './ContactsDirectory';
+import { PaymentHeader } from './PaymentHeader';
+import { RecipientSection } from './RecipientSection';
+import { AmountSection } from './AmountSection';
 
 interface Contact {
   id: string;
@@ -69,59 +69,21 @@ export const PaymentScreen = () => {
     });
   };
 
-  const formattedAmount = new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(parseFloat(amount) || 0);
-
   return (
     <div className="h-screen bg-white flex flex-col">
-      <header className="p-4 flex justify-between items-center">
-        <Link to="/pay" className="p-2">
-          <ChevronLeft className="h-6 w-6" />
-        </Link>
-        <Link to="/pay" className="p-2">
-          <X className="h-6 w-6" />
-        </Link>
-      </header>
+      <PaymentHeader />
 
       <main className="flex-1 flex flex-col items-center px-4 pt-8 pb-6 gap-8">
-        <div className="text-center space-y-2">
-          {selectedContact ? (
-            <>
-              <Avatar className="h-20 w-20 mx-auto">
-                <AvatarImage src={selectedContact.avatar} />
-                <AvatarFallback>{selectedContact.name.slice(0, 2).toUpperCase()}</AvatarFallback>
-              </Avatar>
-              <h2 className="text-xl font-semibold mt-4">{selectedContact.name}</h2>
-              <p className="text-sm text-gray-500">{selectedContact.email || selectedContact.phone}</p>
-            </>
-          ) : (
-            <Button
-              variant="outline"
-              size="lg"
-              className="gap-2"
-              onClick={() => setIsContactsOpen(true)}
-            >
-              <Users className="h-5 w-5" />
-              Select Contact
-            </Button>
-          )}
-        </div>
+        <RecipientSection
+          selectedContact={selectedContact}
+          onOpenContacts={() => setIsContactsOpen(true)}
+        />
 
-        <div className="text-center space-y-4 flex-1 flex flex-col justify-center">
-          <div className="flex items-center justify-center text-5xl font-semibold">
-            <span>$</span>
-            <span>{formattedAmount}</span>
-          </div>
-          <input
-            type="text"
-            placeholder="What's this for?"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            className="w-full p-4 text-center bg-gray-50 rounded-xl text-gray-600 placeholder:text-gray-400"
-          />
-        </div>
+        <AmountSection
+          amount={amount}
+          note={note}
+          onNoteChange={setNote}
+        />
 
         <div className="w-full space-y-4">
           <NumberPad 
