@@ -7,15 +7,15 @@ interface LogoProps {
 
 export const Logo = ({ className = "", size = "md" }: LogoProps) => {
   const sizeClasses = {
-    sm: "h-6",
-    md: "h-8",
-    lg: "h-12"
+    sm: "h-8",
+    md: "h-10",
+    lg: "h-14"
   };
 
   return (
     <Link to="/" className={`inline-block ${className}`}>
       <img
-        src="/lovable-uploads/b04a39c1-cecf-4629-9c21-e54be915568b.png"
+        src="/lovable-uploads/b8851ca3-b012-485f-b1bd-4358e0103093.png"
         alt="BluPay"
         className={`${sizeClasses[size]} w-auto object-contain`}
       />
