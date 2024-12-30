@@ -7,7 +7,7 @@ interface LogoProps {
 
 export const Logo = ({ className = "", size = "md" }: LogoProps) => {
   const sizeClasses = {
-    sm: "h-8",
+    sm: "h-6",
     md: "h-10",
     lg: "h-14"
   };
