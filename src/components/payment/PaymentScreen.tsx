@@ -73,19 +73,23 @@ export const PaymentScreen = () => {
     <div className="h-screen bg-white flex flex-col">
       <PaymentHeader />
 
-      <main className="flex-1 flex flex-col items-center px-4 pt-4">
-        <RecipientSection
-          selectedContact={selectedContact}
-          onOpenContacts={() => setIsContactsOpen(true)}
-        />
+      <main className="flex-1 flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
+        <div className="flex-none px-4 py-2">
+          <RecipientSection
+            selectedContact={selectedContact}
+            onOpenContacts={() => setIsContactsOpen(true)}
+          />
+        </div>
 
-        <AmountSection
-          amount={amount}
-          note={note}
-          onNoteChange={setNote}
-        />
+        <div className="flex-1 px-4 min-h-0 flex flex-col justify-center">
+          <AmountSection
+            amount={amount}
+            note={note}
+            onNoteChange={setNote}
+          />
+        </div>
 
-        <div className="w-full mt-auto mb-4">
+        <div className="flex-none px-4 pb-4">
           <NumberPad 
             onNumberClick={handleNumberClick} 
             onDelete={handleDelete}
