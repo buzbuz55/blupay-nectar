@@ -16,8 +16,8 @@ const rewardCards: RewardCard[] = [
   {
     name: "BluPay Platinum Card",
     type: "Premium Travel",
-    annualFee: 695,
-    image: "/lovable-uploads/7db553d9-50a9-4cbb-90c6-f6216c7da4fb.png",
+    annualFee: 0,
+    image: "/lovable-uploads/17f80516-1964-4674-b008-d77f59af53cd.png",
     welcomeOffer: "Earn 80,000 Membership Rewards® points after spending $8,000 in first 6 months",
     rewardsRate: [
       "5x points on flights booked directly with airlines",
@@ -34,8 +34,8 @@ const rewardCards: RewardCard[] = [
   {
     name: "BluPay Aquamarine Premier",
     type: "Travel Rewards",
-    annualFee: 95,
-    image: "/lovable-uploads/88693561-c2fe-4343-81e0-b2aacf007f7a.png",
+    annualFee: 0,
+    image: "/lovable-uploads/23b44ede-28ca-465a-be45-e0445e94e0f2.png",
     welcomeOffer: "Earn 60,000 bonus points after spending $4,000 in first 3 months",
     rewardsRate: [
       "5x points on travel purchased through BluPay Travel",
@@ -53,8 +53,8 @@ const rewardCards: RewardCard[] = [
   {
     name: "BluPay Aviation Flyer",
     type: "Travel Rewards",
-    annualFee: 95,
-    image: "/lovable-uploads/b1906a52-f885-4bcb-81b7-82f1022695a5.png",
+    annualFee: 0,
+    image: "/lovable-uploads/63daf35f-352a-4122-998e-65150373573d.png",
     welcomeOffer: "Earn 75,000 miles after spending $4,000 in first 3 months",
     rewardsRate: [
       "5x miles on hotels and rental cars booked through BluPay Travel",
@@ -97,7 +97,7 @@ export const FeaturedCards = () => {
                 <h3 className="font-semibold text-lg">{card.name}</h3>
                 <p className="text-sm text-gray-600">{card.type}</p>
                 <p className="text-sm font-medium mt-1">
-                  Annual Fee: ${card.annualFee}
+                  Annual Fee: ${card.annualFee.toFixed(2)}
                 </p>
               </div>
               <div>
