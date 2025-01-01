@@ -7,6 +7,7 @@ import { VoiceAuth } from '@/components/auth/VoiceAuth';
 import { VoicePayment } from '@/components/bluai/VoicePayment';
 import { AiRecommendations } from '@/components/bluai/AiRecommendations';
 import { InvestmentTips } from '@/components/bluai/InvestmentTips';
+import { ChatInterface } from '@/components/bluai/ChatInterface';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -30,7 +31,6 @@ const BLUAi = () => {
     const savedName = localStorage.getItem('userName') || 'User';
     setUserName(savedName);
 
-    // Check if we're returning from the currency converter
     if (location.state?.fromCurrency) {
       setShowCurrencyConverter(true);
     }
@@ -57,19 +57,26 @@ const BLUAi = () => {
           weather={weather}
         />
         
-        <AiRecommendations />
-        <InvestmentTips />
-        
-        <VoiceAuth />
-        <VoicePayment />
-        
-        <div className="flex-1">
-          <div className="mb-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-1">Features</h3>
-            <p className="text-sm text-gray-600">Explore what you can do</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-8">
+            <AiRecommendations />
+            <InvestmentTips />
+            <VoiceAuth />
+            <VoicePayment />
+            
+            <div className="flex-1">
+              <div className="mb-6">
+                <h3 className="text-lg font-medium text-gray-900 mb-1">Features</h3>
+                <p className="text-sm text-gray-600">Explore what you can do</p>
+              </div>
+              
+              <FeatureList onFeatureClick={handleFeatureClick} />
+            </div>
           </div>
-          
-          <FeatureList onFeatureClick={handleFeatureClick} />
+
+          <div className="lg:sticky lg:top-6">
+            <ChatInterface />
+          </div>
         </div>
       </div>
 
