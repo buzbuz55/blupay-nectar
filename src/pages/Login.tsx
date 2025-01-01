@@ -112,7 +112,7 @@ const Login = () => {
 
       {/* FDIC Information */}
       <div className="max-w-md mx-auto space-y-4">
-        <p className="text-gray-600 italic">Bank of America deposit products:</p>
+        <p className="text-gray-600 italic">BLUPAY deposit products:</p>
         <div className="flex items-center space-x-2">
           <img
             src="/lovable-uploads/9ce88fcf-6663-4dfe-a1e4-3e05415953b7.png"
@@ -149,11 +149,7 @@ const Login = () => {
 
       <div className="max-w-md mx-auto text-center text-sm text-gray-600">
         <p>
-          Learn more about Merrill's background on{" "}
-          <a href="#" className="text-blue-600 hover:underline">
-            FINRA's BrokerCheck
-          </a>
-          .
+          BLUPAY USA Inc.
         </p>
       </div>
     </div>
