@@ -17,7 +17,7 @@ const rewardCards: RewardCard[] = [
     name: "BluPay Platinum Card",
     type: "Premium Travel",
     annualFee: 0,
-    image: "/lovable-uploads/98bcc655-8004-4a4a-9a22-90d9f6e01105.png",
+    image: "/lovable-uploads/089660a8-ff67-450b-8250-9d150a8e0065.png",
     welcomeOffer: "Earn 80,000 Membership Rewards® points after spending $8,000 in first 6 months",
     rewardsRate: [
       "5x points on flights booked directly with airlines",
@@ -35,7 +35,7 @@ const rewardCards: RewardCard[] = [
     name: "BluPay Aquamarine Premier",
     type: "Travel Rewards",
     annualFee: 0,
-    image: "/lovable-uploads/f9032a2c-660e-48c3-a038-5ddd35362fad.png",
+    image: "/lovable-uploads/80cdbc5f-bc11-4fa2-b68c-55813b061328.png",
     welcomeOffer: "Earn 60,000 bonus points after spending $4,000 in first 3 months",
     rewardsRate: [
       "5x points on travel purchased through BluPay Travel",
@@ -54,7 +54,7 @@ const rewardCards: RewardCard[] = [
     name: "BluPay Aviation Flyer",
     type: "Travel Rewards",
     annualFee: 0,
-    image: "/lovable-uploads/b928fc8e-fcb2-454f-bb94-d54cced9f728.png",
+    image: "/lovable-uploads/637f0b11-e7ce-4ce9-878d-44d32027fef0.png",
     welcomeOffer: "Earn 75,000 miles after spending $4,000 in first 3 months",
     rewardsRate: [
       "5x miles on hotels and rental cars booked through BluPay Travel",
