@@ -73,7 +73,7 @@ export const PaymentScreen = () => {
     <div className="h-screen bg-white flex flex-col">
       <PaymentHeader />
 
-      <main className="flex-1 flex flex-col items-center px-4 pt-8 pb-6 gap-8">
+      <main className="flex-1 flex flex-col items-center px-4 pt-4">
         <RecipientSection
           selectedContact={selectedContact}
           onOpenContacts={() => setIsContactsOpen(true)}
@@ -85,13 +85,13 @@ export const PaymentScreen = () => {
           onNoteChange={setNote}
         />
 
-        <div className="w-full space-y-4">
+        <div className="w-full mt-auto mb-4">
           <NumberPad 
             onNumberClick={handleNumberClick} 
             onDelete={handleDelete}
             onClear={handleClear}
           />
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 mt-4">
             <Button 
               variant="outline"
               className="w-full h-12 text-lg"
@@ -100,7 +100,7 @@ export const PaymentScreen = () => {
               Request
             </Button>
             <Button 
-              className="w-full h-12 text-lg"
+              className="w-full h-12 text-lg bg-gradient-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600"
               onClick={handleSendMoney}
             >
               Pay
