@@ -9,8 +9,8 @@ export const Balance = () => {
   const [activeTab, setActiveTab] = useState<'wallet' | 'transactions'>('wallet');
 
   return (
-    <Card className="p-6 space-y-6">
-      <div className="flex gap-2 mb-6">
+    <Card className="space-y-4">
+      <div className="flex gap-2">
         <button
           className={`flex-1 py-2 px-4 rounded-full text-center ${
             activeTab === 'wallet' 
