@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { RedPacket } from "@/components/redpacket/RedPacket";
 import { FeaturedCards } from "@/components/cards/FeaturedCards";
 import { ConnectMethods } from "@/components/cards/ConnectMethods";
+import { PointsSystem } from "@/components/cards/PointsSystem";
 
 const CardsOverview = () => {
   return (
@@ -20,6 +21,18 @@ const CardsOverview = () => {
       </header>
 
       <main className="p-4 space-y-6">
+        {/* Featured Cards Section */}
+        <FeaturedCards />
+
+        {/* Points System */}
+        <PointsSystem />
+
+        {/* Red Packet Feature */}
+        <RedPacket />
+
+        {/* Connect Methods */}
+        <ConnectMethods />
+
         {/* Developer Note */}
         <Card className="p-4 bg-blue-50 border-blue-200">
           <h2 className="font-semibold text-blue-800 mb-2">Developer Note</h2>
@@ -33,15 +46,6 @@ const CardsOverview = () => {
             <li>Handle token exchange and account verification</li>
           </ol>
         </Card>
-
-        {/* Featured Cards Section */}
-        <FeaturedCards />
-
-        {/* Connect Methods */}
-        <ConnectMethods />
-
-        {/* Red Packet Feature */}
-        <RedPacket />
       </main>
     </div>
   );
