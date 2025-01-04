@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Gift, Star, Users, Wallet, Info } from "lucide-react";
+import { Gift, Star, Users, Wallet, Info, Crown } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import {
   Dialog,
@@ -21,6 +21,28 @@ export const PointsSystem = () => {
     { icon: Users, name: "Adding Friends", points: 2000 },
     { icon: Star, name: "5-Star Review", points: 10000 },
     { icon: Gift, name: "Sharing App", points: 5000 },
+  ];
+
+  const luxuryCategories = [
+    {
+      title: "High-End Electronics and Gadgets",
+      items: [
+        { name: "Apple MacBook Pro 16" (2025 Model)", points: 250000, value: 2500 },
+        { name: "Samsung QN90B Neo QLED 65" Smart TV", points: 200000, value: 2000 },
+        { name: "Sony WH-1000XM5 Wireless Headphones", points: 75000, value: 750 },
+        // ... more items can be added
+      ]
+    },
+    {
+      title: "Fashion & Accessories",
+      items: [
+        { name: "Louis Vuitton Keepall 55 Bandoulière", points: 150000, value: 1500 },
+        { name: "Gucci GG Marmont Quilted Leather Bag", points: 200000, value: 2000 },
+        { name: "Rolex Submariner Date Watch", points: 500000, value: 5000 },
+        // ... more items can be added
+      ]
+    },
+    // ... more categories can be added
   ];
 
   return (
@@ -56,12 +78,55 @@ export const PointsSystem = () => {
       <Card className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-semibold">Ways to Earn Points</h3>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Info className="h-5 w-5" />
-              </Button>
-            </DialogTrigger>
+          <div className="flex gap-2">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="icon" className="text-amber-600">
+                  <Crown className="h-5 w-5" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>BluPay 2025 Points System – Top 50 Luxury Goods</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-8 py-4">
+                  <p className="text-sm text-gray-600">
+                    In addition to our premium prizes, BluPay users can redeem their points for a wide range of luxury goods. These high-end items appeal to those looking to upgrade their lifestyle, treat themselves to exceptional products, or enjoy exclusive experiences.
+                  </p>
+
+                  {luxuryCategories.map((category, index) => (
+                    <section key={index}>
+                      <h4 className="font-semibold mb-4 text-lg">{category.title}</h4>
+                      <div className="space-y-4">
+                        {category.items.map((item, itemIndex) => (
+                          <div key={itemIndex} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                            <div>
+                              <h5 className="font-medium">{item.name}</h5>
+                              <p className="text-sm text-gray-600">Value: ${item.value.toLocaleString()}</p>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-semibold text-blue-600">{item.points.toLocaleString()} points</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  ))}
+
+                  <section>
+                    <h4 className="font-semibold mb-4">How to Redeem</h4>
+                    <ol className="space-y-2 text-sm text-gray-600 list-decimal list-inside">
+                      <li>Browse the BluPay Prize Catalog</li>
+                      <li>Select Your Prize</li>
+                      <li>Redeem Your Points</li>
+                      <li>Receive Your Reward</li>
+                    </ol>
+                  </section>
+                </div>
+              </DialogContent>
+            </Dialog>
+
+            <Dialog>
             <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>BluPay Points System</DialogTitle>
@@ -124,7 +189,8 @@ export const PointsSystem = () => {
                 </section>
               </div>
             </DialogContent>
-          </Dialog>
+            </Dialog>
+          </div>
         </div>
         <div className="grid gap-4">
           {pointsActivities.map((activity, index) => (
