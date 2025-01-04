@@ -32,10 +32,10 @@ const rewardCards: RewardCard[] = [
     ]
   },
   {
-    name: "BluPay Aquamarine Premier",
+    name: "BluPay Royal Blue",
     type: "Travel Rewards",
     annualFee: 0,
-    image: "/lovable-uploads/80cdbc5f-bc11-4fa2-b68c-55813b061328.png",
+    image: "/lovable-uploads/0c78a7a3-7957-4488-8d24-5ef4db6a0eac.png",
     welcomeOffer: "Earn 60,000 bonus points after spending $4,000 in first 3 months",
     rewardsRate: [
       "5x points on travel purchased through BluPay Travel",
@@ -51,10 +51,10 @@ const rewardCards: RewardCard[] = [
     ]
   },
   {
-    name: "BluPay Aviation Flyer",
+    name: "BluPay Sky Blue",
     type: "Travel Rewards",
     annualFee: 0,
-    image: "/lovable-uploads/637f0b11-e7ce-4ce9-878d-44d32027fef0.png",
+    image: "/lovable-uploads/ca138254-7501-4563-abbc-f8f385dab436.png",
     welcomeOffer: "Earn 75,000 miles after spending $4,000 in first 3 months",
     rewardsRate: [
       "5x miles on hotels and rental cars booked through BluPay Travel",
@@ -84,8 +84,8 @@ export const FeaturedCards = () => {
       <h2 className="text-xl font-semibold">Featured Credit Cards</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {rewardCards.map((card) => (
-          <Card key={card.name} className="overflow-hidden hover:shadow-lg transition-shadow">
-            <div className="p-4 space-y-4">
+          <Card key={card.name} className="flex flex-col overflow-hidden hover:shadow-lg transition-shadow">
+            <div className="p-4 space-y-4 flex-1 flex flex-col">
               <div className="aspect-[1.6/1] relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg overflow-hidden">
                 <img 
                   src={card.image} 
@@ -115,7 +115,7 @@ export const FeaturedCards = () => {
                   ))}
                 </ul>
               </div>
-              <div>
+              <div className="flex-1">
                 <h4 className="font-medium text-sm mb-1">Key Benefits</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
                   {card.benefits.map((benefit, index) => (
@@ -126,9 +126,11 @@ export const FeaturedCards = () => {
                   ))}
                 </ul>
               </div>
-              <Button className="w-full" onClick={handleApply}>
-                Apply Now
-              </Button>
+              <div className="mt-auto pt-4">
+                <Button className="w-full" onClick={handleApply}>
+                  Apply Now
+                </Button>
+              </div>
             </div>
           </Card>
         ))}
