@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
+import { useState } from "react";
 
-const notifications = [
+const initialNotifications = [
   {
     id: 1,
     title: "Check out the BLUPAY Teen Account",
@@ -36,6 +37,19 @@ const notifications = [
 ];
 
 const NotificationsPage = () => {
+  const [notifications, setNotifications] = useState(initialNotifications);
+  const [animatingIds, setAnimatingIds] = useState<number[]>([]);
+
+  const handleDismiss = (id: number) => {
+    setAnimatingIds((prev) => [...prev, id]);
+    
+    // Remove notification after animation completes
+    setTimeout(() => {
+      setNotifications((prev) => prev.filter((notification) => notification.id !== id));
+      setAnimatingIds((prev) => prev.filter((animId) => animId !== id));
+    }, 300); // Match animation duration
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 fixed top-0 left-0 right-0 z-10">
@@ -52,7 +66,14 @@ const NotificationsPage = () => {
 
       <main className="pt-16 p-4 space-y-4">
         {notifications.map((notification) => (
-          <Card key={notification.id} className="p-4 space-y-4">
+          <Card 
+            key={notification.id} 
+            className={`p-4 space-y-4 transition-all duration-300 ${
+              animatingIds.includes(notification.id) 
+                ? 'translate-x-full opacity-0' 
+                : 'translate-x-0 opacity-100'
+            }`}
+          >
             <div className="flex gap-4">
               <Avatar className="bg-blupay-primary text-white">
                 <span className="text-lg font-semibold">B</span>
@@ -68,7 +89,11 @@ const NotificationsPage = () => {
               <Button className="w-full bg-blupay-primary hover:bg-blupay-primary/90">
                 {notification.action}
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => handleDismiss(notification.id)}
+              >
                 {notification.secondary}
               </Button>
             </div>
