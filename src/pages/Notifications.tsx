@@ -1,5 +1,5 @@
 import { ArrowLeft, Settings } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
@@ -11,32 +11,37 @@ const initialNotifications = [
     title: "Check out the BLUPAY Teen Account",
     description: "Teach them financial independence, feel confident with parental controls.",
     action: "Let's do it",
-    secondary: "Not now"
+    secondary: "Not now",
+    route: "/cards"
   },
   {
     id: 2,
     title: "Check out BLUPAY for business, an easy way to shop, share & connect",
     description: "",
     action: "Learn more",
-    secondary: "Not now"
+    secondary: "Not now",
+    route: "/merchant"
   },
   {
     id: 3,
     title: "Set up Direct Deposit and get your paycheck up to 2 days* before payday!",
     description: "",
     action: "Learn more",
-    secondary: "Not now"
+    secondary: "Not now",
+    route: "/direct-deposits"
   },
   {
     id: 4,
     title: "Invite friends, earn $5",
     description: "Share your link or invite friends from your contacts. Everybody gets $5!",
     action: "Invite",
-    secondary: "Not now"
+    secondary: "Not now",
+    route: "/profile"
   }
 ];
 
 const NotificationsPage = () => {
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState(initialNotifications);
   const [animatingIds, setAnimatingIds] = useState<number[]>([]);
 
@@ -48,6 +53,10 @@ const NotificationsPage = () => {
       setNotifications((prev) => prev.filter((notification) => notification.id !== id));
       setAnimatingIds((prev) => prev.filter((animId) => animId !== id));
     }, 300); // Match animation duration
+  };
+
+  const handleAction = (route: string) => {
+    navigate(route);
   };
 
   return (
@@ -86,7 +95,10 @@ const NotificationsPage = () => {
               </div>
             </div>
             <div className="space-y-2">
-              <Button className="w-full bg-blupay-primary hover:bg-blupay-primary/90">
+              <Button 
+                className="w-full bg-blupay-primary hover:bg-blupay-primary/90"
+                onClick={() => handleAction(notification.route)}
+              >
                 {notification.action}
               </Button>
               <Button 
