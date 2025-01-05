@@ -13,6 +13,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const CORS_PROXY = "https://cors-proxy.fringe.zone/";
 const COINGECKO_API = "https://api.coingecko.com/api/v3";
+const CACHE_TIME = 2 * 60 * 1000; // 2 minutes
+const STALE_TIME = 30 * 1000; // 30 seconds
 
 const CryptoPage = () => {
   const [showScanner, setShowScanner] = useState(false);
@@ -29,7 +31,7 @@ const CryptoPage = () => {
         );
         
         if (response.status === 429) {
-          throw new Error("Rate limit exceeded. Please try again in a minute.");
+          throw new Error("Rate limit reached. Please try again in a few minutes.");
         }
         
         if (!response.ok) {
@@ -44,8 +46,10 @@ const CryptoPage = () => {
         throw new Error('Failed to fetch crypto data');
       }
     },
-    retry: 1,
-    refetchInterval: 30000, // Reduced to 30 seconds to avoid rate limits
+    retry: false, // Don't retry on failure
+    staleTime: STALE_TIME, // Consider data stale after 30 seconds
+    cacheTime: CACHE_TIME, // Keep cache for 2 minutes
+    refetchInterval: CACHE_TIME, // Only refetch every 2 minutes
   });
 
   const handleRefresh = async () => {
@@ -68,6 +72,7 @@ const CryptoPage = () => {
     onRefresh: handleRefresh,
     threshold: 50,
     refreshMessage: "Crypto prices updated",
+    disabled: isLoading,
   });
 
   const handleScanClick = () => {
