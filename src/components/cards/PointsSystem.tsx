@@ -1,17 +1,10 @@
 import { Card } from "@/components/ui/card";
-import { Gift, Star, Users, Wallet, Crown, Gem } from "lucide-react";
+import { Gift, Star, Users, Wallet } from "lucide-react";
 import { PointsHeader } from "./points/PointsHeader";
 import { PointsActivitiesList } from "./points/PointsActivitiesList";
 import { LuxuryItemsDialog } from "./points/LuxuryItemsDialog";
 import { PointsInfoDialog } from "./points/PointsInfoDialog";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { BluClubDialog } from "./points/BluClubDialog";
 
 export const PointsSystem = () => {
   // Mock data - in a real app this would come from your backend
@@ -94,102 +87,7 @@ export const PointsSystem = () => {
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-semibold">Ways to Earn Points</h3>
           <div className="flex gap-2">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-purple-600">
-                  <Gem className="h-5 w-5" />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle>THE BLUCLUB - Exclusive Access</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-8 py-4">
-                  <p className="text-sm text-gray-600">
-                    Welcome to THE BLUCLUB - where luxury meets exclusivity. As a BLUCLUB member, you gain access to an extraordinary world of privileges and experiences.
-                  </p>
-
-                  <section>
-                    <h4 className="font-semibold mb-4">Premium Destinations</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="p-4 bg-purple-50 rounded-lg">
-                        <h5 className="font-medium text-purple-800">Private Lounges</h5>
-                        <p className="text-sm text-purple-600">Access to exclusive airport lounges worldwide</p>
-                      </div>
-                      <div className="p-4 bg-purple-50 rounded-lg">
-                        <h5 className="font-medium text-purple-800">Luxury Resorts</h5>
-                        <p className="text-sm text-purple-600">Special rates at 5-star resorts and spas</p>
-                      </div>
-                      <div className="p-4 bg-purple-50 rounded-lg">
-                        <h5 className="font-medium text-purple-800">VIP Events</h5>
-                        <p className="text-sm text-purple-600">Priority access to exclusive events and concerts</p>
-                      </div>
-                      <div className="p-4 bg-purple-50 rounded-lg">
-                        <h5 className="font-medium text-purple-800">Fine Dining</h5>
-                        <p className="text-sm text-purple-600">Reserved tables at Michelin-starred restaurants</p>
-                      </div>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h4 className="font-semibold mb-4">Exclusive Perks</h4>
-                    <ul className="space-y-3">
-                      <li className="flex items-start gap-2">
-                        <div className="mt-1 p-1 bg-purple-100 rounded">
-                          <Crown className="w-4 h-4 text-purple-600" />
-                        </div>
-                        <div>
-                          <p className="font-medium">24/7 Concierge Service</p>
-                          <p className="text-sm text-gray-600">Personal assistance anytime, anywhere</p>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <div className="mt-1 p-1 bg-purple-100 rounded">
-                          <Crown className="w-4 h-4 text-purple-600" />
-                        </div>
-                        <div>
-                          <p className="font-medium">Priority Booking</p>
-                          <p className="text-sm text-gray-600">First access to limited events and experiences</p>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <div className="mt-1 p-1 bg-purple-100 rounded">
-                          <Crown className="w-4 h-4 text-purple-600" />
-                        </div>
-                        <div>
-                          <p className="font-medium">Enhanced Points Earning</p>
-                          <p className="text-sm text-gray-600">2x points on all transactions</p>
-                        </div>
-                      </li>
-                    </ul>
-                  </section>
-
-                  <section>
-                    <h4 className="font-semibold mb-4">Club Access</h4>
-                    <div className="space-y-4">
-                      <div className="p-4 bg-gradient-to-r from-purple-100 to-blue-50 rounded-lg">
-                        <h5 className="font-medium mb-2">Private Members Clubs</h5>
-                        <p className="text-sm text-gray-600">Access to an exclusive network of private members clubs in major cities worldwide.</p>
-                      </div>
-                      <div className="p-4 bg-gradient-to-r from-purple-100 to-blue-50 rounded-lg">
-                        <h5 className="font-medium mb-2">Luxury Fitness Centers</h5>
-                        <p className="text-sm text-gray-600">Complimentary access to premium fitness clubs and wellness centers.</p>
-                      </div>
-                      <div className="p-4 bg-gradient-to-r from-purple-100 to-blue-50 rounded-lg">
-                        <h5 className="font-medium mb-2">Golf Clubs</h5>
-                        <p className="text-sm text-gray-600">Access to prestigious golf clubs and preferred tee times.</p>
-                      </div>
-                    </div>
-                  </section>
-
-                  <div className="text-center pt-4">
-                    <a href="https://blupay.com/bluclub" className="text-sm text-purple-600 hover:text-purple-700">
-                      Visit BluPay.com/bluclub for complete membership details →
-                    </a>
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
+            <BluClubDialog />
             <LuxuryItemsDialog categories={luxuryCategories} />
             <PointsInfoDialog />
           </div>
