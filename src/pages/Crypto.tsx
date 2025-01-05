@@ -13,7 +13,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const CORS_PROXY = "https://cors-proxy.fringe.zone/";
 const COINGECKO_API = "https://api.coingecko.com/api/v3";
-const CACHE_TIME = 2 * 60 * 1000; // 2 minutes
+const GC_TIME = 2 * 60 * 1000; // 2 minutes
 const STALE_TIME = 30 * 1000; // 30 seconds
 
 const CryptoPage = () => {
@@ -48,8 +48,8 @@ const CryptoPage = () => {
     },
     retry: false, // Don't retry on failure
     staleTime: STALE_TIME, // Consider data stale after 30 seconds
-    cacheTime: CACHE_TIME, // Keep cache for 2 minutes
-    refetchInterval: CACHE_TIME, // Only refetch every 2 minutes
+    gcTime: GC_TIME, // Keep cache for 2 minutes (renamed from cacheTime)
+    refetchInterval: GC_TIME, // Only refetch every 2 minutes
   });
 
   const handleRefresh = async () => {
