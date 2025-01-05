@@ -1,11 +1,14 @@
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { RefreshCw } from "lucide-react";
 import { CryptoAsset } from "@/types/crypto";
 
 interface CryptoListProps {
   cryptos?: CryptoAsset[];
   isLoading: boolean;
+  onRefresh?: () => void;
 }
 
 const CryptoListItem = memo(({ crypto, onClick }: { 
@@ -42,7 +45,7 @@ const CryptoListItem = memo(({ crypto, onClick }: {
 
 CryptoListItem.displayName = 'CryptoListItem';
 
-export const CryptoList = ({ cryptos, isLoading }: CryptoListProps) => {
+export const CryptoList = ({ cryptos, isLoading, onRefresh }: CryptoListProps) => {
   const navigate = useNavigate();
 
   if (isLoading) {
@@ -62,6 +65,19 @@ export const CryptoList = ({ cryptos, isLoading }: CryptoListProps) => {
 
   return (
     <div className="space-y-2">
+      {onRefresh && (
+        <div className="flex justify-end mb-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onRefresh}
+            className="gap-2"
+          >
+            <RefreshCw className="h-4 w-4" />
+            Refresh
+          </Button>
+        </div>
+      )}
       {cryptos?.map((crypto) => (
         <CryptoListItem
           key={crypto.id}
