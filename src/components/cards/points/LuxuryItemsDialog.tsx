@@ -36,6 +36,15 @@ export const LuxuryItemsDialog = ({ categories }: LuxuryItemsDialogProps) => {
           <DialogTitle>BluPay 2025 Points System – Top 50 Luxury Goods</DialogTitle>
         </DialogHeader>
         <div className="space-y-8 py-4">
+          {/* Promotional Banner */}
+          <div className="relative rounded-lg overflow-hidden bg-gradient-to-r from-blue-900 to-blue-800">
+            <img 
+              src="/lovable-uploads/303e3c71-0921-4195-9b0e-6331a830836a.png" 
+              alt="BluPay Credit Club Card"
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
+
           <p className="text-sm text-gray-600">
             In addition to our premium prizes, BluPay users can redeem their points for a wide range of luxury goods. 
             These high-end items appeal to those looking to upgrade their lifestyle, treat themselves to exceptional products, 
@@ -43,14 +52,17 @@ export const LuxuryItemsDialog = ({ categories }: LuxuryItemsDialogProps) => {
           </p>
 
           {categories.map((category, index) => (
-            <section key={index}>
-              <h4 className="font-semibold mb-4 text-lg">{category.title}</h4>
-              <div className="space-y-4">
+            <section key={index} className="space-y-4">
+              <h4 className="font-semibold text-lg text-blue-900">{category.title}</h4>
+              <div className="grid gap-4">
                 {category.items.map((item, itemIndex) => (
-                  <div key={itemIndex} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                  <div 
+                    key={itemIndex} 
+                    className="flex justify-between items-center p-4 bg-blue-50 rounded-lg border border-blue-100 hover:bg-blue-100 transition-colors"
+                  >
                     <div>
-                      <h5 className="font-medium">{item.name}</h5>
-                      <p className="text-sm text-gray-600">Value: ${item.value.toLocaleString()}</p>
+                      <h5 className="font-medium text-blue-900">{item.name}</h5>
+                      <p className="text-sm text-blue-700">Value: ${item.value.toLocaleString()}</p>
                     </div>
                     <div className="text-right">
                       <p className="font-semibold text-blue-600">{item.points.toLocaleString()} points</p>
@@ -61,9 +73,9 @@ export const LuxuryItemsDialog = ({ categories }: LuxuryItemsDialogProps) => {
             </section>
           ))}
 
-          <section>
-            <h4 className="font-semibold mb-4">How to Redeem</h4>
-            <ol className="space-y-2 text-sm text-gray-600 list-decimal list-inside">
+          <section className="bg-blue-50 p-4 rounded-lg">
+            <h4 className="font-semibold mb-4 text-blue-900">How to Redeem</h4>
+            <ol className="space-y-2 text-sm text-blue-700 list-decimal list-inside">
               <li>Browse the BluPay Prize Catalog</li>
               <li>Select Your Prize</li>
               <li>Redeem Your Points</li>
@@ -77,7 +89,7 @@ export const LuxuryItemsDialog = ({ categories }: LuxuryItemsDialogProps) => {
             rel="noopener noreferrer"
             className="block text-sm text-blue-600 hover:text-blue-800 text-center pt-4 border-t"
           >
-            Visit BluPay.com/prizes for the full list of this month's prizes
+            Visit BluPay.com/prizes for the full list of this month's prizes →
           </a>
         </div>
       </DialogContent>
