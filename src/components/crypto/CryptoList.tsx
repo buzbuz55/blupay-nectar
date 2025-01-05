@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 import { CryptoAsset } from "@/types/crypto";
+import { useToast } from "@/hooks/use-toast";
 
 interface CryptoListProps {
   cryptos?: CryptoAsset[];
@@ -32,7 +33,10 @@ const CryptoListItem = memo(({ crypto, onClick }: {
       </div>
     </div>
     <div className="text-right">
-      <p className="font-medium">${crypto.current_price.toLocaleString()}</p>
+      <p className="font-medium">${crypto.current_price.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 8
+      })}</p>
       <p className={`text-sm ${
         crypto.price_change_percentage_24h >= 0 ? 'text-green-500' : 'text-red-500'
       }`}>
@@ -47,6 +51,25 @@ CryptoListItem.displayName = 'CryptoListItem';
 
 export const CryptoList = ({ cryptos, isLoading, onRefresh }: CryptoListProps) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  const handleRefresh = async () => {
+    if (onRefresh) {
+      try {
+        await onRefresh();
+        toast({
+          title: "Prices Updated",
+          description: "Cryptocurrency prices have been refreshed",
+        });
+      } catch (error) {
+        toast({
+          title: "Update Failed",
+          description: "Could not refresh prices. Please try again.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
 
   if (isLoading) {
     return (
@@ -70,11 +93,11 @@ export const CryptoList = ({ cryptos, isLoading, onRefresh }: CryptoListProps) =
           <Button
             variant="outline"
             size="sm"
-            onClick={onRefresh}
+            onClick={handleRefresh}
             className="gap-2"
           >
             <RefreshCw className="h-4 w-4" />
-            Refresh
+            Refresh Prices
           </Button>
         </div>
       )}
