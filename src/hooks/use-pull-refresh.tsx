@@ -5,6 +5,7 @@ interface PullRefreshOptions {
   onRefresh: () => Promise<void>;
   threshold?: number;
   refreshMessage?: string;
+  disabled?: boolean;
 }
 
 export const usePullRefresh = (
@@ -18,30 +19,30 @@ export const usePullRefresh = (
   const threshold = options.threshold || 50;
 
   const handleTouchStart = useCallback((e: TouchEvent) => {
-    if (document.documentElement.scrollTop <= 0) {
-      setStartY(e.touches[0].pageY);
-    }
-  }, []);
+    if (options.disabled || document.documentElement.scrollTop > 0) return;
+    setStartY(e.touches[0].pageY);
+  }, [options.disabled]);
 
   const handleTouchMove = useCallback((e: TouchEvent) => {
-    if (startY) {
-      const currentY = e.touches[0].pageY;
-      const diff = currentY - startY;
-      if (diff > threshold) {
-        setPulling(true);
-        e.preventDefault();
-      }
+    if (!startY || options.disabled) return;
+    
+    const currentY = e.touches[0].pageY;
+    const diff = currentY - startY;
+    
+    if (diff > threshold && !pulling) {
+      setPulling(true);
+      e.preventDefault();
     }
-  }, [startY, threshold]);
+  }, [startY, pulling, threshold, options.disabled]);
 
   const handleTouchEnd = useCallback(async () => {
-    if (pulling && !refreshing) {
+    if (pulling && !refreshing && !options.disabled) {
       setRefreshing(true);
       try {
         await options.onRefresh();
         toast({
-          title: "Refreshed",
-          description: options.refreshMessage || "Content has been updated.",
+          title: "Updated",
+          description: options.refreshMessage || "Content has been refreshed",
         });
       } catch (error) {
         toast({
@@ -49,6 +50,7 @@ export const usePullRefresh = (
           description: "Failed to refresh. Please try again.",
           variant: "destructive",
         });
+        console.error('Refresh error:', error);
       } finally {
         setRefreshing(false);
       }
@@ -61,7 +63,7 @@ export const usePullRefresh = (
     const container = containerRef.current;
     if (!container) return;
 
-    container.addEventListener('touchstart', handleTouchStart, { passive: false });
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
     container.addEventListener('touchmove', handleTouchMove, { passive: false });
     container.addEventListener('touchend', handleTouchEnd);
 
