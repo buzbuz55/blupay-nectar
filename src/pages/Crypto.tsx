@@ -10,6 +10,9 @@ import { CryptoList } from "@/components/crypto/CryptoList";
 import { CryptoAsset } from "@/types/crypto";
 import { usePullRefresh } from "@/hooks/use-pull-refresh";
 
+const CORS_PROXY = "https://cors-proxy.fringe.zone/";
+const COINGECKO_API = "https://api.coingecko.com/api/v3";
+
 const CryptoPage = () => {
   const [showScanner, setShowScanner] = useState(false);
   const { toast } = useToast();
@@ -20,14 +23,14 @@ const CryptoPage = () => {
     queryKey: ['cryptos'],
     queryFn: async () => {
       const response = await fetch(
-        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false'
+        `${CORS_PROXY}${COINGECKO_API}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false`
       );
       if (!response.ok) {
         throw new Error('Failed to fetch crypto data');
       }
       return response.json() as Promise<CryptoAsset[]>;
     },
-    refetchInterval: 1000, // Update every second
+    refetchInterval: 1000,
   });
 
   const handleRefresh = async () => {
