@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send } from "lucide-react";
+import { usePullRefresh } from "@/hooks/use-pull-refresh";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -18,6 +19,17 @@ export const ChatInterface = () => {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const chatRef = useRef<HTMLDivElement>(null);
+
+  const { pulling, refreshing } = usePullRefresh(chatRef, {
+    onRefresh: async () => {
+      setIsLoading(true);
+      // Simulate refresh delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setIsLoading(false);
+    },
+    refreshMessage: "Chat has been refreshed",
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,12 +38,10 @@ export const ChatInterface = () => {
     const userMessage = input.trim();
     setInput('');
     
-    // Add user message
     setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     
     setIsLoading(true);
     
-    // Simulate AI response
     setTimeout(() => {
       setMessages(prev => [...prev, {
         role: 'assistant',
@@ -42,7 +52,13 @@ export const ChatInterface = () => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)] bg-white rounded-lg shadow-sm">
+    <div className="flex flex-col h-[calc(100vh-8rem)] bg-white rounded-lg shadow-sm" ref={chatRef}>
+      {(pulling || refreshing) && (
+        <div className="absolute top-0 left-0 w-full text-center text-sm text-gray-500 py-2 bg-gray-50/80 backdrop-blur-sm z-10">
+          {refreshing ? "Refreshing..." : "Release to refresh..."}
+        </div>
+      )}
+      
       <ScrollArea className="flex-1 p-4">
         <div className="space-y-4">
           {messages.map((message, i) => (

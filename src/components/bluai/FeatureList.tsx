@@ -1,6 +1,7 @@
 import { FeatureButton } from "./FeatureButton";
 import { featureButtons } from "./featureData";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { usePullRefresh } from "@/hooks/use-pull-refresh";
 
 interface FeatureListProps {
   onFeatureClick: (route: string) => void;
@@ -8,56 +9,26 @@ interface FeatureListProps {
 
 export const FeatureList = ({ onFeatureClick }: FeatureListProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-
-    let animationFrameId: number;
-    let scrollPos = 0;
-    const scrollSpeed = 0.5; // Pixels per frame
-
-    const animate = () => {
-      if (!scrollContainer) return;
-      
-      scrollPos += scrollSpeed;
-      
-      // Reset scroll position when reaching the bottom
-      if (scrollPos >= scrollContainer.scrollHeight - scrollContainer.clientHeight) {
-        scrollPos = 0;
-      }
-      
-      scrollContainer.scrollTop = scrollPos;
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    // Start animation
-    animationFrameId = requestAnimationFrame(animate);
-
-    // Pause animation on hover
-    const handleMouseEnter = () => cancelAnimationFrame(animationFrameId);
-    const handleMouseLeave = () => {
-      scrollPos = scrollContainer.scrollTop;
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    scrollContainer.addEventListener('mouseenter', handleMouseEnter);
-    scrollContainer.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      if (scrollContainer) {
-        scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
-        scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
-      }
-    };
-  }, []);
+  
+  const { pulling, refreshing } = usePullRefresh(scrollRef, {
+    onRefresh: async () => {
+      // Simulate refresh delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    },
+    refreshMessage: "Features list has been refreshed",
+  });
 
   return (
     <div 
       ref={scrollRef}
-      className="space-y-3 overflow-y-auto max-h-[60vh] pr-2 scroll-smooth"
+      className="space-y-3 overflow-y-auto max-h-[60vh] pr-2 scroll-smooth relative"
     >
+      {(pulling || refreshing) && (
+        <div className="absolute top-0 left-0 w-full text-center text-sm text-gray-500 py-2 bg-gray-50/80 backdrop-blur-sm">
+          {refreshing ? "Refreshing..." : "Release to refresh..."}
+        </div>
+      )}
+      
       {featureButtons.map((feature, index) => (
         <FeatureButton
           key={index}
