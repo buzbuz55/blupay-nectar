@@ -21,6 +21,15 @@ export const BluClubDialog = () => {
           <DialogTitle>THE BLUCLUB - Exclusive Access</DialogTitle>
         </DialogHeader>
         <div className="space-y-8 py-4">
+          {/* Promotional Banner */}
+          <div className="relative rounded-lg overflow-hidden">
+            <img 
+              src="/lovable-uploads/049058f6-aadd-4e6a-8029-3584bc6bbe4a.png" 
+              alt="MacBook Pro 2025 Giveaway"
+              className="w-full h-auto rounded-lg shadow-lg"
+            />
+          </div>
+
           <p className="text-sm text-gray-600">
             Welcome to THE BLUCLUB - where luxury meets exclusivity. As a BLUCLUB member, you gain access to an extraordinary world of privileges and experiences.
           </p>
