@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./routes/AppRoutes";
 import { LoadingFallback } from "./components/layout/LoadingFallback";
+import { SettingsProvider } from "./contexts/SettingsContext";
 import React from "react";
 
 const queryClient = new QueryClient({
@@ -23,15 +24,17 @@ const App = () => {
   return (
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <TooltipProvider>
-            <Suspense fallback={<LoadingFallback />}>
-              <Toaster />
-              <Sonner />
-              <AppRoutes />
-            </Suspense>
-          </TooltipProvider>
-        </BrowserRouter>
+        <SettingsProvider>
+          <BrowserRouter>
+            <TooltipProvider>
+              <Suspense fallback={<LoadingFallback />}>
+                <Toaster />
+                <Sonner />
+                <AppRoutes />
+              </Suspense>
+            </TooltipProvider>
+          </BrowserRouter>
+        </SettingsProvider>
       </QueryClientProvider>
     </React.StrictMode>
   );

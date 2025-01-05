@@ -1,70 +1,18 @@
-import { ArrowLeft, Building2, Plus, Landmark, CalendarClock, MapPin, Fingerprint, Lock, Bell, Users2, SmilePlus, HelpCircle, FileText, Wallet, BriefcaseBusiness, Send, Gift, FileKey, Smartphone, ShieldCheck, FileQuestion, Star, LogOut } from "lucide-react";
+import { ArrowLeft, Building2, Plus, Landmark, CalendarClock, MapPin, Fingerprint, Lock, Bell, Users2, SmilePlus, HelpCircle, FileText, Wallet, BriefcaseBusiness, Send, Gift, FileKey, Smartphone, ShieldCheck, FileQuestion, Star, LogOut, Moon, Sun, Globe } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { NotificationSettings } from "@/components/notifications/NotificationSettings";
-
-const settingSections = [
-  {
-    title: "PREFERENCES",
-    items: [
-      { id: "account", icon: Building2, label: "Account", badge: "", content: "Manage your account settings and preferences" },
-      { id: "business", icon: Plus, label: "Create Business Profile", badge: "New", content: "Set up your business profile to accept payments" },
-      { id: "payment", icon: Landmark, label: "Payment Methods", badge: "", content: "Add or remove payment methods" },
-      { id: "scheduled", icon: CalendarClock, label: "Scheduled Payments & Requests", badge: "", content: "View and manage your scheduled transactions" },
-      { id: "shipping", icon: MapPin, label: "Shipping Addresses", badge: "", content: "Manage your shipping addresses" },
-      { id: "faceid", icon: Fingerprint, label: "Face ID & Passcode", badge: "", content: "Configure your security settings" },
-      { id: "privacy", icon: Lock, label: "Privacy", badge: "", content: "Control your privacy settings" },
-      { id: "notifications", icon: Bell, label: "Notifications", badge: "", content: "Customize your notification preferences" },
-      { id: "friends", icon: Users2, label: "Friends & Social", badge: "", content: "Manage your social connections" },
-      { id: "emoji", icon: SmilePlus, label: "Emoji", badge: "", content: "Customize your emoji reactions" },
-      { id: "help", icon: HelpCircle, label: "Get help", badge: "", content: "Get support and answers to your questions" },
-    ]
-  },
-  {
-    title: "TAX",
-    items: [
-      { icon: FileText, label: "Tax Verification", badge: "" },
-      { icon: FileText, label: "Tax Documents", badge: "" },
-    ]
-  },
-  {
-    title: "BUYING",
-    items: [
-      { icon: Wallet, label: "BLUPAY Debit Card", badge: "" },
-      { icon: BriefcaseBusiness, label: "Direct Deposit", badge: "" },
-      { icon: FileText, label: "Cash a Check", badge: "" },
-      { icon: Wallet, label: "Backup Payment", badge: "" },
-      { icon: BriefcaseBusiness, label: "Connected Businesses", badge: "" },
-      { icon: Send, label: "Send & receive money with Visa+", badge: "" },
-      { icon: Gift, label: "Offers", badge: "" },
-      { icon: Gift, label: "Gift cards", badge: "" },
-    ]
-  },
-  {
-    title: "SECURITY",
-    items: [
-      { icon: FileKey, label: "Change Password", badge: "" },
-      { icon: Smartphone, label: "Remembered Devices", badge: "" },
-      { icon: ShieldCheck, label: "Identity Verification", badge: "" },
-    ]
-  },
-  {
-    title: "INFORMATION",
-    items: [
-      { icon: FileQuestion, label: "Legal", badge: "" },
-      { icon: FileText, label: "Helpful Information", badge: "" },
-      { icon: FileText, label: "Technical Info", badge: "" },
-      { icon: Star, label: "Rate BLUPAY", badge: "" },
-    ]
-  }
-];
+import { useSettings } from "@/contexts/SettingsContext";
+import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const SettingsPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { settings, updateSetting } = useSettings();
   const [selectedSetting, setSelectedSetting] = useState<{
     id: string;
     label: string;
@@ -80,7 +28,7 @@ const SettingsPage = () => {
       title: "Signing out...",
       description: "You have been successfully signed out.",
     });
-    // In a real app, you would handle the sign out logic here
+    localStorage.clear();
     setTimeout(() => {
       navigate('/');
     }, 1500);
@@ -98,20 +46,117 @@ const SettingsPage = () => {
       </header>
 
       <main className="pt-16 pb-20">
-        <div className="p-4">
-          <NotificationSettings />
-        </div>
+        <div className="p-4 space-y-6">
+          {/* Theme Settings */}
+          <div className="bg-white rounded-lg p-4 space-y-4">
+            <h2 className="font-semibold">Display & Accessibility</h2>
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <label className="text-sm font-medium">Theme</label>
+                <p className="text-xs text-gray-500">Choose your preferred theme</p>
+              </div>
+              <Select
+                value={settings.theme}
+                onValueChange={(value: "light" | "dark" | "system") => updateSetting("theme", value)}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select theme" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="light">
+                    <div className="flex items-center gap-2">
+                      <Sun className="w-4 h-4" />
+                      Light
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="dark">
+                    <div className="flex items-center gap-2">
+                      <Moon className="w-4 h-4" />
+                      Dark
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="system">
+                    <div className="flex items-center gap-2">
+                      <Globe className="w-4 h-4" />
+                      System
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-        {settingSections.map((section) => (
-          <div key={section.title} className="mb-6">
-            <h2 className="px-4 py-2 text-sm font-semibold text-gray-500">{section.title}</h2>
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <label className="text-sm font-medium">Sound Effects</label>
+                <p className="text-xs text-gray-500">Enable sound effects for actions</p>
+              </div>
+              <Switch
+                checked={settings.sound}
+                onCheckedChange={(checked) => updateSetting("sound", checked)}
+              />
+            </div>
+          </div>
+
+          {/* Security Settings */}
+          <div className="bg-white rounded-lg p-4 space-y-4">
+            <h2 className="font-semibold">Security</h2>
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <label className="text-sm font-medium">Two-Factor Authentication</label>
+                <p className="text-xs text-gray-500">Add an extra layer of security</p>
+              </div>
+              <Switch
+                checked={settings.twoFactorAuth}
+                onCheckedChange={(checked) => updateSetting("twoFactorAuth", checked)}
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <label className="text-sm font-medium">Auto-Lock</label>
+                <p className="text-xs text-gray-500">Lock app after {settings.autoLock} minutes</p>
+              </div>
+              <Select
+                value={settings.autoLock.toString()}
+                onValueChange={(value) => updateSetting("autoLock", parseInt(value))}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select time" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1 minute</SelectItem>
+                  <SelectItem value="5">5 minutes</SelectItem>
+                  <SelectItem value="15">15 minutes</SelectItem>
+                  <SelectItem value="30">30 minutes</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <NotificationSettings />
+
+          {/* Settings Sections */}
+          <div className="mb-6">
+            <h2 className="px-4 py-2 text-sm font-semibold text-gray-500">PREFERENCES</h2>
             <div className="bg-white">
-              {section.items.map((item, index) => (
+              {[
+                { id: "account", icon: Building2, label: "Account", badge: "", content: "Manage your account settings and preferences" },
+                { id: "business", icon: Plus, label: "Create Business Profile", badge: "New", content: "Set up your business profile to accept payments" },
+                { id: "payment", icon: Landmark, label: "Payment Methods", badge: "", content: "Add or remove payment methods" },
+                { id: "scheduled", icon: CalendarClock, label: "Scheduled Payments & Requests", badge: "", content: "View and manage your scheduled transactions" },
+                { id: "shipping", icon: MapPin, label: "Shipping Addresses", badge: "", content: "Manage your shipping addresses" },
+                { id: "faceid", icon: Fingerprint, label: "Face ID & Passcode", badge: "", content: "Configure your security settings" },
+                { id: "privacy", icon: Lock, label: "Privacy", badge: "", content: "Control your privacy settings" },
+                { id: "notifications", icon: Bell, label: "Notifications", badge: "", content: "Customize your notification preferences" },
+                { id: "friends", icon: Users2, label: "Friends & Social", badge: "", content: "Manage your social connections" },
+                { id: "emoji", icon: SmilePlus, label: "Emoji", badge: "", content: "Customize your emoji reactions" },
+                { id: "help", icon: HelpCircle, label: "Get help", badge: "", content: "Get support and answers to your questions" },
+              ].map((item, index) => (
                 <button
                   key={item.label}
                   onClick={() => handleSettingClick(item)}
                   className={`w-full flex items-center justify-between p-4 hover:bg-gray-50 ${
-                    index !== section.items.length - 1 ? 'border-b border-gray-100' : ''
+                    index !== 9 ? 'border-b border-gray-100' : ''
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -130,18 +175,18 @@ const SettingsPage = () => {
               ))}
             </div>
           </div>
-        ))}
 
-        <div className="p-4">
-          <Button 
-            variant="destructive"
-            className="w-full flex items-center justify-center gap-2 py-2"
-            onClick={handleSignOut}
-          >
-            <LogOut className="w-5 h-5" />
-            <span>Sign Out of BLUPAY</span>
-          </Button>
-          <p className="text-center text-gray-500 text-sm mt-4">Version 10.55.0 (4)</p>
+          <div className="p-4">
+            <Button 
+              variant="destructive"
+              className="w-full flex items-center justify-center gap-2 py-2"
+              onClick={handleSignOut}
+            >
+              <LogOut className="w-5 h-5" />
+              <span>Sign Out of BLUPAY</span>
+            </Button>
+            <p className="text-center text-gray-500 text-sm mt-4">Version 10.55.0 (4)</p>
+          </div>
         </div>
       </main>
 
@@ -149,10 +194,8 @@ const SettingsPage = () => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{selectedSetting?.label}</DialogTitle>
+            <DialogDescription>{selectedSetting?.content}</DialogDescription>
           </DialogHeader>
-          <div className="p-4">
-            <p className="text-gray-600">{selectedSetting?.content}</p>
-          </div>
         </DialogContent>
       </Dialog>
     </div>
