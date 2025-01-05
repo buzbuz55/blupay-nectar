@@ -12,10 +12,45 @@ export const PointsSystem = () => {
   const progress = (currentPoints / nextRewardThreshold) * 100;
 
   const pointsActivities = [
-    { icon: Wallet, name: "Opening Account", points: 50000 },
-    { icon: Users, name: "Adding Friends", points: 2000 },
-    { icon: Star, name: "5-Star Review", points: 10000 },
-    { icon: Gift, name: "Sharing App", points: 5000 },
+    { 
+      icon: Wallet, 
+      name: "Opening Account", 
+      points: 50000,
+      milestones: [
+        { threshold: 1, points: 50000, description: "First account creation" },
+        { threshold: 30, points: 10000, description: "Active for 30 days" },
+        { threshold: 90, points: 25000, description: "Active for 90 days" }
+      ]
+    },
+    { 
+      icon: Users, 
+      name: "Adding Friends", 
+      points: 2000,
+      milestones: [
+        { threshold: 1, points: 2000, description: "First friend added" },
+        { threshold: 5, points: 5000, description: "5 friends milestone" },
+        { threshold: 10, points: 10000, description: "10 friends milestone" }
+      ]
+    },
+    { 
+      icon: Star, 
+      name: "5-Star Review", 
+      points: 10000,
+      milestones: [
+        { threshold: 1, points: 10000, description: "First review" },
+        { threshold: 5, points: 15000, description: "5 reviews milestone" }
+      ]
+    },
+    { 
+      icon: Gift, 
+      name: "Sharing App", 
+      points: 5000,
+      milestones: [
+        { threshold: 1, points: 5000, description: "First share" },
+        { threshold: 5, points: 7500, description: "5 shares milestone" },
+        { threshold: 10, points: 15000, description: "10 shares milestone" }
+      ]
+    },
   ];
 
   const luxuryCategories = [
