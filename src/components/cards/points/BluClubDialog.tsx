@@ -24,8 +24,8 @@ export const BluClubDialog = () => {
           {/* Promotional Banner */}
           <div className="relative rounded-lg overflow-hidden">
             <img 
-              src="/lovable-uploads/049058f6-aadd-4e6a-8029-3584bc6bbe4a.png" 
-              alt="MacBook Pro 2025 Giveaway"
+              src="/lovable-uploads/ec92928f-127a-4e44-b93c-bec306525d98.png" 
+              alt="BluClub Welcome Package"
               className="w-full h-auto rounded-lg shadow-lg"
             />
           </div>
