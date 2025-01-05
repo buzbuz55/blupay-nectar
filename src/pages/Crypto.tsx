@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { CryptoList } from "@/components/crypto/CryptoList";
 import { CryptoAsset } from "@/types/crypto";
 import { usePullRefresh } from "@/hooks/use-pull-refresh";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const CORS_PROXY = "https://cors-proxy.fringe.zone/";
 const COINGECKO_API = "https://api.coingecko.com/api/v3";
@@ -19,26 +20,48 @@ const CryptoPage = () => {
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { data: cryptos, isLoading, refetch } = useQuery({
+  const { data: cryptos, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['cryptos'],
     queryFn: async () => {
-      const response = await fetch(
-        `${CORS_PROXY}${COINGECKO_API}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false`
-      );
-      if (!response.ok) {
+      try {
+        const response = await fetch(
+          `${CORS_PROXY}${COINGECKO_API}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false`
+        );
+        
+        if (response.status === 429) {
+          throw new Error("Rate limit exceeded. Please try again in a minute.");
+        }
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch crypto data');
+        }
+        
+        return response.json() as Promise<CryptoAsset[]>;
+      } catch (err) {
+        if (err instanceof Error) {
+          throw new Error(err.message);
+        }
         throw new Error('Failed to fetch crypto data');
       }
-      return response.json() as Promise<CryptoAsset[]>;
     },
-    refetchInterval: 1000,
+    retry: 1,
+    refetchInterval: 30000, // Reduced to 30 seconds to avoid rate limits
   });
 
   const handleRefresh = async () => {
-    await refetch();
-    toast({
-      title: "Refreshed",
-      description: "Crypto data has been updated",
-    });
+    try {
+      await refetch();
+      toast({
+        title: "Refreshed",
+        description: "Crypto data has been updated",
+      });
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to refresh data",
+        variant: "destructive",
+      });
+    }
   };
 
   const { pulling, refreshing } = usePullRefresh(containerRef, {
@@ -92,6 +115,14 @@ const CryptoPage = () => {
           <p className="text-gray-600">Your crypto balance</p>
           <h2 className="text-4xl font-bold">$0</h2>
         </div>
+
+        {isError && (
+          <Alert variant="destructive">
+            <AlertDescription>
+              {error instanceof Error ? error.message : "Failed to load crypto data"}
+            </AlertDescription>
+          </Alert>
+        )}
 
         <div className="grid grid-cols-2 gap-4">
           <Dialog>
