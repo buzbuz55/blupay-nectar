@@ -1,15 +1,10 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowDownLeft, ArrowUpRight, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { TransactionMessage } from "@/components/messaging/TransactionMessage";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { TransactionItem } from "./TransactionItem";
 
 interface Transaction {
   id: string;
@@ -28,29 +23,28 @@ export const TransactionHistory = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const fetchTransactions = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('transactions')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setTransactions(data || []);
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-
-        const { data, error } = await supabase
-          .from('transactions')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (error) throw error;
-        setTransactions(data || []);
-      } catch (error) {
-        console.error('Error fetching transactions:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchTransactions();
 
-    // Subscribe to realtime updates
     const channel = supabase
       .channel('public:transactions')
       .on('postgres_changes', 
@@ -59,11 +53,7 @@ export const TransactionHistory = () => {
           schema: 'public', 
           table: 'transactions' 
         }, 
-        (payload) => {
-          console.log('Change received!', payload);
-          // Refresh transactions when changes occur
-          fetchTransactions();
-        }
+        () => fetchTransactions()
       )
       .subscribe();
 
@@ -71,11 +61,6 @@ export const TransactionHistory = () => {
       supabase.removeChannel(channel);
     };
   }, []);
-
-  const filteredTransactions = transactions.filter(transaction =>
-    transaction.recipient_identifier.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (transaction.note && transaction.note.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -91,6 +76,11 @@ export const TransactionHistory = () => {
       return date.toLocaleDateString();
     }
   };
+
+  const filteredTransactions = transactions.filter(transaction =>
+    transaction.recipient_identifier.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (transaction.note && transaction.note.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
 
   if (loading) {
     return (
@@ -128,49 +118,11 @@ export const TransactionHistory = () => {
           </div>
         ) : (
           filteredTransactions.map((transaction) => (
-            <Collapsible key={transaction.id}>
-              <CollapsibleTrigger className="w-full">
-                <Card className="p-4 hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${
-                        transaction.sender_id === (supabase.auth.getUser() as any).data?.user?.id
-                          ? "bg-red-100"
-                          : "bg-green-100"
-                      }`}>
-                        {transaction.sender_id === (supabase.auth.getUser() as any).data?.user?.id ? (
-                          <ArrowUpRight className="w-4 h-4 text-red-600" />
-                        ) : (
-                          <ArrowDownLeft className="w-4 h-4 text-green-600" />
-                        )}
-                      </div>
-                      <div>
-                        <p className="font-medium">{transaction.recipient_identifier}</p>
-                        <p className="text-sm text-gray-500">{transaction.type}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className={`font-semibold ${
-                        transaction.sender_id === (supabase.auth.getUser() as any).data?.user?.id
-                          ? "text-red-600"
-                          : "text-green-600"
-                      }`}>
-                        {transaction.sender_id === (supabase.auth.getUser() as any).data?.user?.id ? "-" : "+"}
-                        ${transaction.amount.toFixed(2)}
-                      </p>
-                      <p className="text-sm text-gray-500">{formatDate(transaction.created_at)}</p>
-                    </div>
-                  </div>
-                </Card>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <TransactionMessage 
-                  transactionId={transaction.id}
-                  messages={[]}
-                  reactions={[]}
-                />
-              </CollapsibleContent>
-            </Collapsible>
+            <TransactionItem 
+              key={transaction.id}
+              transaction={transaction}
+              formatDate={formatDate}
+            />
           ))
         )}
       </div>
