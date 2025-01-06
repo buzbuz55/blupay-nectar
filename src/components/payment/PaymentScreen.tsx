@@ -7,10 +7,12 @@ import { NumberPad } from "@/components/payment/NumberPad";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from 'react-router-dom';
+import { Search, Mail, Phone } from 'lucide-react';
 
 const PayPage = () => {
   const [amount, setAmount] = useState('0');
   const [recipient, setRecipient] = useState('');
+  const [searchMode, setSearchMode] = useState<'email' | 'phone'>('email');
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -35,6 +37,11 @@ const PayPage = () => {
 
   const handleClear = () => {
     setAmount('0');
+  };
+
+  const toggleSearchMode = () => {
+    setSearchMode(prev => prev === 'email' ? 'phone' : 'email');
+    setRecipient('');
   };
 
   const handlePay = async () => {
@@ -105,19 +112,36 @@ const PayPage = () => {
             <AvatarFallback>TO</AvatarFallback>
           </Avatar>
           <div className="space-y-1">
-            <h2 className="text-xl font-semibold">Payment</h2>
-            <p className="text-sm text-gray-500">Enter recipient and amount</p>
+            <h2 className="text-xl font-semibold">Pay To</h2>
+            <p className="text-sm text-gray-500">Enter recipient details</p>
           </div>
         </div>
 
         <div className="space-y-4">
-          <Input
-            type="text"
-            placeholder="Enter email or phone number"
-            value={recipient}
-            onChange={(e) => setRecipient(e.target.value)}
-            className="text-center"
-          />
+          <div className="relative">
+            <div className="absolute inset-y-0 left-3 flex items-center">
+              {searchMode === 'email' ? (
+                <Mail className="h-5 w-5 text-gray-400" />
+              ) : (
+                <Phone className="h-5 w-5 text-gray-400" />
+              )}
+            </div>
+            <Input
+              type={searchMode === 'email' ? 'email' : 'tel'}
+              placeholder={searchMode === 'email' ? 'Enter email address' : 'Enter phone number'}
+              value={recipient}
+              onChange={(e) => setRecipient(e.target.value)}
+              className="pl-10 pr-24"
+            />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleSearchMode}
+              className="absolute right-2 top-1/2 -translate-y-1/2"
+            >
+              Switch to {searchMode === 'email' ? 'Phone' : 'Email'}
+            </Button>
+          </div>
 
           <div className="flex-1 flex items-center justify-center">
             <div className="text-5xl font-semibold flex items-center">
