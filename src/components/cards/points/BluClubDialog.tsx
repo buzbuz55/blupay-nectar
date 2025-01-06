@@ -22,11 +22,11 @@ export const BluClubDialog = () => {
         </DialogHeader>
         <div className="space-y-8 py-4">
           {/* Promotional Banner */}
-          <div className="relative rounded-lg overflow-hidden">
+          <div className="relative rounded-lg overflow-hidden max-w-lg mx-auto">
             <img 
               src="/lovable-uploads/ec92928f-127a-4e44-b93c-bec306525d98.png" 
               alt="BluClub Welcome Package"
-              className="w-full h-auto rounded-lg shadow-lg"
+              className="w-full h-auto max-h-[200px] object-cover rounded-lg shadow-lg"
             />
           </div>
 
