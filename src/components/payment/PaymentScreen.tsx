@@ -1,123 +1,150 @@
 import React, { useState } from 'react';
-import { useToast } from '@/components/ui/use-toast';
-import { Button } from '@/components/ui/button';
-import { NumberPad } from './NumberPad';
-import { ContactsDirectory } from './ContactsDirectory';
-import { PaymentHeader } from './PaymentHeader';
-import { RecipientSection } from './RecipientSection';
-import { AmountSection } from './AmountSection';
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useToast } from "@/components/ui/use-toast";
+import { NumberPad } from "@/components/payment/NumberPad";
+import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from 'react-router-dom';
 
-interface Contact {
-  id: string;
-  name: string;
-  email?: string;
-  phone?: string;
-  avatar?: string;
-}
-
-export const PaymentScreen = () => {
-  const [amount, setAmount] = useState('');
-  const [note, setNote] = useState('');
-  const [isContactsOpen, setIsContactsOpen] = useState(false);
-  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
+const PayPage = () => {
+  const [amount, setAmount] = useState('0');
+  const [recipient, setRecipient] = useState('');
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleNumberClick = (num: string) => {
-    if (amount.length < 8) {
-      setAmount(prev => {
-        if (prev === '0') return num;
-        return prev + num;
-      });
+    if (amount === '0' && num !== '.') {
+      setAmount(num);
+    } else if (amount.includes('.') && num === '.') {
+      return;
+    } else if (amount.split('.')[1]?.length >= 2 && amount.includes('.')) {
+      return;
+    } else {
+      setAmount(prev => prev + num);
     }
   };
 
   const handleDelete = () => {
-    setAmount(prev => prev.slice(0, -1) || '');
-  };
-
-  const handleClear = () => {
-    setAmount('');
-  };
-
-  const handleSelectContact = (contact: Contact) => {
-    setSelectedContact(contact);
-    setIsContactsOpen(false);
-  };
-
-  const handleSendMoney = () => {
-    if (!amount || parseFloat(amount) <= 0) {
-      toast({
-        title: "Invalid amount",
-        description: "Please enter a valid amount to send",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!selectedContact) {
-      toast({
-        title: "Select recipient",
-        description: "Please select a recipient from your contacts",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    toast({
-      title: "Money sent successfully",
-      description: `$${amount} has been sent to ${selectedContact.name}`,
+    setAmount(prev => {
+      if (prev.length === 1) return '0';
+      return prev.slice(0, -1);
     });
   };
 
+  const handleClear = () => {
+    setAmount('0');
+  };
+
+  const handlePay = async () => {
+    if (!recipient) {
+      toast({
+        title: "Recipient required",
+        description: "Please enter an email or phone number",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (parseFloat(amount) <= 0) {
+      toast({
+        title: "Invalid amount",
+        description: "Please enter a valid amount",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        toast({
+          title: "Authentication required",
+          description: "Please log in to make payments",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const { error } = await supabase
+        .from('transactions')
+        .insert({
+          sender_id: user.id,
+          recipient_identifier: recipient,
+          amount: parseFloat(amount),
+          type: 'payment',
+          status: 'completed',
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Payment sent!",
+        description: `$${amount} sent to ${recipient}`,
+      });
+
+      navigate('/');
+    } catch (error) {
+      console.error('Payment error:', error);
+      toast({
+        title: "Payment failed",
+        description: "There was an error processing your payment",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
-    <div className="h-screen bg-white flex flex-col">
-      <PaymentHeader />
-
-      <main className="flex-1 flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
-        <div className="flex-none px-4 py-2">
-          <RecipientSection
-            selectedContact={selectedContact}
-            onOpenContacts={() => setIsContactsOpen(true)}
-          />
+    <div className="h-[calc(100vh-4rem)] bg-gradient-to-br from-gray-50 to-white/80 p-4 flex flex-col">
+      <Card className="flex-1 p-6 flex flex-col gap-6">
+        <div className="text-center space-y-4">
+          <Avatar className="h-16 w-16 mx-auto">
+            <AvatarImage src="/placeholder.svg" />
+            <AvatarFallback>TO</AvatarFallback>
+          </Avatar>
+          <div className="space-y-1">
+            <h2 className="text-xl font-semibold">Payment</h2>
+            <p className="text-sm text-gray-500">Enter recipient and amount</p>
+          </div>
         </div>
 
-        <div className="flex-1 px-4 min-h-0 flex flex-col justify-center">
-          <AmountSection
-            amount={amount}
-            note={note}
-            onNoteChange={setNote}
+        <div className="space-y-4">
+          <Input
+            type="text"
+            placeholder="Enter email or phone number"
+            value={recipient}
+            onChange={(e) => setRecipient(e.target.value)}
+            className="text-center"
           />
+
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-5xl font-semibold flex items-center">
+              <span className="text-3xl mr-2">$</span>
+              <span>{amount}</span>
+            </div>
+          </div>
         </div>
 
-        <div className="flex-none px-4 pb-4">
+        <div className="space-y-4">
           <NumberPad 
             onNumberClick={handleNumberClick} 
             onDelete={handleDelete}
             onClear={handleClear}
           />
-          <div className="grid grid-cols-2 gap-4 mt-4">
-            <Button 
-              variant="outline"
-              className="w-full h-12 text-lg"
-              onClick={() => setAmount('')}
-            >
-              Request
-            </Button>
-            <Button 
-              className="w-full h-12 text-lg bg-gradient-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600"
-              onClick={handleSendMoney}
-            >
-              Pay
-            </Button>
-          </div>
+          
+          <Button 
+            size="lg"
+            onClick={handlePay}
+            className="w-full text-lg"
+          >
+            Pay
+          </Button>
         </div>
-      </main>
-
-      <ContactsDirectory
-        isOpen={isContactsOpen}
-        onClose={() => setIsContactsOpen(false)}
-        onSelectContact={handleSelectContact}
-      />
+      </Card>
     </div>
   );
 };
+
+export default PayPage;
