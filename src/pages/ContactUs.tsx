@@ -2,6 +2,8 @@ import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/common/Logo";
+import { MessageSquare, Mail, MapPin } from "lucide-react";
 
 const ContactUs = () => {
   const navigate = useNavigate();
@@ -18,30 +20,47 @@ const ContactUs = () => {
         >
           <ArrowLeft className="h-6 w-6" />
         </Button>
-        <h1 className="text-2xl font-semibold text-gray-800">Contact Us</h1>
+        <Logo size="sm" />
       </div>
 
       <div className="space-y-4 max-w-2xl mx-auto">
         {/* BLUPAY Support Card */}
         <Card className="p-6 space-y-4">
           <div className="flex items-center gap-4">
-            <img
-              src="/lovable-uploads/9ce88fcf-6663-4dfe-a1e4-3e05415953b7.png"
-              alt="BLUPAY"
-              className="h-8"
-            />
+            <Logo size="sm" />
             <span className="text-xl text-gray-700">BLUPAY</span>
           </div>
           
-          <div className="space-y-2">
+          <div className="space-y-4">
             <div className="text-gray-600">
               Mon - Fri, 8 a.m. - 11 p.m. ET
               <br />
               Sat - Sun, 8 a.m. - 8 p.m. ET
             </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 text-gray-700">
+                <MessageSquare className="h-5 w-5" />
+                <a href="/bluai" className="hover:text-blue-600">AI Chat Support</a>
+              </div>
+              <div className="flex items-center gap-2 text-gray-700">
+                <Mail className="h-5 w-5" />
+                <a href="mailto:support@blupay.com" className="hover:text-blue-600">support@blupay.com</a>
+              </div>
+              <div className="flex items-center gap-2 text-gray-700">
+                <MapPin className="h-5 w-5" />
+                <a href="https://maps.google.com/?q=1755+Broadway,+New+York+NY,+10019" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   className="hover:text-blue-600">
+                  1755 Broadway, New York NY, 10019
+                </a>
+              </div>
+            </div>
+
             <a 
               href="tel:800-933-6262" 
-              className="text-blue-600 text-lg font-semibold hover:underline"
+              className="text-blue-600 text-lg font-semibold hover:underline block"
             >
               800-933-6262
             </a>
@@ -107,23 +126,28 @@ const ContactUs = () => {
           <p>
             BLUPAY and its advisors do not provide legal, tax or accounting advice. Clients should consult their legal and/or tax advisors before making any financial decisions.
           </p>
+
+          <p className="font-medium mt-4">
+            Deposits insured up to $3 million by FDIC
+          </p>
         </div>
 
         {/* Footer Links */}
         <div className="flex flex-wrap justify-center gap-4 text-blue-600 text-sm py-6">
-          <a href="#" className="hover:underline">Security</a>
+          <a href="/security" className="hover:underline">Security</a>
           <span className="text-gray-300">|</span>
-          <a href="#" className="hover:underline">Privacy</a>
+          <a href="/privacy" className="hover:underline">Privacy</a>
           <span className="text-gray-300">|</span>
-          <a href="#" className="hover:underline">Children's Privacy</a>
+          <a href="/children-privacy" className="hover:underline">Children's Privacy</a>
           <span className="text-gray-300">|</span>
-          <a href="#" className="hover:underline">Your Privacy Choices</a>
+          <a href="/privacy-choices" className="hover:underline">Your Privacy Choices</a>
           <span className="text-gray-300">|</span>
-          <a href="#" className="hover:underline">Advertising Practices</a>
+          <a href="/advertising" className="hover:underline">Advertising Practices</a>
         </div>
 
         <div className="text-center text-gray-600 text-sm pb-6">
-          BLUPAY, N.A. Member FDIC. © 2024 BLUPAY Corporation.
+          <p>BLUPAY USA Inc. Member FDIC.</p>
+          <p>© 2024 BLUPAY Corporation.</p>
         </div>
       </div>
     </div>
