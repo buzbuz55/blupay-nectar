@@ -11,7 +11,6 @@ import { CryptoAsset } from "@/types/crypto";
 import { usePullRefresh } from "@/hooks/use-pull-refresh";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
-const CORS_PROXY = "https://cors-proxy.fringe.zone/";
 const COINGECKO_API = "https://api.coingecko.com/api/v3";
 const GC_TIME = 2 * 60 * 1000; // 2 minutes
 const STALE_TIME = 30 * 1000; // 30 seconds
@@ -27,7 +26,7 @@ const CryptoPage = () => {
     queryFn: async () => {
       try {
         const response = await fetch(
-          `${CORS_PROXY}${COINGECKO_API}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false`
+          `${COINGECKO_API}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false`
         );
         
         if (response.status === 429) {
