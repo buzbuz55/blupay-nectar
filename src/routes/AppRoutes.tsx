@@ -1,12 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { lazy } from "react";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { SettingsRoutes } from "./settings-routes";
 
 // Lazy load all pages
 const Login = lazy(() => import("@/pages/Login"));
 const Index = lazy(() => import("@/pages/Index"));
 const NotificationsPage = lazy(() => import("@/pages/Notifications"));
-const SettingsPage = lazy(() => import("@/pages/Settings"));
 const CardsPage = lazy(() => import("@/pages/Cards"));
 const PayPage = lazy(() => import("@/pages/Pay"));
 const CryptoPage = lazy(() => import("@/pages/Crypto"));
@@ -48,7 +48,7 @@ export const AppRoutes = () => {
         path="/settings/*"
         element={
           <div className="pb-20">
-            <SettingsPage />
+            <SettingsRoutes />
             <BottomNav />
           </div>
         }
