@@ -5,8 +5,14 @@ import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-// Sample top locations data
-const topLocations = [
+// Define proper type for location data
+type Location = {
+  name: string;
+  coordinates: [number, number]; // This ensures exactly two numbers
+};
+
+// Sample top locations data with proper typing
+const topLocations: Location[] = [
   { name: "New York", coordinates: [-74.006, 40.7128] },
   { name: "London", coordinates: [-0.1276, 51.5074] },
   { name: "Tokyo", coordinates: [139.6917, 35.6895] },
@@ -26,13 +32,13 @@ const Locations = () => {
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/light-v11',
-      center: [-74.006, 40.7128], // Default to NYC
+      center: [-74.006, 40.7128] as [number, number], // Type assertion for center coordinates
       zoom: 2
     });
 
     // Add markers for each location
     topLocations.forEach(location => {
-      const marker = new mapboxgl.Marker()
+      new mapboxgl.Marker()
         .setLngLat(location.coordinates)
         .setPopup(new mapboxgl.Popup().setHTML(`<h3>${location.name}</h3>`))
         .addTo(map.current!);
