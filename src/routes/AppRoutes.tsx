@@ -20,12 +20,16 @@ const PaymentRequestPage = lazy(() => import("@/pages/PaymentRequest"));
 const MerchantPage = lazy(() => import("@/pages/Merchant"));
 const ProfilePage = lazy(() => import("@/pages/Profile"));
 const ContactUs = lazy(() => import("@/pages/ContactUs"));
+const Locations = lazy(() => import("@/pages/Locations"));
+const Enroll = lazy(() => import("@/pages/Enroll"));
 
 export const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/contact-us" element={<ContactUs />} />
+      <Route path="/locations" element={<Locations />} />
+      <Route path="/enroll" element={<Enroll />} />
       <Route
         path="/"
         element={

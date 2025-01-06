@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -15,33 +15,6 @@ const Login = () => {
     e.preventDefault();
     navigate("/");
   };
-
-  const creditCards = [
-    {
-      title: "Brighten your holidays with a new card",
-      image: null,
-      offer: null,
-      color: "white",
-    },
-    {
-      title: "$200 bonus offer",
-      image: "/lovable-uploads/9ce88fcf-6663-4dfe-a1e4-3e05415953b7.png",
-      offer: "$200",
-      color: "red",
-    },
-    {
-      title: "0% intro APR offer",
-      image: "/lovable-uploads/9ce88fcf-6663-4dfe-a1e4-3e05415953b7.png",
-      offer: "0%",
-      color: "white",
-    },
-    {
-      title: "25,000 points offer",
-      image: "/lovable-uploads/9ce88fcf-6663-4dfe-a1e4-3e05415953b7.png",
-      offer: "25,000",
-      color: "blue",
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-white p-4 space-y-8">
@@ -126,31 +99,29 @@ const Login = () => {
         </div>
 
         <div className="flex justify-center space-x-4 text-blue-600">
-          <a href="#" className="hover:underline">
+          <Link to="/my-balance" className="hover:underline">
             My Balance®
-          </a>
+          </Link>
           <span>|</span>
-          <a href="#" className="hover:underline">
+          <Link to="/enroll" className="hover:underline">
             Enroll
-          </a>
+          </Link>
         </div>
       </div>
 
       {/* Footer Links */}
       <div className="max-w-md mx-auto flex justify-center space-x-4 text-blue-600">
-        <a href="#" className="hover:underline">
+        <Link to="/locations" className="hover:underline">
           Locations
-        </a>
+        </Link>
         <span>|</span>
-        <a href="#" className="hover:underline">
+        <Link to="/contact-us" className="hover:underline">
           Contact us
-        </a>
+        </Link>
       </div>
 
       <div className="max-w-md mx-auto text-center text-sm text-gray-600">
-        <p>
-          BLUPAY USA Inc.
-        </p>
+        <p>BLUPAY USA Inc.</p>
       </div>
     </div>
   );
