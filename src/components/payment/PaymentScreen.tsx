@@ -7,7 +7,7 @@ import { NumberPad } from "@/components/payment/NumberPad";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from 'react-router-dom';
-import { Search, Mail, Phone, Bank } from 'lucide-react';
+import { Search, Mail, Phone, Building2 } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -179,7 +179,7 @@ const PayPage = () => {
           {transferMethod === 'zelle' && (
             <div className="relative">
               <div className="absolute inset-y-0 left-3 flex items-center">
-                <Bank className="h-5 w-5 text-gray-400" />
+                <Building2 className="h-5 w-5 text-gray-400" />
               </div>
               <Input
                 type="text"
