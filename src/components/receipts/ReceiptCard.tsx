@@ -1,55 +1,43 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Receipt, Store } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
-
-interface ReceiptItem {
-  name: string;
-  quantity: number;
-  price: number;
-}
+import { Card } from "@/components/ui/card";
+import { Receipt } from "./types";
+import { format } from "date-fns";
 
 interface ReceiptCardProps {
-  receiptNumber: string;
-  businessName: string;
-  totalAmount: number;
-  items: ReceiptItem[] | null;
-  createdAt: string;
+  receipt: Receipt;
 }
 
-export const ReceiptCard = ({
-  receiptNumber,
-  businessName,
-  totalAmount,
-  items,
-  createdAt,
-}: ReceiptCardProps) => {
+export const ReceiptCard = ({ receipt }: ReceiptCardProps) => {
   return (
-    <Card className="w-full hover:shadow-lg transition-shadow">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <div className="space-y-1">
-          <CardTitle className="text-lg font-bold">Receipt #{receiptNumber}</CardTitle>
-          <div className="flex items-center text-sm text-muted-foreground">
-            <Store className="mr-1 h-4 w-4" />
-            {businessName}
-          </div>
+    <Card className="p-4 hover:shadow-lg transition-shadow">
+      <div className="flex justify-between items-start mb-4">
+        <div>
+          <h3 className="font-medium">Receipt #{receipt.receipt_number}</h3>
+          <p className="text-sm text-gray-500">
+            {format(new Date(receipt.created_at), 'MMM d, yyyy')}
+          </p>
         </div>
-        <Receipt className="h-5 w-5 text-blue-500" />
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Total Amount</span>
-            <span className="font-medium">${totalAmount.toFixed(2)}</span>
+        <p className="font-semibold">${receipt.total_amount.toFixed(2)}</p>
+      </div>
+      
+      <div className="space-y-2">
+        {receipt.items.map((item, index) => (
+          <div key={index} className="flex justify-between text-sm">
+            <span>{item.name} (x{item.quantity})</span>
+            <span>${(item.price * item.quantity).toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Items</span>
-            <span className="font-medium">{items?.length || 0} items</span>
-          </div>
-          <div className="text-xs text-muted-foreground">
-            {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
-          </div>
-        </div>
-      </CardContent>
+        ))}
+      </div>
+      
+      {receipt.receipt_url && (
+        <a
+          href={receipt.receipt_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm text-blue-600 hover:underline mt-4 block"
+        >
+          View Full Receipt
+        </a>
+      )}
     </Card>
   );
 };
