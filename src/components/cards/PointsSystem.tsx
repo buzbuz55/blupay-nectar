@@ -5,11 +5,69 @@ import { PointsActivitiesList } from "./points/PointsActivitiesList";
 import { LuxuryItemsDialog } from "./points/LuxuryItemsDialog";
 import { PointsInfoDialog } from "./points/PointsInfoDialog";
 import { BluClubDialog } from "./points/BluClubDialog";
+import { useToast } from "@/components/ui/use-toast";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 export const PointsSystem = () => {
-  // Mock data - in a real app this would come from your backend
-  const currentPoints = 65000;
-  const nextRewardThreshold = 70000;
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  // Fetch user points
+  const { data: pointsData, isLoading } = useQuery({
+    queryKey: ['userPoints'],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error } = await supabase
+        .from('user_points')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error) throw error;
+      return data || { total_points: 0, next_reward_threshold: 70000 };
+    }
+  });
+
+  // Handle points activity completion
+  const completeMutation = useMutation({
+    mutationFn: async ({ activityType, points }: { activityType: string, points: number }) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { data, error } = await supabase
+        .from('points_activities')
+        .insert({
+          user_id: user.id,
+          activity_type: activityType,
+          points_earned: points
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userPoints'] });
+      toast({
+        title: "Points earned!",
+        description: "Your points have been updated successfully.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error earning points",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  });
+
+  const currentPoints = pointsData?.total_points || 0;
+  const nextRewardThreshold = pointsData?.next_reward_threshold || 70000;
   const progress = (currentPoints / nextRewardThreshold) * 100;
 
   const pointsActivities = [
@@ -81,6 +139,7 @@ export const PointsSystem = () => {
         currentPoints={currentPoints}
         nextRewardThreshold={nextRewardThreshold}
         progress={progress}
+        isLoading={isLoading}
       />
 
       <Card className="p-6">
@@ -92,7 +151,12 @@ export const PointsSystem = () => {
             <PointsInfoDialog />
           </div>
         </div>
-        <PointsActivitiesList activities={pointsActivities} />
+        <PointsActivitiesList 
+          activities={pointsActivities}
+          onActivityComplete={(activityType, points) => 
+            completeMutation.mutate({ activityType, points })
+          }
+        />
       </Card>
     </div>
   );
