@@ -9,6 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      business_profiles: {
+        Row: {
+          address: string | null
+          business_name: string
+          business_type: string
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string | null
+          id: string
+          logo_url: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          business_name: string
+          business_type: string
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          id?: string
+          logo_url?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          business_name?: string
+          business_type?: string
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          id?: string
+          logo_url?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           contact_id: string | null
@@ -44,6 +83,139 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      digital_receipts: {
+        Row: {
+          business_id: string | null
+          created_at: string | null
+          id: string
+          items: Json | null
+          receipt_number: string
+          receipt_url: string | null
+          total_amount: number
+          transaction_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          business_id?: string | null
+          created_at?: string | null
+          id?: string
+          items?: Json | null
+          receipt_number: string
+          receipt_url?: string | null
+          total_amount: number
+          transaction_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          business_id?: string | null
+          created_at?: string | null
+          id?: string
+          items?: Json | null
+          receipt_number?: string
+          receipt_url?: string | null
+          total_amount?: number
+          transaction_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "digital_receipts_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "business_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "digital_receipts_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoices: {
+        Row: {
+          amount: number
+          business_id: string | null
+          created_at: string | null
+          due_date: string | null
+          id: string
+          invoice_number: string
+          items: Json | null
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          business_id?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          id?: string
+          invoice_number: string
+          items?: Json | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          business_id?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          id?: string
+          invoice_number?: string
+          items?: Json | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "business_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      loyalty_programs: {
+        Row: {
+          business_id: string
+          created_at: string | null
+          id: string
+          points_per_dollar: number | null
+          program_name: string
+          updated_at: string | null
+        }
+        Insert: {
+          business_id: string
+          created_at?: string | null
+          id?: string
+          points_per_dollar?: number | null
+          program_name: string
+          updated_at?: string | null
+        }
+        Update: {
+          business_id?: string
+          created_at?: string | null
+          id?: string
+          points_per_dollar?: number | null
+          program_name?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loyalty_programs_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "business_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       points_activities: {
         Row: {
