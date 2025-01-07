@@ -34,6 +34,24 @@ interface SupabaseReceipt {
   };
 }
 
+// Type guard to check if an item is a valid ReceiptItem
+const isValidReceiptItem = (item: any): item is ReceiptItem => {
+  return (
+    typeof item === 'object' &&
+    typeof item.name === 'string' &&
+    typeof item.quantity === 'number' &&
+    typeof item.price === 'number'
+  );
+};
+
+// Function to safely transform Json to ReceiptItem[]
+const transformItems = (items: Json): ReceiptItem[] | null => {
+  if (!Array.isArray(items)) return null;
+  
+  const validItems = items.filter(isValidReceiptItem);
+  return validItems.length === items.length ? validItems : null;
+};
+
 export const DigitalReceipts = () => {
   const { data: receipts, isLoading, error } = useQuery<Receipt[]>({
     queryKey: ["digital-receipts"],
@@ -53,7 +71,7 @@ export const DigitalReceipts = () => {
       // Transform the data to ensure items is properly typed
       return (data as SupabaseReceipt[]).map(receipt => ({
         ...receipt,
-        items: receipt.items as ReceiptItem[] | null
+        items: transformItems(receipt.items)
       }));
     },
   });
