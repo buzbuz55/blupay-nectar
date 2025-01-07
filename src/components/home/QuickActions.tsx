@@ -4,6 +4,8 @@ import { useState } from "react";
 import { ContactsDirectory } from "@/components/payment/ContactsDirectory";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
+import type { Contact } from "@/components/payment/types";
 
 // Example contacts data
 const exampleContacts = [
@@ -15,8 +17,18 @@ const exampleContacts = [
 export const QuickActions = () => {
   const [isContactsOpen, setIsContactsOpen] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleSendMoney = (contact: { id: string; email: string; name: string }) => {
+  const handleSendMoney = (contact: Contact) => {
+    if (!contact.email) {
+      toast({
+        title: "Cannot send money",
+        description: "This contact doesn't have an email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     navigate('/pay', { 
       state: { 
         recipient: contact.email,
