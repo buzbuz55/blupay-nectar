@@ -90,7 +90,7 @@ export const FeaturedCards = () => {
                 <img 
                   src={card.image} 
                   alt={card.name}
-                  className="absolute inset-0 w-full h-full object-cover transform scale-125 hover:scale-150 transition-transform duration-300"
+                  className="absolute inset-0 w-full h-full object-cover transform scale-110 hover:scale-125 transition-transform duration-300"
                 />
               </div>
               <div>
