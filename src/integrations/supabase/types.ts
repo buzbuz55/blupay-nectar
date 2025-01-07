@@ -9,6 +9,42 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      contacts: {
+        Row: {
+          contact_id: string | null
+          created_at: string | null
+          email: string | null
+          id: string
+          is_synced: boolean | null
+          name: string
+          phone: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          contact_id?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          is_synced?: boolean | null
+          name: string
+          phone?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          contact_id?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          is_synced?: boolean | null
+          name?: string
+          phone?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       points_activities: {
         Row: {
           activity_type: string
