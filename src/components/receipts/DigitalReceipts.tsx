@@ -35,17 +35,19 @@ interface SupabaseReceipt {
 }
 
 // Type guard to check if an item is a valid ReceiptItem
-const isValidReceiptItem = (item: any): item is ReceiptItem => {
+const isValidReceiptItem = (item: unknown): item is ReceiptItem => {
+  if (typeof item !== 'object' || item === null) return false;
+  
+  const candidate = item as Record<string, unknown>;
   return (
-    typeof item === 'object' &&
-    typeof item.name === 'string' &&
-    typeof item.quantity === 'number' &&
-    typeof item.price === 'number'
+    typeof candidate.name === 'string' &&
+    typeof candidate.quantity === 'number' &&
+    typeof candidate.price === 'number'
   );
 };
 
 // Function to safely transform Json to ReceiptItem[]
-const transformItems = (items: Json): ReceiptItem[] | null => {
+const transformItems = (items: Json | null): ReceiptItem[] | null => {
   if (!Array.isArray(items)) return null;
   
   const validItems = items.filter(isValidReceiptItem);
