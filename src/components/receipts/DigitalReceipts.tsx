@@ -50,7 +50,9 @@ const isValidReceiptItem = (item: unknown): item is ReceiptItem => {
 const transformItems = (items: Json | null): ReceiptItem[] | null => {
   if (!Array.isArray(items)) return null;
   
-  const validItems = items.filter(isValidReceiptItem);
+  // Type assertion to unknown first, then filter with type guard
+  const unknownItems = items as unknown[];
+  const validItems = unknownItems.filter(isValidReceiptItem);
   return validItems.length === items.length ? validItems : null;
 };
 
