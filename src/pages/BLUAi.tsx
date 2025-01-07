@@ -11,6 +11,7 @@ import { ChatInterface } from '@/components/bluai/ChatInterface';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { LoyaltyPrograms } from '@/components/loyalty/LoyaltyPrograms';
+import { DigitalReceipts } from '@/components/receipts/DigitalReceipts';
 
 const BLUAi = () => {
   const [hasCompletedSignup, setHasCompletedSignup] = useState(() => {
@@ -65,6 +66,7 @@ const BLUAi = () => {
             <VoiceAuth />
             <VoicePayment />
             <LoyaltyPrograms />
+            <DigitalReceipts />
             
             <div className="flex-1">
               <div className="mb-6">
