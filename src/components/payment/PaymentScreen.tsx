@@ -7,12 +7,21 @@ import { NumberPad } from "@/components/payment/NumberPad";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from 'react-router-dom';
-import { Search, Mail, Phone } from 'lucide-react';
+import { Search, Mail, Phone, Bank } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const PayPage = () => {
   const [amount, setAmount] = useState('0');
   const [recipient, setRecipient] = useState('');
   const [searchMode, setSearchMode] = useState<'email' | 'phone'>('email');
+  const [transferMethod, setTransferMethod] = useState<'standard' | 'zelle'>('standard');
+  const [bankName, setBankName] = useState('');
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -63,6 +72,15 @@ const PayPage = () => {
       return;
     }
 
+    if (transferMethod === 'zelle' && !bankName) {
+      toast({
+        title: "Bank name required",
+        description: "Please enter the recipient's bank name for Zelle transfers",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
@@ -83,13 +101,15 @@ const PayPage = () => {
           amount: parseFloat(amount),
           type: 'payment',
           status: 'completed',
+          transfer_method: transferMethod,
+          recipient_bank_info: transferMethod === 'zelle' ? { bank_name: bankName } : null,
         });
 
       if (error) throw error;
 
       toast({
         title: "Payment sent!",
-        description: `$${amount} sent to ${recipient}`,
+        description: `$${amount} sent to ${recipient} via ${transferMethod === 'zelle' ? 'Zelle' : 'standard transfer'}`,
       });
 
       navigate('/');
@@ -118,6 +138,19 @@ const PayPage = () => {
         </div>
 
         <div className="space-y-4">
+          <Select
+            value={transferMethod}
+            onValueChange={(value: 'standard' | 'zelle') => setTransferMethod(value)}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select transfer method" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="standard">Standard Transfer</SelectItem>
+              <SelectItem value="zelle">Zelle</SelectItem>
+            </SelectContent>
+          </Select>
+
           <div className="relative">
             <div className="absolute inset-y-0 left-3 flex items-center">
               {searchMode === 'email' ? (
@@ -143,6 +176,21 @@ const PayPage = () => {
             </Button>
           </div>
 
+          {transferMethod === 'zelle' && (
+            <div className="relative">
+              <div className="absolute inset-y-0 left-3 flex items-center">
+                <Bank className="h-5 w-5 text-gray-400" />
+              </div>
+              <Input
+                type="text"
+                placeholder="Enter recipient's bank name"
+                value={bankName}
+                onChange={(e) => setBankName(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          )}
+
           <div className="flex-1 flex items-center justify-center">
             <div className="text-5xl font-semibold flex items-center">
               <span className="text-3xl mr-2">$</span>
@@ -163,7 +211,7 @@ const PayPage = () => {
             onClick={handlePay}
             className="w-full text-lg"
           >
-            Pay
+            {transferMethod === 'zelle' ? 'Send via Zelle' : 'Pay'}
           </Button>
         </div>
       </Card>

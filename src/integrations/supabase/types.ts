@@ -247,10 +247,12 @@ export type Database = {
           created_at: string
           id: string
           note: string | null
+          recipient_bank_info: Json | null
           recipient_id: string | null
           recipient_identifier: string
           sender_id: string
           status: string
+          transfer_method: string | null
           type: string
           updated_at: string
         }
@@ -259,10 +261,12 @@ export type Database = {
           created_at?: string
           id?: string
           note?: string | null
+          recipient_bank_info?: Json | null
           recipient_id?: string | null
           recipient_identifier: string
           sender_id: string
           status?: string
+          transfer_method?: string | null
           type?: string
           updated_at?: string
         }
@@ -271,10 +275,12 @@ export type Database = {
           created_at?: string
           id?: string
           note?: string | null
+          recipient_bank_info?: Json | null
           recipient_id?: string | null
           recipient_identifier?: string
           sender_id?: string
           status?: string
+          transfer_method?: string | null
           type?: string
           updated_at?: string
         }
