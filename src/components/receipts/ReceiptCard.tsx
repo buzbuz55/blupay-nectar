@@ -2,11 +2,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Receipt, Store } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
+interface ReceiptItem {
+  name: string;
+  quantity: number;
+  price: number;
+}
+
 interface ReceiptCardProps {
   receiptNumber: string;
   businessName: string;
   totalAmount: number;
-  items: any[];
+  items: ReceiptItem[] | null;
   createdAt: string;
 }
 

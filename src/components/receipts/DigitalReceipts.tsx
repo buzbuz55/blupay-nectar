@@ -5,8 +5,25 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
+interface ReceiptItem {
+  name: string;
+  quantity: number;
+  price: number;
+}
+
+interface Receipt {
+  id: string;
+  receipt_number: string;
+  total_amount: number;
+  items: ReceiptItem[] | null;
+  created_at: string;
+  business_profiles: {
+    business_name: string;
+  };
+}
+
 export const DigitalReceipts = () => {
-  const { data: receipts, isLoading, error } = useQuery({
+  const { data: receipts, isLoading, error } = useQuery<Receipt[]>({
     queryKey: ["digital-receipts"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -61,7 +78,7 @@ export const DigitalReceipts = () => {
               receiptNumber={receipt.receipt_number}
               businessName={receipt.business_profiles.business_name}
               totalAmount={receipt.total_amount}
-              items={receipt.items || []}
+              items={receipt.items}
               createdAt={receipt.created_at}
             />
           ))}
