@@ -84,41 +84,6 @@ export const ContactsDirectory = ({ isOpen, onClose, onSelectContact }: Contacts
     setContacts(data);
   };
 
-  const handleAddNewContact = async (newContact: { name: string; email: string; phone: string }) => {
-    if (!newContact.name || (!newContact.email && !newContact.phone)) {
-      toast({
-        title: "Invalid Contact",
-        description: "Please provide a name and either an email or phone number",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const { error } = await supabase.from('contacts').insert({
-      name: newContact.name,
-      email: newContact.email,
-      phone: newContact.phone,
-      user_id: (await supabase.auth.getUser()).data.user?.id
-    });
-
-    if (error) {
-      toast({
-        title: "Error",
-        description: "Could not add contact",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    toast({
-      title: "Contact Added",
-      description: "New contact has been added successfully",
-    });
-    
-    setNewContactMode(false);
-    fetchContacts();
-  };
-
   useEffect(() => {
     if (isOpen) {
       fetchContacts();
@@ -139,35 +104,60 @@ export const ContactsDirectory = ({ isOpen, onClose, onSelectContact }: Contacts
         </DialogHeader>
         
         <div className="space-y-4">
+          <SearchBar value={searchQuery} onChange={setSearchQuery} />
+
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              className="flex-1 justify-center gap-2"
+              onClick={() => setNewContactMode(true)}
+            >
+              <UserPlus className="h-4 w-4" />
+              Add Contact
+            </Button>
+            <Button
+              variant="outline"
+              className="flex-1 justify-center gap-2"
+              onClick={handleSyncContacts}
+            >
+              <Phone className="h-4 w-4" />
+              Sync Device
+            </Button>
+          </div>
+
           {!newContactMode ? (
-            <>
-              <SearchBar value={searchQuery} onChange={setSearchQuery} />
-
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  className="flex-1 justify-center gap-2"
-                  onClick={() => setNewContactMode(true)}
-                >
-                  <UserPlus className="h-4 w-4" />
-                  Add Contact
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex-1 justify-center gap-2"
-                  onClick={handleSyncContacts}
-                >
-                  <Phone className="h-4 w-4" />
-                  Sync Device
-                </Button>
-              </div>
-
-              <ContactList contacts={filteredContacts} onSelectContact={onSelectContact} />
-            </>
+            <ContactList 
+              contacts={filteredContacts} 
+              onSelectContact={onSelectContact}
+            />
           ) : (
             <NewContactForm
               onCancel={() => setNewContactMode(false)}
-              onSubmit={handleAddNewContact}
+              onSubmit={async (newContact) => {
+                const { error } = await supabase.from('contacts').insert({
+                  name: newContact.name,
+                  email: newContact.email,
+                  phone: newContact.phone,
+                  user_id: (await supabase.auth.getUser()).data.user?.id
+                });
+
+                if (error) {
+                  toast({
+                    title: "Error",
+                    description: "Could not add contact",
+                    variant: "destructive",
+                  });
+                  return;
+                }
+
+                toast({
+                  title: "Contact Added",
+                  description: "New contact has been added successfully",
+                });
+                
+                setNewContactMode(false);
+                fetchContacts();
+              }}
             />
           )}
         </div>
