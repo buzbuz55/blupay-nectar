@@ -8,6 +8,10 @@ import { BluClubDialog } from "./points/BluClubDialog";
 import { useToast } from "@/components/ui/use-toast";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
+
+type UserPoints = Database['public']['Tables']['user_points']['Row'];
+type PointsActivity = Database['public']['Tables']['points_activities']['Row'];
 
 export const PointsSystem = () => {
   const { toast } = useToast();
@@ -24,7 +28,7 @@ export const PointsSystem = () => {
         .from('user_points')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data || { total_points: 0, next_reward_threshold: 70000 };
