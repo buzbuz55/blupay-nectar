@@ -4,6 +4,7 @@ import { ReceiptCard } from "./ReceiptCard";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Json } from "@/integrations/supabase/types";
 
 interface ReceiptItem {
   name: string;
@@ -16,6 +17,17 @@ interface Receipt {
   receipt_number: string;
   total_amount: number;
   items: ReceiptItem[] | null;
+  created_at: string;
+  business_profiles: {
+    business_name: string;
+  };
+}
+
+interface SupabaseReceipt {
+  id: string;
+  receipt_number: string;
+  total_amount: number;
+  items: Json;
   created_at: string;
   business_profiles: {
     business_name: string;
@@ -37,7 +49,12 @@ export const DigitalReceipts = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data;
+
+      // Transform the data to ensure items is properly typed
+      return (data as SupabaseReceipt[]).map(receipt => ({
+        ...receipt,
+        items: receipt.items as ReceiptItem[] | null
+      }));
     },
   });
 
