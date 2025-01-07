@@ -8,6 +8,7 @@ import { FeaturedCards } from "@/components/cards/FeaturedCards";
 import { ConnectMethods } from "@/components/cards/ConnectMethods";
 import { PointsSystem } from "@/components/cards/PointsSystem";
 import { BusinessFeatures } from "@/components/cards/BusinessFeatures";
+import { BusinessAnalytics } from "@/components/cards/BusinessAnalytics";
 
 const CardsOverview = () => {
   return (
@@ -24,6 +25,9 @@ const CardsOverview = () => {
       <main className="p-4 space-y-6">
         {/* Featured Cards Section */}
         <FeaturedCards />
+
+        {/* Business Analytics */}
+        <BusinessAnalytics />
 
         {/* Business Features */}
         <BusinessFeatures />
