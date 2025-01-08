@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { usePaymentForm } from './hooks/usePaymentForm';
+import { TransferMethod } from './hooks/usePaymentForm';
 
 const RecipientInput = memo(({ 
   searchMode, 
@@ -101,7 +102,7 @@ const PaymentScreen = () => {
         <div className="space-y-4">
           <Select
             value={transferMethod}
-            onValueChange={setTransferMethod}
+            onValueChange={(value: TransferMethod) => setTransferMethod(value)}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select transfer method" />
